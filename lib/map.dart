@@ -41,7 +41,7 @@ class _MapAdminState extends State<MapAdmin> {
         ..position = myLatlng
         ..map = map
         ..title = 'Hello World!'
-        ..label = 'h'
+        ..label = 'label'
         ..icon =
             'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png');
 
