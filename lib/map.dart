@@ -26,8 +26,8 @@ class _MapAdminState extends State<MapAdmin> {
       final myLatlng2 = LatLng(1.4521, 103.9198);
 
       final mapOptions = MapOptions()
-        ..zoom = 10
-        ..center = LatLng(1.3521, 103.8198);
+        ..zoom = 5
+        ..center = LatLng(14.5995, 120.9842);
 
       final elem = DivElement()
         ..id = htmlId
