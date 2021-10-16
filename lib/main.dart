@@ -4,6 +4,7 @@ import 'package:sylviapp_admin/home.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/manage_users.dart';
 import 'package:sylviapp_admin/map.dart';
+import 'package:sylviapp_admin/verification_info.dart';
 import 'package:sylviapp_admin/verify_users.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         "/manage_users": (_) => const ManageUsers(),
         "/map": (_) => const MapAdmin(),
         "/verify_users": (_) => const VerifyUsers(),
+        "/verification_info": (_) => VerificationInfo(),
       },
       home: LoginAdmin(),
     );
