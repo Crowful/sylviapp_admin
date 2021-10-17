@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/providers.dart';
 
 class VerificationInfo extends StatefulWidget {
-  const VerificationInfo({Key? key}) : super(key: key);
+  final String userUID;
+  const VerificationInfo({required this.userUID});
 
   @override
   _VerificationInfoState createState() => _VerificationInfoState();
@@ -15,8 +16,10 @@ class _VerificationInfoState extends State<VerificationInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<DocumentSnapshot>(
-          stream:
-              FirebaseFirestore.instance.collection('users').doc().snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('verification')
+              .doc(widget.userUID)
+              .snapshots(),
           builder: (context, snapshot) {
             return Center(
               child: SingleChildScrollView(
@@ -24,7 +27,6 @@ class _VerificationInfoState extends State<VerificationInfo> {
                   margin: EdgeInsets.fromLTRB(350, 100, 350, 0),
                   child: Column(
                     children: [
-                      Text(snapshot.data.toString()),
                       Container(
                         height: 500,
                         width: 500,
@@ -35,11 +37,11 @@ class _VerificationInfoState extends State<VerificationInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("ALFIE C. TRIBACO"),
+                          Text(snapshot.data!.get('reasonForApplication')),
                           SizedBox(
                             width: 30,
                           ),
-                          Text("1203981238"),
+                          Text(snapshot.data!.get('reasonForApplication')),
                         ],
                       ),
                       Container(

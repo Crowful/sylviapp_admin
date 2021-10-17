@@ -33,7 +33,9 @@ class MyApp extends StatelessWidget {
         "/manage_users": (_) => const ManageUsers(),
         "/map": (_) => const MapAdmin(),
         "/verify_users": (_) => const VerifyUsers(),
-        "/verification_info": (_) => VerificationInfo(),
+        "/verification_info": (_) => VerificationInfo(
+              userUID: "",
+            ),
       },
       home: LoginAdmin(),
     );
