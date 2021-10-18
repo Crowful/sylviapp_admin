@@ -133,10 +133,7 @@ class _AdminHomeState extends State<AdminHome> {
                                           ],
                                         ),
                                         IconButton(
-                                            onPressed: () {
-                                              Navigator.pushNamed(
-                                                  context, 'verify_users');
-                                            },
+                                            onPressed: () {},
                                             icon: const Icon(Icons.menu))
                                       ],
                                     ),
@@ -146,7 +143,10 @@ class _AdminHomeState extends State<AdminHome> {
                                     Row(
                                       children: [
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, '/verify_users');
+                                          },
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
                                                 horizontal: 5, vertical: 5),
@@ -309,74 +309,91 @@ class _AdminHomeState extends State<AdminHome> {
                                                     height: 15,
                                                   ),
                                                   Center(
-                                                    child: StreamBuilder<
-                                                            QuerySnapshot>(
-                                                        stream: FirebaseFirestore
-                                                            .instance
-                                                            .collection('users')
-                                                            .where('isVerify',
-                                                                isNotEqualTo:
-                                                                    true)
-                                                            .snapshots(),
-                                                        builder: (context,
-                                                            AsyncSnapshot<
-                                                                    QuerySnapshot>
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        StreamBuilder<
+                                                                QuerySnapshot>(
+                                                            stream: FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'users')
+                                                                .where(
+                                                                    'isVerify',
+                                                                    isNotEqualTo:
+                                                                        true)
+                                                                .snapshots(),
+                                                            builder: (context,
                                                                 notTrue) {
-                                                          return Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              Text(
-                                                                notTrue
-                                                                        .data!
-                                                                        .docs
-                                                                        .length
-                                                                        .toString() +
-                                                                    ' Basic(s)',
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              StreamBuilder<
-                                                                      QuerySnapshot>(
-                                                                  stream: FirebaseFirestore
-                                                                      .instance
-                                                                      .collection(
-                                                                          'users')
-                                                                      .where(
-                                                                          'isVerify',
-                                                                          isEqualTo:
-                                                                              true)
-                                                                      .snapshots(),
-                                                                  builder: (context,
-                                                                      AsyncSnapshot<
-                                                                              QuerySnapshot>
-                                                                          snapshot) {
-                                                                    return Text(
-                                                                      snapshot
-                                                                              .data!
-                                                                              .docs
-                                                                              .length
-                                                                              .toString() +
-                                                                          ' Organizer(s)',
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontWeight: FontWeight
+                                                              if (notTrue
+                                                                  .hasData) {
+                                                                return Text(
+                                                                  notTrue
+                                                                          .data!
+                                                                          .docs
+                                                                          .length
+                                                                          .toString() +
+                                                                      ' Basic(s)',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
                                                                               .bold,
-                                                                          fontSize:
-                                                                              15),
-                                                                    );
-                                                                  }),
-                                                            ],
-                                                          );
-                                                        }),
+                                                                      fontSize:
+                                                                          15),
+                                                                );
+                                                              } else {
+                                                                return Container(
+                                                                    height: 10,
+                                                                    width: 10,
+                                                                    child:
+                                                                        CircularProgressIndicator());
+                                                              }
+                                                            }),
+                                                        StreamBuilder<
+                                                                QuerySnapshot>(
+                                                            stream: FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'users')
+                                                                .where(
+                                                                    'isVerify',
+                                                                    isEqualTo:
+                                                                        true)
+                                                                .snapshots(),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                  .hasData) {
+                                                                return Text(
+                                                                  snapshot
+                                                                          .data!
+                                                                          .docs
+                                                                          .length
+                                                                          .toString() +
+                                                                      ' Organizer(s)',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          15),
+                                                                );
+                                                              } else {
+                                                                return Container(
+                                                                    width: 10,
+                                                                    height: 10,
+                                                                    child:
+                                                                        CircularProgressIndicator());
+                                                              }
+                                                            }),
+                                                      ],
+                                                    ),
                                                   )
                                                 ],
                                               ),

@@ -18,7 +18,7 @@ class _VerifyUsersState extends State<VerifyUsers> {
   String? taske;
   String? errorText;
   String urlTest = "";
-  String uid = "";
+  String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
   late String Future;
   showProfile(uid) async {
     String fileName = "pic";
@@ -42,7 +42,6 @@ class _VerifyUsersState extends State<VerifyUsers> {
     super.initState();
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +121,7 @@ class _VerifyUsersState extends State<VerifyUsers> {
                                             color: Colors.red,
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(urlTest))),
+                                                image: NetworkImage(""))),
                                       ),
                                       const SizedBox(
                                         width: 20,
@@ -151,14 +150,14 @@ class _VerifyUsersState extends State<VerifyUsers> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                          HeroDialogRoute(builder: (context) {
-                                        return VerificationInfo(
+                                      Navigator.of(context)
+                                          .push(HeroDialogRoute(
+                                        builder: (context) => VerificationInfo(
                                           userUID: e.id,
                                           name: name,
                                           email: email,
-                                        );
-                                      }));
+                                        ),
+                                      ));
                                     },
                                     child: Container(
                                       height: 50,
