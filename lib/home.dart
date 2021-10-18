@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sylviapp_admin/map.dart';
@@ -13,6 +14,8 @@ class _AdminHomeState extends State<AdminHome> {
   bool onHov = false;
   @override
   Widget build(BuildContext context) {
+    final now = new DateTime.now();
+    String formatter = DateFormat.yMMMMd('en_US').format(now); // 28/03/2020
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -84,6 +87,10 @@ class _AdminHomeState extends State<AdminHome> {
                         height: 60,
                         decoration:
                             const BoxDecoration(color: Color(0xffF6F8FA)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Text(formatter)],
+                        ),
                       ),
                       Expanded(
                         child: Container(
@@ -134,6 +141,7 @@ class _AdminHomeState extends State<AdminHome> {
                                   Row(
                                     children: [
                                       Container(
+                                        padding: const EdgeInsets.all(20),
                                         margin: const EdgeInsets.symmetric(
                                             horizontal: 5, vertical: 5),
                                         height: 250,
@@ -150,8 +158,35 @@ class _AdminHomeState extends State<AdminHome> {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(10)),
                                             color: Colors.white),
-                                        child: const Center(
-                                          child: Text('DASHBOARD 1'),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  'View Campaign Requests',
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Color(0xff65BFB8),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Tooltip(
+                                                    child: Icon(
+                                                      Icons.help_rounded,
+                                                      color: Colors.black
+                                                          .withOpacity(0.3),
+                                                      size: 13,
+                                                    ),
+                                                    message:
+                                                        "Newest request: 10:00am October 17, 2021")
+                                              ],
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       Container(
