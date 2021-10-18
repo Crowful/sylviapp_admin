@@ -101,92 +101,6 @@ class _AdminHomeState extends State<AdminHome> {
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 1000),
                             child: Center(
-<<<<<<< HEAD
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: const [
-                                          Text(
-                                            'Dashboard',
-                                            style: TextStyle(
-                                                color: Color(0xff65BFB8),
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 30),
-                                          ),
-                                          Text(
-                                            'Welcome to Sylviapp Dashboard',
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.menu))
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(20),
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 5),
-                                        height: 250,
-                                        width: 310,
-                                        decoration: const BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Color(0xffE7E6E9),
-                                                blurRadius: 4,
-                                                offset: Offset(
-                                                    2, 5), // Shadow position
-                                              ),
-                                            ],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                            color: Colors.white),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Text(
-                                                  'View Campaign Requests',
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Color(0xff65BFB8),
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Tooltip(
-                                                    child: Icon(
-                                                      Icons.help_rounded,
-                                                      color: Colors.black
-                                                          .withOpacity(0.3),
-                                                      size: 13,
-                                                    ),
-                                                    message:
-                                                        "Newest request: 10:00am October 17, 2021")
-                                              ],
-=======
                               child: SingleChildScrollView(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -214,7 +128,6 @@ class _AdminHomeState extends State<AdminHome> {
                                               style: TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 15),
->>>>>>> fda1796c4f43e2aba0ee86e9606b019b04defd14
                                             ),
                                           ],
                                         ),
@@ -228,7 +141,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     ),
                                     Row(
                                       children: [
-                                        GestureDetector(
+                                        InkWell(
                                           onTap: () => Navigator.pushNamed(
                                               context, "/verify_users"),
                                           child: Container(
