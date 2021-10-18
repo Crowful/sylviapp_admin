@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'package:sylviapp_admin/verification_info.dart';
@@ -121,12 +122,12 @@ class _VerifyUsersState extends State<VerifyUsers> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  VerificationInfo(
-                                                      userUID: e.id)));
+                                      Navigator.of(context).push(
+                                          HeroDialogRoute(builder: (context) {
+                                        return VerificationInfo(
+                                          userUID: e.id,
+                                        );
+                                      }));
                                     },
                                     child: Container(
                                       height: 50,

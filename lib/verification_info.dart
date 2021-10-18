@@ -14,55 +14,140 @@ class VerificationInfo extends StatefulWidget {
 class _VerificationInfoState extends State<VerificationInfo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('verification')
-              .doc(widget.userUID)
-              .snapshots(),
-          builder: (context, snapshot) {
-            return Center(
-              child: SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(350, 100, 350, 0),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('verification')
+          .doc(widget.userUID)
+          .snapshots(),
+      builder: (context, snapshot) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: 400,
+            height: 700,
+            decoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80",
+                          ))),
+                  height: 230,
+                  width: double.infinity,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 500,
-                        width: 500,
-                        child: Image.network(
-                            "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80"),
-                      ),
-                      SizedBox(height: 50),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(snapshot.data!.get('reasonForApplication')),
-                          SizedBox(
-                            width: 30,
+                      Text(
+                          snapshot.data!.get(
+                            'fullname',
                           ),
-                          Text(snapshot.data!.get('reasonForApplication')),
-                        ],
+                          style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff65BFB8))),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Reason:',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff65BFB8)),
+                      ),
+                      Text(snapshot.data!.get('reasonForApplication')),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Valid Id:',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff65BFB8)),
                       ),
                       Container(
-                        height: 300,
-                        width: 300,
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        height: 200,
+                        width: 200,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: Image.network(
                             "https://media.istockphoto.com/photos/covid19-vaccination-record-card-on-white-background-picture-id1297704047"),
                       ),
-                      Text("Reason for Applying as an organizer: "),
-                      Text(
-                          "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsum"),
-                      Text("Have any Experience?:  No"),
-                      ElevatedButton(
-                          onPressed: () {}, child: Text("Approve Application"))
                     ],
                   ),
-                ),
-              ),
-            );
-          }),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
+// Scaffold(
+//       body: StreamBuilder<DocumentSnapshot>(
+//           stream: FirebaseFirestore.instance
+//               .collection('verification')
+//               .doc(widget.userUID)
+//               .snapshots(),
+//           builder: (context, snapshot) {
+//             return Center(
+//               child: SingleChildScrollView(
+//                 child: Container(
+//                   margin: const EdgeInsets.fromLTRB(350, 100, 350, 0),
+//                   child: Column(
+//                     children: [
+//                       SizedBox(
+//                         height: 500,
+//                         width: 500,
+//                         child: Image.network(
+//                             "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80"),
+//                       ),
+//                       const SizedBox(height: 50),
+//                       Row(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         children: [
+//                           Text(snapshot.data!.get('reasonForApplication')),
+//                           const SizedBox(
+//                             width: 30,
+//                           ),
+//                           Text(snapshot.data!.get('reasonForApplication')),
+//                         ],
+//                       ),
+//                       Container(
+//                         height: 300,
+//                         width: 300,
+//                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+//                         child: Image.network(
+//                             "https://media.istockphoto.com/photos/covid19-vaccination-record-card-on-white-background-picture-id1297704047"),
+//                       ),
+//                       const Text("Reason for Applying as an organizer: "),
+//                       const Text(
+//                           "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsum"),
+//                       const Text("Have any Experience?:  No"),
+//                       ElevatedButton(
+//                           onPressed: () {},
+//                           child: const Text("Approve Application"))
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             );
+//           }),
+//     );
