@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -142,8 +143,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     Row(
                                       children: [
                                         InkWell(
-                                          onTap: () => Navigator.pushNamed(
-                                              context, "/verify_users"),
+                                          onTap: () {},
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
                                                 horizontal: 5, vertical: 5),
@@ -162,7 +162,13 @@ class _AdminHomeState extends State<AdminHome> {
                                                     Radius.circular(10)),
                                                 color: Colors.white),
                                             child: const Center(
-                                              child: Text('APPLICATIONS'),
+                                              child: Text(
+                                                'Manage Campaign Requests',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xff65BFB8),
+                                                    fontSize: 20),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -300,33 +306,74 @@ class _AdminHomeState extends State<AdminHome> {
                                                     height: 15,
                                                   ),
                                                   Center(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: const [
-                                                        Text(
-                                                          '10 basic',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 15),
-                                                        ),
-                                                        Text(
-                                                          '10 organizers',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 15),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                    child: StreamBuilder<
+                                                            QuerySnapshot>(
+                                                        stream: FirebaseFirestore
+                                                            .instance
+                                                            .collection('users')
+                                                            .where('isVerify',
+                                                                isNotEqualTo:
+                                                                    true)
+                                                            .snapshots(),
+                                                        builder: (context,
+                                                            AsyncSnapshot<
+                                                                    QuerySnapshot>
+                                                                notTrue) {
+                                                          return Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              Text(
+                                                                notTrue
+                                                                        .data!
+                                                                        .docs
+                                                                        .length
+                                                                        .toString() +
+                                                                    ' Basic(s)',
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        15),
+                                                              ),
+                                                              StreamBuilder<
+                                                                      QuerySnapshot>(
+                                                                  stream: FirebaseFirestore
+                                                                      .instance
+                                                                      .collection(
+                                                                          'users')
+                                                                      .where(
+                                                                          'isVerify',
+                                                                          isEqualTo:
+                                                                              true)
+                                                                      .snapshots(),
+                                                                  builder: (context,
+                                                                      AsyncSnapshot<
+                                                                              QuerySnapshot>
+                                                                          snapshot) {
+                                                                    return Text(
+                                                                      snapshot
+                                                                              .data!
+                                                                              .docs
+                                                                              .length
+                                                                              .toString() +
+                                                                          ' Organizer(s)',
+                                                                      style: const TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              15),
+                                                                    );
+                                                                  }),
+                                                            ],
+                                                          );
+                                                        }),
                                                   )
                                                 ],
                                               ),
@@ -393,7 +440,8 @@ class _AdminHomeState extends State<AdminHome> {
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () => Navigator.pushNamed(
+                                              context, "/verify_users"),
                                           onHover: (hover) {},
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
