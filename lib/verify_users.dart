@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
@@ -44,6 +45,8 @@ class _VerifyUsersState extends State<VerifyUsers> {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    String formatter = DateFormat.yMMMMd('en_US').format(now);
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -69,121 +72,140 @@ class _VerifyUsersState extends State<VerifyUsers> {
             } else {
               return Align(
                 alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Verify the users',
-                      style: TextStyle(
-                          color: Color(0xff65BFB8),
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        width: 800,
-                        child: ListView(
-                          children: snapshot.data!.docs.map((e) {
-                            String name = AESCryptography().decryptAES(
-                                enc.Encrypted.fromBase64(e['fullname']));
-                            showProfile(e.id);
-                            String email = e.get('email');
-                            return Container(
-                              padding: const EdgeInsets.all(20),
-                              height: 100,
-                              margin: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0xffE7E6E9),
-                                      blurRadius: 4,
-                                      offset: Offset(2, 5), // Shadow position
-                                    ),
-                                  ]),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 1000,
-                                        decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(""))),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            name,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const Text(
-                                            'Applicant',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 13,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(HeroDialogRoute(
-                                        builder: (context) => VerificationInfo(
-                                          userUID: e.id,
-                                          name: name,
-                                          email: email,
-                                        ),
-                                      ));
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      decoration: const BoxDecoration(
-                                          color: Color(0xff65BFB8),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5))),
-                                      width: 100,
-                                      child: const Center(
-                                        child: Text(
-                                          'View',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 60,
+                        decoration:
+                            const BoxDecoration(color: Color(0xffF6F8FA)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Text(formatter)],
                         ),
                       ),
-                    ),
-                  ],
+                      const Text(
+                        ' Applicants',
+                        style: TextStyle(
+                            color: Color(0xff65BFB8),
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const Text(
+                        '  Verify the users',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          child: ListView(
+                            children: snapshot.data!.docs.map((e) {
+                              String name = AESCryptography().decryptAES(
+                                  enc.Encrypted.fromBase64(e['fullname']));
+                              String email = e['email'];
+
+                              return Container(
+                                padding: const EdgeInsets.all(20),
+                                height: 100,
+                                margin: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xffE7E6E9),
+                                        blurRadius: 4,
+                                        offset: Offset(2, 5), // Shadow position
+                                      ),
+                                    ]),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 100,
+                                          height: 1000,
+                                          decoration: const BoxDecoration(
+                                              color: Colors.red,
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                      "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80"))),
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              name,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            const Text(
+                                              'Applicant',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 13,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            HeroDialogRoute(builder: (context) {
+                                          return VerificationInfo(
+                                            userUID: e.id,
+                                            name: name,
+                                            email: email,
+                                          );
+                                        }));
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff65BFB8),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5))),
+                                        width: 100,
+                                        child: const Center(
+                                          child: Text(
+                                            'View',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }

@@ -16,7 +16,7 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
     final now = new DateTime.now();
-    String formatter = DateFormat.yMMMMd('en_US').format(now); // 28/03/2020
+    String formatter = DateFormat.yMMMMd('en_US').format(now);
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -234,26 +234,52 @@ class _AdminHomeState extends State<AdminHome> {
                                                                 FontWeight
                                                                     .bold),
                                                       ),
-                                                      IconButton(
-                                                          onPressed: () {},
-                                                          icon: const Icon(
-                                                            Icons.menu,
-                                                            size: 20,
-                                                          ))
+                                                      Tooltip(
+                                                        message:
+                                                            "Total Active Campaigns done by Sylviapp",
+                                                        child: Icon(
+                                                          Icons.help_rounded,
+                                                          color: Colors.black
+                                                              .withOpacity(0.7),
+                                                          size: 13,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                   const SizedBox(
-                                                    height: 10,
+                                                    height: 40,
                                                   ),
-                                                  const Center(
-                                                    child: Text(
-                                                      '10 campaigns',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
+                                                  Center(
+                                                    child: StreamBuilder<
+                                                            QuerySnapshot>(
+                                                        stream:
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'campaigns')
+                                                                .snapshots(),
+                                                        builder: (context,
+                                                            AsyncSnapshot<
+                                                                    QuerySnapshot>
+                                                                snaphots) {
+                                                          return Center(
+                                                            child: Text(
+                                                              snaphots
+                                                                      .data!
+                                                                      .docs
+                                                                      .length
+                                                                      .toString() +
+                                                                  " Campaign(s)",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 20),
+                                                            ),
+                                                          );
+                                                        }),
                                                   )
                                                 ],
                                               ),
