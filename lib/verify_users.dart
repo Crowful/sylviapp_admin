@@ -51,7 +51,7 @@ class _VerifyUsersState extends State<VerifyUsers> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
-              .where('isVerify', isEqualTo: true)
+              .where('isApplying', isEqualTo: true)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -137,12 +137,12 @@ class _VerifyUsersState extends State<VerifyUsers> {
                                         Container(
                                           width: 100,
                                           height: 1000,
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
                                               color: Colors.red,
                                               image: DecorationImage(
                                                   fit: BoxFit.cover,
-                                                  image: NetworkImage(
-                                                      "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80"))),
+                                                  image:
+                                                      NetworkImage(urlTest))),
                                         ),
                                         const SizedBox(
                                           width: 20,

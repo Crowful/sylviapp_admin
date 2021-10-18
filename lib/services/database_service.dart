@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 
 class DatabaseService {
@@ -56,6 +57,24 @@ class DatabaseService {
       'fullname': fullname,
       'address': address,
     });
+  }
+
+  Future verifytheUser(String userUID) async {
+    return await userCollection.doc(userUID).update({
+      'isApplying': true,
+    });
+  }
+
+  Future unVerifyTheUser(String userUID) async {
+    return await userCollection.doc(userUID).update({
+      'isApplying': false,
+    }).whenComplete(() => Fluttertoast.showToast(msg: "Successfully verified"));
+  }
+
+  Future verify(String userUID) async {
+    return await verificationCollection.doc(userUID).update({
+      'verified': true,
+    }).whenComplete(() => Fluttertoast.showToast(msg: "Verified"));
   }
 
 //Campaign

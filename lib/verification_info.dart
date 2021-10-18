@@ -91,21 +91,6 @@ class _VerificationInfoState extends State<VerificationInfo> {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Column(
                   children: [
-                    urlTest != ""
-                        ? CircleAvatar(
-                            radius: 45,
-                            backgroundImage: FadeInImage.memoryNetwork(
-                              placeholder: kTransparentImage,
-                              image: urlTest,
-                              imageErrorBuilder: (context, error, stackTrace) {
-                                return CircleAvatar(
-                                  radius: 100,
-                                  child: Icon(Icons.account_circle),
-                                );
-                              },
-                            ).image,
-                          )
-                        : CircularProgressIndicator(),
                     InkWell(
                       onTap: () {
                         Navigator.of(context)
@@ -135,10 +120,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                              snapshot.data!.get(
-                                'fullname',
-                              ),
+                          Text(widget.name,
                               style: const TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
@@ -157,8 +139,8 @@ class _VerificationInfoState extends State<VerificationInfo> {
                           const SizedBox(
                             height: 20,
                           ),
-                          const Text(
-                            'Valid Id:',
+                          Text(
+                            'Valid Id: ',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -172,15 +154,20 @@ class _VerificationInfoState extends State<VerificationInfo> {
                               }));
                             },
                             child: Container(
-                              height: 200,
-                              width: 200,
-                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: Image.network(urlTest2),
-                            ),
+                                height: 200,
+                                width: 200,
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: FadeInImage.memoryNetwork(
+                                    placeholder: kTransparentImage,
+                                    image: urlTest)),
                           ),
                           ElevatedButton(
                               onPressed: () async {
-                                print(urlTest);
+                                await context
+                                    .read(authserviceProvider)
+                                    .removerVerification(widget.userUID);
+
+                                Navigator.pop(context);
                               },
                               child: Text("Approve"))
                         ],

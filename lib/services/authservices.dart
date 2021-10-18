@@ -211,4 +211,20 @@ class AuthService extends ChangeNotifier {
       Fluttertoast.showToast(msg: e.toString());
     }
   }
+
+  verifyAUser(String id) async {
+    try {
+      await DatabaseService(uid: "admin").verifytheUser(id);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  removerVerification(String id) async {
+    try {
+      await DatabaseService(uid: "admin").unVerifyTheUser(id);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
