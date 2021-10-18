@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sylviapp_admin/animations/opaque.dart';
+import 'package:sylviapp_admin/showFull.dart';
 import 'providers/providers.dart';
 
 class VerificationInfo extends StatefulWidget {
@@ -34,18 +36,29 @@ class _VerificationInfoState extends State<VerificationInfo> {
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             child: Column(
               children: [
-                Container(
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(HeroDialogRoute(builder: (context) {
+                      return ImageFullScreen(
+                        imgLink:
                             "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80",
-                          ))),
-                  height: 230,
-                  width: double.infinity,
+                      );
+                    }));
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80",
+                            ))),
+                    height: 230,
+                    width: double.infinity,
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(20),
@@ -82,12 +95,22 @@ class _VerificationInfoState extends State<VerificationInfo> {
                             fontWeight: FontWeight.bold,
                             color: Color(0xff65BFB8)),
                       ),
-                      Container(
-                        height: 200,
-                        width: 200,
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        child: Image.network(
-                            "https://media.istockphoto.com/photos/covid19-vaccination-record-card-on-white-background-picture-id1297704047"),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(HeroDialogRoute(builder: (context) {
+                            return ImageFullScreen(
+                                imgLink:
+                                    "https://media.istockphoto.com/photos/covid19-vaccination-record-card-on-white-background-picture-id1297704047");
+                          }));
+                        },
+                        child: Container(
+                          height: 200,
+                          width: 200,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Image.network(
+                              "https://media.istockphoto.com/photos/covid19-vaccination-record-card-on-white-background-picture-id1297704047"),
+                        ),
                       ),
                     ],
                   ),
