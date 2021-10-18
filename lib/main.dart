@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:sylviapp_admin/analytics.dart';
 import 'package:sylviapp_admin/home.dart';
 import 'package:sylviapp_admin/login.dart';
@@ -11,7 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
         "/verify_users": (_) => const VerifyUsers(),
         "/verification_info": (_) => VerificationInfo(
               userUID: "",
+              email: " ",
+              name: " ",
             ),
       },
       home: LoginAdmin(),

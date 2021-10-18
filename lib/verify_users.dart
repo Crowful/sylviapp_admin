@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
@@ -14,6 +15,34 @@ class VerifyUsers extends StatefulWidget {
 }
 
 class _VerifyUsersState extends State<VerifyUsers> {
+  String? taske;
+  String? errorText;
+  String urlTest = "";
+  String uid = "";
+  late String Future;
+  showProfile(uid) async {
+    String fileName = "pic";
+    String destination = 'files/users/$uid/ProfilePicture/$fileName';
+    Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
+    try {
+      taske = await firebaseStorageRef.getDownloadURL();
+    } catch (e) {
+      setState(() {
+        errorText = e.toString();
+      });
+    }
+    setState(() {
+      urlTest = taske.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    showProfile(uid);
+    super.initState();
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +88,8 @@ class _VerifyUsersState extends State<VerifyUsers> {
                           children: snapshot.data!.docs.map((e) {
                             String name = AESCryptography().decryptAES(
                                 enc.Encrypted.fromBase64(e['fullname']));
-
+                            showProfile(e.id);
+                            String email = e.get('email');
                             return Container(
                               padding: const EdgeInsets.all(20),
                               height: 100,
@@ -88,12 +118,11 @@ class _VerifyUsersState extends State<VerifyUsers> {
                                       Container(
                                         width: 100,
                                         height: 1000,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                             color: Colors.red,
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                    "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80"))),
+                                                image: NetworkImage(urlTest))),
                                       ),
                                       const SizedBox(
                                         width: 20,
@@ -126,6 +155,8 @@ class _VerifyUsersState extends State<VerifyUsers> {
                                           HeroDialogRoute(builder: (context) {
                                         return VerificationInfo(
                                           userUID: e.id,
+                                          name: name,
+                                          email: email,
                                         );
                                       }));
                                     },

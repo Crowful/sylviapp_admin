@@ -133,7 +133,10 @@ class _AdminHomeState extends State<AdminHome> {
                                           ],
                                         ),
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.pushNamed(
+                                                  context, 'verify_users');
+                                            },
                                             icon: const Icon(Icons.menu))
                                       ],
                                     ),
