@@ -18,26 +18,9 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
 
-
-  <script>
-    // TODO: Replace the following with your app's Firebase project configuration.
-    // See: https://support.google.com/firebase/answer/7015592
-    var firebaseConfig = {
-      apiKey: "...",
-      authDomain: "[YOUR_PROJECT].firebaseapp.com",
-      databaseURL: "https://[YOUR_PROJECT].firebaseio.com",
-      projectId: "[YOUR_PROJECT]",
-      storageBucket: "[YOUR_PROJECT].appspot.com",
-      messagingSenderId: "...",
-      appId: "1:...:web:...",
-      measurementId: "G-..."
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
@@ -102,5 +85,32 @@
       loadMainDartJs();
     }
   </script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+
+<script>
+
+ 
+  const firebaseConfig = {
+    apiKey: "AIzaSyBN13-MnjFBRPcoma5XHSPqX1K8RJOCc8U",
+    authDomain: "sylviapp-77c5e.firebaseapp.com",
+    projectId: "sylviapp-77c5e",
+    storageBucket: "sylviapp-77c5e.appspot.com",
+    messagingSenderId: "92670595275",
+    appId: "1:92670595275:web:b9dc8b2018c2cd3f308b4e",
+    measurementId: "G-M4R7ZTD93X"
+  };
+
+
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+
+
+
 </body>
 </html>
