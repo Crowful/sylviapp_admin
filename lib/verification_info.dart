@@ -19,6 +19,8 @@ class VerificationInfo extends StatefulWidget {
 }
 
 class _VerificationInfoState extends State<VerificationInfo> {
+  String? link;
+  String? link1;
   String? taske;
   String? errorText;
   String urlTest = "";
@@ -26,8 +28,11 @@ class _VerificationInfoState extends State<VerificationInfo> {
   Future showFaceURL(uid) async {
     String fileName = "pic";
     String destination = 'files/users/$uid/verification/facePic/$fileName';
-    ;
+
     Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
+    firebaseStorageRef
+        .getDownloadURL()
+        .then((value) => setState(() => link = value));
     try {
       taske = await firebaseStorageRef.getDownloadURL();
     } catch (e) {
@@ -48,6 +53,11 @@ class _VerificationInfoState extends State<VerificationInfo> {
     String fileName = "pic";
     String destination = 'files/users/$uid/verification/validID/$fileName';
     Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
+
+    firebaseStorageRef
+        .getDownloadURL()
+        .then((value) => setState(() => link1 = value));
+
     try {
       taske2 = await firebaseStorageRef.getDownloadURL();
     } catch (e) {
@@ -62,9 +72,10 @@ class _VerificationInfoState extends State<VerificationInfo> {
 
   @override
   void initState() {
+    super.initState();
+
     showFaceURL(widget.userUID);
     showvalidID(widget.userUID);
-    super.initState();
   }
 
   @override
@@ -96,19 +107,19 @@ class _VerificationInfoState extends State<VerificationInfo> {
                         Navigator.of(context)
                             .push(HeroDialogRoute(builder: (context) {
                           return ImageFullScreen(
-                            imgLink: urlTest,
+                            imgLink: link!,
                           );
                         }));
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10)),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  urlTest,
+                                  link!,
                                 ))),
                         height: 230,
                         width: double.infinity,
@@ -139,7 +150,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Valid Id: ',
                             style: TextStyle(
                                 fontSize: 18,
@@ -150,16 +161,16 @@ class _VerificationInfoState extends State<VerificationInfo> {
                             onTap: () {
                               Navigator.of(context)
                                   .push(HeroDialogRoute(builder: (context) {
-                                return ImageFullScreen(imgLink: urlTest2);
+                                return ImageFullScreen(imgLink: link1!);
                               }));
                             },
                             child: Container(
                                 height: 200,
                                 width: 200,
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: FadeInImage.memoryNetwork(
                                     placeholder: kTransparentImage,
-                                    image: urlTest)),
+                                    image: link1!)),
                           ),
                           ElevatedButton(
                               onPressed: () async {
@@ -169,7 +180,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
 
                                 Navigator.pop(context);
                               },
-                              child: Text("Approve"))
+                              child: const Text("Approve"))
                         ],
                       ),
                     )
