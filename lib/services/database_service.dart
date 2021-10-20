@@ -66,9 +66,10 @@ class DatabaseService {
   }
 
   Future unVerifyTheUser(String userUID) async {
-    return await userCollection.doc(userUID).update({
-      'isApplying': false,
-    }).whenComplete(() => Fluttertoast.showToast(msg: "Successfully verified"));
+    return await userCollection
+        .doc(userUID)
+        .update({'isApplying': false, 'isVerify': true}).whenComplete(
+            () => Fluttertoast.showToast(msg: "Successfully verified"));
   }
 
   Future verify(String userUID) async {
