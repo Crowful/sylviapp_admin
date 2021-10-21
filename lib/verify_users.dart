@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:encrypt/encrypt.dart' as enc;

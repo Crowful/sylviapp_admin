@@ -36,9 +36,12 @@ class ShowCampaignState extends State<ShowCampaign> {
                     ),
                     color: Colors.white),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(widget.campaignId),
-                    Text(snapshot.data!.get('campaign_name')),
+                    Text(snapshot.data!.get('campaign_name'),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
                     Text(snapshot.data!.get('address')),
                     Text(snapshot.data!.get('campaignID')),
                     Text(snapshot.data!.get('city')),
@@ -56,6 +59,7 @@ class ShowCampaignState extends State<ShowCampaign> {
                     Text(snapshot.data!.get('radius').toString()),
                     Text(snapshot.data!.get('time')),
                     Text(snapshot.data!.get('uid')),
+                    Text(snapshot.data!.get('username')),
                     SizedBox(
                       height: 50,
                     ),
