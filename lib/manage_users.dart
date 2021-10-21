@@ -223,25 +223,6 @@ class _ManageUsersState extends State<ManageUsers> {
                                         ),
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        height: 50,
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff65BFB8),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5))),
-                                        width: 100,
-                                        child: const Center(
-                                          child: Text(
-                                            'Delete User',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               );
