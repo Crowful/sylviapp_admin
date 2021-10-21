@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sylviapp_admin/providers/providers.dart';
 
 class ShowCampaigneRequests extends StatefulWidget {
   const ShowCampaigneRequests({Key? key}) : super(key: key);
@@ -36,6 +38,27 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                       child: SizedBox(
                         child: ListView(
                           children: snapshot.data!.docs.map((e) {
+                            String campaignAddress = e['address'];
+                            String campaignID = e['campaignID'];
+                            String campaignName = e['campaign_name'];
+                            String campaignCity = e['city'];
+                            double campaignCurrentDonation =
+                                e['current_donations'];
+                            int campaignCurrentVolunteers =
+                                e['current_volunteers'];
+                            String campaignDateCreated = e['date_created'];
+                            String campaignDateEnded = e['date_ended'];
+                            String campaignDateStart = e['date_start'];
+                            String campaignDescription = e['description'];
+                            double campaignLatitude = e['latitude'];
+                            double campaignlongitude = e['longitude'];
+                            double campaignMaxDonation = e['max_donation'];
+                            int campaignNumberOfSeeds = e['number_of_seeds'];
+                            int campaignNumberVolunteers =
+                                e['number_volunteers'];
+                            String campaignTime = e['time'];
+                            String campaignUID = e['uid'];
+                            String campaignUsername = e['username'];
                             return Container(
                               padding: const EdgeInsets.all(20),
                               height: 100,
@@ -76,7 +99,7 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                                             ),
                                           ),
                                           Text(
-                                            e['campaign_name'],
+                                            e['city'],
                                             style: const TextStyle(
                                               color: Colors.grey,
                                               fontSize: 13,
@@ -88,10 +111,27 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      // Navigator.of(context).push(
-                                      //     HeroDialogRoute(builder: (context) {
-
-                                      // }));
+                                      context
+                                          .read(authserviceProvider)
+                                          .createCampaign(
+                                              campaignName,
+                                              campaignDescription,
+                                              campaignID,
+                                              campaignDateCreated,
+                                              campaignDateStart,
+                                              campaignDateEnded,
+                                              campaignAddress,
+                                              campaignCity,
+                                              campaignTime,
+                                              campaignUID,
+                                              campaignUsername,
+                                              campaignLatitude,
+                                              campaignlongitude,
+                                              campaignNumberOfSeeds,
+                                              campaignCurrentDonation,
+                                              campaignMaxDonation,
+                                              campaignCurrentVolunteers,
+                                              campaignNumberVolunteers);
                                     },
                                     child: Container(
                                       height: 50,
@@ -102,7 +142,7 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                                       width: 100,
                                       child: const Center(
                                         child: Text(
-                                          'View',
+                                          'Approve Campaign',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white),
