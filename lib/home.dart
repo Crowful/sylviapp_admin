@@ -431,53 +431,64 @@ class _AdminHomeState extends State<AdminHome> {
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 5),
-                                            height: 250,
-                                            width: 100,
-                                            decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: AssetImage(
-                                                        "assets/images/map.png")),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Color(0xffE7E6E9),
-                                                    blurRadius: 4,
-                                                    offset: Offset(2,
-                                                        5), // Shadow position
-                                                  ),
-                                                ],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                color: Colors.white),
-                                            child: ClipRRect(
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    begin:
-                                                        Alignment.bottomCenter,
-                                                    end: Alignment.topCenter,
-                                                    colors: [
-                                                      const Color(0xff65BFB8)
-                                                          .withOpacity(0.4),
-                                                      Colors.transparent,
-                                                    ],
-                                                  ),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, "/map");
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 5),
+                                              height: 250,
+                                              width: 100,
+                                              decoration: const BoxDecoration(
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: AssetImage(
+                                                          "assets/images/map.png")),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Color(0xffE7E6E9),
+                                                      blurRadius: 4,
+                                                      offset: Offset(2,
+                                                          5), // Shadow position
+                                                    ),
+                                                  ],
                                                   borderRadius:
-                                                      const BorderRadius.all(
+                                                      BorderRadius.all(
                                                           Radius.circular(10)),
-                                                ),
-                                                child: const ClipRRect(
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Go to Map',
-                                                      style: TextStyle(
-                                                          fontSize: 30,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                  color: Colors.white),
+                                              child: ClipRRect(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment
+                                                          .bottomCenter,
+                                                      end: Alignment.topCenter,
+                                                      colors: [
+                                                        const Color(0xff65BFB8)
+                                                            .withOpacity(0.4),
+                                                        Colors.transparent,
+                                                      ],
+                                                    ),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  child: const ClipRRect(
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Go to Map',
+                                                        style: TextStyle(
+                                                            fontSize: 30,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
