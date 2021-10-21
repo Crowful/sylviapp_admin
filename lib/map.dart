@@ -48,6 +48,7 @@ class _MapAdminState extends State<MapAdmin> {
           .then((QuerySnapshot querySnapshot) {
         // ignore: avoid_function_literals_in_foreach_calls
         querySnapshot.docs.forEach((doc) {
+          double thisisRadius = doc['radius'] * 100;
           final sirkel = Circle(CircleOptions()
             ..center = LatLng(doc['latitude'], doc['longitude'])
             ..map = map
@@ -56,7 +57,7 @@ class _MapAdminState extends State<MapAdmin> {
             ..strokeOpacity = 0.2
             ..fillOpacity = 0.1
             ..fillColor = "red"
-            ..radius = 500
+            ..radius = thisisRadius
             ..clickable = true);
 
           sirkel.onClick.listen((event) {

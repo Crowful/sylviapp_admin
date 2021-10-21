@@ -12,8 +12,11 @@ class ShowCampaign extends StatefulWidget {
 class ShowCampaignState extends State<ShowCampaign> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: null,
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('admin_campaign_requests')
+            .doc(widget.campaignId)
+            .snapshots(),
         builder: (context, snapshot) {
           return Dialog(
             shape:
@@ -30,7 +33,27 @@ class ShowCampaignState extends State<ShowCampaign> {
                   ),
                   color: Colors.white),
               child: Column(
-                children: [Text(widget.campaignId),],
+                children: [
+                  Text(widget.campaignId),
+                  Text(snapshot.data!.get('campaign_name')),
+                  Text(snapshot.data!.get('address')),
+                  Text(snapshot.data!.get('campaignID')),
+                  Text(snapshot.data!.get('city')),
+                  Text(snapshot.data!.get('current_donations').toString()),
+                  Text(snapshot.data!.get('current_volunteers').toString()),
+                  Text(snapshot.data!.get('date_created')),
+                  Text(snapshot.data!.get('date_ended')),
+                  Text(snapshot.data!.get('date_start')),
+                  Text(snapshot.data!.get('description')),
+                  Text(snapshot.data!.get('latitude').toString()),
+                  Text(snapshot.data!.get('longitude').toString()),
+                  Text(snapshot.data!.get('max_donation').toString()),
+                  Text(snapshot.data!.get('number_of_seeds').toString()),
+                  Text(snapshot.data!.get('number_volunteers').toString()),
+                  Text(snapshot.data!.get('radius').toString()),
+                  Text(snapshot.data!.get('time')),
+                  Text(snapshot.data!.get('uid')),
+                ],
               ),
             ),
           );
