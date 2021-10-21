@@ -487,7 +487,7 @@ class _AdminHomeState extends State<AdminHome> {
                                         ),
                                         InkWell(
                                           onTap: () => Navigator.pushNamed(
-                                              context, "/verify_users"),
+                                              context, "/manage_users"),
                                           onHover: (hover) {},
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
