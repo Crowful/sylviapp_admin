@@ -30,7 +30,7 @@ class ShowCampaignState extends State<ShowCampaign> {
                   ),
                   color: Colors.white),
               child: Column(
-                children: [Text(widget.campaignId)],
+                children: [Text(widget.campaignId),],
               ),
             ),
           );

@@ -362,7 +362,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                                           .length
                                                                           .toString() +
                                                                       ' Basic(s)',
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(
                                                                       color: Colors
                                                                           .black,
                                                                       fontWeight:
@@ -401,7 +401,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                                           .length
                                                                           .toString() +
                                                                       ' Organizer(s)',
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(
                                                                       color: Colors
                                                                           .black,
                                                                       fontWeight:
