@@ -16,6 +16,9 @@ class DatabaseService {
   final CollectionReference campaignCollection =
       FirebaseFirestore.instance.collection('campaigns');
 
+  final CollectionReference adminCampaignCollection =
+      FirebaseFirestore.instance.collection('admin_campaign_requests');
+
   final CollectionReference feedbackCollection =
       FirebaseFirestore.instance.collection('feedbacks');
 
@@ -45,6 +48,10 @@ class DatabaseService {
 
   Future deleteUserData() async {
     return await userCollection.doc(uid).delete();
+  }
+
+  Future deleteRequestCampaign(campaignID) async {
+    return await adminCampaignCollection.doc(campaignID).delete();
   }
 
   Future updateUserData(
@@ -98,7 +105,7 @@ class DatabaseService {
       double maxDonations,
       int currentVolunteers,
       int numberVolunteers) async {
-    return await campaignCollection.doc(uid).set({
+    return await campaignCollection.doc(campaignID).set({
       'campaignID': campaignID,
       'campaign_name': title,
       'description': description,

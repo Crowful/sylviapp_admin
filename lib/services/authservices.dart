@@ -162,7 +162,7 @@ class AuthService extends ChangeNotifier {
       int currentVolunteers,
       int numberVolunteers) async {
     try {
-      await DatabaseService(uid: _loggedInUser!.uid)
+      await DatabaseService(uid: "admin")
           .addCampaign(
               title,
               description,
@@ -183,7 +183,8 @@ class AuthService extends ChangeNotifier {
               currentVolunteers,
               numberVolunteers)
           .whenComplete(() =>
-              Fluttertoast.showToast(msg: "Campaign Successfully Created"));
+              Fluttertoast.showToast(msg: "Campaign Successfully Published"));
+      await DatabaseService(uid: "admin").deleteRequestCampaign(campaignID);
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
