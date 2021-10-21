@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:sylviapp_admin/analytics.dart';
+import 'package:sylviapp_admin/campaignrequests.dart';
 import 'package:sylviapp_admin/home.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/manage_users.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
               email: " ",
               name: " ",
             ),
+        "/campaignrequest": (_) => const ShowCampaigneRequests()
       },
       home: LoginAdmin(),
     );
