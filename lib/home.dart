@@ -145,7 +145,7 @@ class _AdminHomeState extends State<AdminHome> {
                                         InkWell(
                                           onTap: () {
                                             Navigator.pushNamed(
-                                                context, '/verify_users');
+                                                context, '/campaignrequest');
                                           },
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
