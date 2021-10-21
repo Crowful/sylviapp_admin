@@ -214,7 +214,9 @@ class AuthService extends ChangeNotifier {
 
   verifyAUser(String id) async {
     try {
-      await DatabaseService(uid: "admin").verifytheUser(id);
+      await DatabaseService(uid: "admin")
+          .verifyTheUser(id)
+          .whenComplete(() => DatabaseService(uid: "admin").verify(id));
     } catch (e) {
       print(e.toString());
     }
@@ -222,9 +224,7 @@ class AuthService extends ChangeNotifier {
 
   removerVerification(String id) async {
     try {
-      await DatabaseService(uid: "admin")
-          .unVerifyTheUser(id)
-          .whenComplete(() => DatabaseService(uid: "admin").verify(id));
+      await DatabaseService(uid: "admin").unVerifyUser(id);
     } catch (e) {
       print(e.toString());
     }

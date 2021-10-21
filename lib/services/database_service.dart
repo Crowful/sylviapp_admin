@@ -59,13 +59,13 @@ class DatabaseService {
     });
   }
 
-  Future verifytheUser(String userUID) async {
-    return await userCollection.doc(userUID).update({
-      'isApplying': true,
-    });
+  Future unVerifyUser(String userUID) async {
+    return await userCollection
+        .doc(userUID)
+        .update({'isVerify': false, 'isApplying': false});
   }
 
-  Future unVerifyTheUser(String userUID) async {
+  Future verifyTheUser(String userUID) async {
     return await userCollection
         .doc(userUID)
         .update({'isApplying': false, 'isVerify': true}).whenComplete(

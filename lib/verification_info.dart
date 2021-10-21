@@ -176,7 +176,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                               onPressed: () async {
                                 await context
                                     .read(authserviceProvider)
-                                    .removerVerification(widget.userUID);
+                                    .verifyAUser(widget.userUID);
 
                                 Navigator.pop(context);
                               },
