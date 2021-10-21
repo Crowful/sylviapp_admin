@@ -56,11 +56,10 @@ class _MapAdminState extends State<MapAdmin> {
             ..strokeOpacity = 0.2
             ..fillOpacity = 0.1
             ..fillColor = "red"
-            ..radius = 500
+            ..radius = doc['radius']
             ..clickable = true);
 
           sirkel.onClick.listen((event) {
-            print(doc.id);
             Navigator.of(context).push(HeroDialogRoute(builder: (context) {
               return ShowCampaign(campaignId: doc.id);
             }));
