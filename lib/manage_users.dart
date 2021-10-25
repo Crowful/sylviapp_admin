@@ -112,10 +112,12 @@ class _ManageUsersState extends State<ManageUsers> {
                                 padding: const EdgeInsets.all(20),
                                 height: 100,
                                 margin: const EdgeInsets.all(5),
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
-                                    color: Colors.white,
+                                    color: status == true
+                                        ? Colors.green[50]
+                                        : Colors.orange[50],
                                     boxShadow: [
                                       BoxShadow(
                                         color: Color(0xffE7E6E9),
@@ -177,50 +179,103 @@ class _ManageUsersState extends State<ManageUsers> {
                                         ),
                                       ],
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        await context
-                                            .read(authserviceProvider)
-                                            .removerVerification(e.id);
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff65BFB8),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5))),
-                                        width: 100,
-                                        child: const Center(
-                                          child: Text(
-                                            'Remove Verification',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              await context
+                                                  .read(authserviceProvider)
+                                                  .removerVerification(e.id);
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.red[400],
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5))),
+                                              width: 100,
+                                              child: const Center(
+                                                child: Text(
+                                                  'Remove Verification',
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        await context
-                                            .read(authserviceProvider)
-                                            .verifyAUser(e.id);
-                                      },
-                                      child: Container(
-                                        height: 50,
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xff65BFB8),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5))),
-                                        width: 100,
-                                        child: const Center(
-                                          child: Text(
-                                            ' Verify',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                          SizedBox(
+                                            width: 10,
                                           ),
-                                        ),
+                                          InkWell(
+                                            onTap: () async {
+                                              await context
+                                                  .read(authserviceProvider)
+                                                  .verifyAUser(e.id);
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              decoration: const BoxDecoration(
+                                                  color: Color(0xff65BFB8),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5))),
+                                              width: 100,
+                                              child: const Center(
+                                                child: Text(
+                                                  ' Verify',
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+                                              Navigator.of(context).push(
+                                                  HeroDialogRoute(
+                                                      builder: (context) {
+                                                return VerificationInfo(
+                                                  userUID: e.id,
+                                                  name: name,
+                                                  email: email,
+                                                );
+                                              }));
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              decoration: const BoxDecoration(
+                                                  color: Color(0xff65BFB8),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5))),
+                                              width: 100,
+                                              child: const Center(
+                                                child: Text(
+                                                  ' View Info',
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

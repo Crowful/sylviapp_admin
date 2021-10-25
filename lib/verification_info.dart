@@ -174,13 +174,9 @@ class _VerificationInfoState extends State<VerificationInfo> {
                           ),
                           ElevatedButton(
                               onPressed: () async {
-                                await context
-                                    .read(authserviceProvider)
-                                    .verifyAUser(widget.userUID);
-
                                 Navigator.pop(context);
                               },
-                              child: const Text("Approve"))
+                              child: const Text("Back"))
                         ],
                       ),
                     )
