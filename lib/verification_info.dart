@@ -73,9 +73,6 @@ class _VerificationInfoState extends State<VerificationInfo> {
   @override
   void initState() {
     super.initState();
-
-    showFaceURL(widget.userUID);
-    showvalidID(widget.userUID);
   }
 
   @override
@@ -86,7 +83,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
           .doc(widget.userUID)
           .snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (!snapshot.hasData) {
           return Dialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -103,28 +100,54 @@ class _VerificationInfoState extends State<VerificationInfo> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(HeroDialogRoute(builder: (context) {
-                          return ImageFullScreen(
-                            imgLink: link!,
-                          );
-                        }));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10)),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  link!,
-                                ))),
-                        height: 230,
-                        width: double.infinity,
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(HeroDialogRoute(builder: (context) {
+                            return ImageFullScreen(
+                              imgLink: link!,
+                            );
+                          }));
+                        },
+                        child: Text("IMAGE")),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [CircularProgressIndicator()],
                       ),
-                    ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            child: SingleChildScrollView(
+              child: Container(
+                width: 400,
+                height: 700,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Column(
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(HeroDialogRoute(builder: (context) {
+                            return ImageFullScreen(
+                              imgLink: link!,
+                            );
+                          }));
+                        },
+                        child: Text("IMAGE")),
                     Container(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -158,19 +181,12 @@ class _VerificationInfoState extends State<VerificationInfo> {
                                 color: Color(0xff65BFB8)),
                           ),
                           InkWell(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .push(HeroDialogRoute(builder: (context) {
-                                return ImageFullScreen(imgLink: link1!);
-                              }));
-                            },
+                            onTap: () {},
                             child: Container(
                                 height: 200,
                                 width: 200,
                                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: FadeInImage.memoryNetwork(
-                                    placeholder: kTransparentImage,
-                                    image: link1!)),
+                                child: Text("IMAGE")),
                           ),
                           ElevatedButton(
                               onPressed: () async {
@@ -185,8 +201,6 @@ class _VerificationInfoState extends State<VerificationInfo> {
               ),
             ),
           );
-        } else {
-          return CircularProgressIndicator();
         }
       },
     );
