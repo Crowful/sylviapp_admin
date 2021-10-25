@@ -66,6 +66,12 @@ class _MapAdminState extends State<MapAdmin> {
       return elem;
     });
 
-    return HtmlElementView(viewType: htmlId);
+    return Scaffold(
+        body: Stack(children: [
+      HtmlElementView(viewType: htmlId),
+      Container(
+          margin: EdgeInsets.fromLTRB(400, 400, 0, 0),
+          child: ElevatedButton(onPressed: () {}, child: Text("TESTING"))),
+    ]));
   }
 }
