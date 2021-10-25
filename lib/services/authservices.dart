@@ -190,6 +190,10 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  Future declineCampaign(campaignID) async {
+    await DatabaseService(uid: "admin").deleteRequestCampaign(campaignID);
+  }
+
   Future createApplication(
     String validIDUrl,
     String idNumber,

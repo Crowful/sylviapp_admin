@@ -86,11 +86,15 @@ class _AdminHomeState extends State<AdminHome> {
                     children: [
                       Container(
                         height: 60,
-                        decoration:
-                            const BoxDecoration(color: Color(0xffF6F8FA)),
+                        decoration: BoxDecoration(color: Color(0xffF6F8FA)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text(formatter)],
+                          children: [
+                            Text(
+                              formatter,
+                              style: TextStyle(color: Colors.black54),
+                            )
+                          ],
                         ),
                       ),
                       Expanded(
@@ -175,23 +179,35 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 5),
-                                          height: 250,
-                                          width: 310,
-                                          decoration: const BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Color(0xffE7E6E9),
-                                                  blurRadius: 4,
-                                                  offset: Offset(
-                                                      2, 5), // Shadow position
-                                                ),
-                                              ],
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                              color: Colors.white),
+                                        InkWell(
+                                          onTap: () {},
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 5),
+                                            height: 250,
+                                            width: 310,
+                                            decoration: const BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color(0xffE7E6E9),
+                                                    blurRadius: 4,
+                                                    offset: Offset(2,
+                                                        5), // Shadow position
+                                                  ),
+                                                ],
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Colors.white),
+                                            child: Center(
+                                              child: Text(
+                                                'Create Polygon',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xff65BFB8),
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                         Column(
                                           children: [
@@ -262,23 +278,34 @@ class _AdminHomeState extends State<AdminHome> {
                                                             AsyncSnapshot<
                                                                     QuerySnapshot>
                                                                 snaphots) {
-                                                          return Center(
-                                                            child: Text(
-                                                              snaphots
-                                                                      .data!
-                                                                      .docs
-                                                                      .length
-                                                                      .toString() +
-                                                                  " Campaign(s)",
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 20),
-                                                            ),
-                                                          );
+                                                          if (!snaphots
+                                                              .hasData) {
+                                                            return Container(
+                                                              height: 10,
+                                                              width: 10,
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            );
+                                                          } else {
+                                                            return Center(
+                                                              child: Text(
+                                                                snaphots
+                                                                        .data!
+                                                                        .docs
+                                                                        .length
+                                                                        .toString() +
+                                                                    " Campaign(s)",
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        20),
+                                                              ),
+                                                            );
+                                                          }
                                                         }),
                                                   )
                                                 ],
@@ -361,7 +388,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                                           .docs
                                                                           .length
                                                                           .toString() +
-                                                                      ' Basic(s)',
+                                                                      ' Volunteer(s)',
                                                                   style: const TextStyle(
                                                                       color: Colors
                                                                           .black,

@@ -25,7 +25,7 @@ class _MapAdminState extends State<MapAdmin> {
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
       final mapOptions = MapOptions()
-        ..zoom = 13
+        ..zoom = 14
         ..center = LatLng(14.7452, 121.0984);
 
       final elem = DivElement()

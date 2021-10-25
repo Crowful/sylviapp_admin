@@ -54,10 +54,16 @@ class _LoginAdminState extends State<LoginAdmin> {
                                   const InputDecoration(hintText: "Username"),
                             ),
                             TextField(
+                                obscureText: true,
                                 controller: passwordController,
                                 decoration: const InputDecoration(
                                     hintText: "Password")),
+                            SizedBox(
+                              height: 10,
+                            ),
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(0xff65BFB8)),
                                 onPressed: () {
                                   if (usernameController.text == "admin" &&
                                       passwordController.text == "123456") {
@@ -105,7 +111,13 @@ class _LoginAdminState extends State<LoginAdmin> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: const [
-                                        Text('wew'),
+                                        Text(
+                                          'W E L C O M E',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ],
                                     ),
                                   )

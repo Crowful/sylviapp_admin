@@ -36,12 +36,14 @@ class ShowCampaignState extends State<ShowCampaign> {
                     ),
                     color: Colors.white),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(snapshot.data!.get('campaign_name'),
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
+                            color: Color(0xff65BFB8),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30)),
                     Text(snapshot.data!.get('address')),
                     Text(snapshot.data!.get('campaignID')),
                     Text(snapshot.data!.get('city')),
@@ -89,13 +91,43 @@ class ShowCampaignState extends State<ShowCampaign> {
                               .whenComplete(
                                   () => Navigator.pushNamed(context, '/map'));
                         },
-                        child: Text("Approve This Campaign"))
+                        child: Text("Approve This Campaign")),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.red),
+                        onPressed: () {
+                          context
+                              .read(authserviceProvider)
+                              .declineCampaign(snapshot.data!.id)
+                              .whenComplete(
+                                  () => Navigator.pushNamed(context, '/map'));
+                        },
+                        child: Text("Decline This Campaign"))
                   ],
                 ),
               ),
             );
           } else {
-            return CircularProgressIndicator();
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                height: MediaQuery.of(context).size.height - 200,
+                width: 1000,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    color: Colors.white),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [CircularProgressIndicator()],
+                ),
+              ),
+            );
           }
         });
   }
