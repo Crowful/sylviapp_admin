@@ -180,7 +180,10 @@ class _AdminHomeState extends State<AdminHome> {
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, "/map_polygon");
+                                          },
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
                                                 horizontal: 5, vertical: 5),
