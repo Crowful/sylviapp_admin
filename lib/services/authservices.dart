@@ -234,4 +234,14 @@ class AuthService extends ChangeNotifier {
       print(e.toString());
     }
   }
+
+  createPolygon(String forestname, points) async {
+    try {
+      await DatabaseService(uid: "admin")
+          .savePolygonLamesa(forestname, points)
+          .whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS"));
+    } catch (e) {
+      print(e);
+    }
+  }
 }

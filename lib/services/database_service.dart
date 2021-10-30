@@ -25,6 +25,9 @@ class DatabaseService {
   final CollectionReference verificationCollection =
       FirebaseFirestore.instance.collection('verification');
 
+  final CollectionReference polygonCollection =
+      FirebaseFirestore.instance.collection('polygon');
+
 //methods
 
 //User
@@ -140,6 +143,15 @@ class DatabaseService {
       'pictureURL': pictureURL,
       'reasonForApplication': reasonForApplication,
       'doHaveExperience': doHaveExperience,
+    });
+  }
+
+  Future savePolygonLamesa(
+    String forestname,
+    points,
+  ) async {
+    return await polygonCollection.doc(forestname).set({
+      'points': points,
     });
   }
 }
