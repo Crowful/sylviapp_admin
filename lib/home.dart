@@ -464,7 +464,7 @@ class _AdminHomeState extends State<AdminHome> {
                                           child: InkWell(
                                             onTap: () {
                                               Navigator.pushNamed(
-                                                  context, "/map");
+                                                  context, "/new_map");
                                             },
                                             child: Container(
                                               margin:

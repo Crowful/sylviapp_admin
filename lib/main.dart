@@ -6,6 +6,7 @@ import 'package:sylviapp_admin/home.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/manage_users.dart';
 import 'package:sylviapp_admin/map.dart';
+import 'package:sylviapp_admin/map_new.dart';
 import 'package:sylviapp_admin/map_polygon.dart';
 import 'package:sylviapp_admin/verification_info.dart';
 import 'package:sylviapp_admin/verify_users.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
             ),
         "/campaignrequest": (_) => const ShowCampaigneRequests(),
         "/map_polygon": (_) => const MapPolygon(),
+        "/new_map": (_) => const MapCampaignRequest()
       },
       home: LoginAdmin(),
     );
