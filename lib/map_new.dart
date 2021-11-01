@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' as fmap;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:latlong2/latlong.dart' as lt;
 
 class MapCampaignRequest extends StatefulWidget {
@@ -16,7 +16,8 @@ class MapCampaignRequest extends StatefulWidget {
 class _MapCampaignRequestState extends State<MapCampaignRequest> {
   lt.LatLng? _initialCameraPosition = lt.LatLng(14.7452, 121.0984);
 
-  List<fmap.CircleMarker> circleMarkersCampaigns = List.empty(growable: true);
+  List<Map<String, dynamic>> circleMarkersCampaigns =
+      List.empty(growable: true);
 
   fmap.MapController cntrler = fmap.MapController();
 
@@ -30,44 +31,56 @@ class _MapCampaignRequestState extends State<MapCampaignRequest> {
               .asStream(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else {
               snapshot.data!.docs.forEach((doc) {
                 var campaignLat = doc.get("latitude");
                 var campaignLon = doc.get("longitude");
                 var campaignRad = doc.get("radius");
+                var campaignUid = doc.id;
 
-                circleMarkersCampaigns.add(fmap.CircleMarker(
-                    point: lt.LatLng(campaignLat, campaignLon),
-                    radius: campaignRad));
+                circleMarkersCampaigns.add({
+                  "latitude": campaignLat as double,
+                  "longitude": campaignLon as double,
+                  "radius": campaignRad as double,
+                  "uid": campaignUid
+                });
               });
               return Stack(children: [
                 fmap.FlutterMap(
-                  mapController: cntrler,
-                  options: fmap.MapOptions(
-                    center: _initialCameraPosition,
-                    zoom: 13,
-                  ),
-                  layers: [
-                    fmap.TileLayerOptions(
-                      urlTemplate:
-                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      subdomains: ['a', 'b', 'c'],
-                      attributionBuilder: (_) {
-                        return Text("© OpenStreetMap contributors");
-                      },
+                    mapController: cntrler,
+                    options: fmap.MapOptions(
+                      center: _initialCameraPosition,
+                      zoom: 13,
                     ),
-                    fmap.CircleLayerOptions(
-                      circles: [
-                        for (var item in circleMarkersCampaigns)
-                          fmap.CircleMarker(
-                              color: Colors.red,
-                              point: item.point,
-                              radius: item.radius * 100)
-                      ],
-                    ),
-                  ],
-                ),
+                    children: [
+                      fmap.TileLayerWidget(
+                        options: fmap.TileLayerOptions(
+                          urlTemplate:
+                              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          subdomains: ['a', 'b', 'c'],
+                          attributionBuilder: (_) {
+                            return Text("© OpenStreetMap contributors");
+                          },
+                        ),
+                      ),
+                      for (var item in circleMarkersCampaigns)
+                        fmap.CircleLayerWidget(
+                          options: fmap.CircleLayerOptions(
+                            circles: [
+                              GestureDetector(
+                                onTap: () => print("SUCCSS"),
+                                child: null,
+                              ) as fmap.CircleMarker,
+                              fmap.CircleMarker(
+                                  point: lt.LatLng(item.values.elementAt(0),
+                                      item.values.elementAt(1)),
+                                  radius: item.values.elementAt(2) * 100,
+                                  color: Colors.red)
+                            ],
+                          ),
+                        ),
+                    ]),
                 Row(
                   children: [
                     ElevatedButton(
