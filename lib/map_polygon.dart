@@ -13,6 +13,7 @@ class MapPolygon extends StatefulWidget {
 }
 
 class _MapPolygonState extends State<MapPolygon> {
+  double zooming = 5;
   LatLng? _initialCameraPosition = LatLng(14.5995, 120.9842);
 
   MapController _mapctl = MapController();
@@ -79,7 +80,8 @@ class _MapPolygonState extends State<MapPolygon> {
                           width: 150,
                           child: ElevatedButton(
                             onPressed: () {
-                              _mapctl.move(LatLng(14.918990, 121.165563), 13);
+                              _mapctl.move(
+                                  LatLng(14.918990, 121.165563), zooming);
                             },
                             child: const Center(child: Text("Angat Forest")),
                             style: ElevatedButton.styleFrom(
@@ -91,7 +93,8 @@ class _MapPolygonState extends State<MapPolygon> {
                           width: 150,
                           child: ElevatedButton(
                               onPressed: () {
-                                _mapctl.move(LatLng(14.7452, 121.0984), 13);
+                                _mapctl.move(
+                                    LatLng(14.7452, 121.0984), zooming);
                               },
                               child: const Text("Lamesa Forest"),
                               style: ElevatedButton.styleFrom(
@@ -102,7 +105,8 @@ class _MapPolygonState extends State<MapPolygon> {
                           width: 150,
                           child: ElevatedButton(
                               onPressed: () {
-                                _mapctl.move(LatLng(15.780574, 121.121838), 13);
+                                _mapctl.move(
+                                    LatLng(15.780574, 121.121838), zooming);
                               },
                               child: const Text("Pantabangan Forest"),
                               style: ElevatedButton.styleFrom(
@@ -230,7 +234,9 @@ class _MapPolygonState extends State<MapPolygon> {
                                       msg: "Select forest first");
                                 }
                               },
-                              child: const Text("Undo")),
+                              child: const Text("Undo"),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Color(0xffFFD54C))),
                         ),
                         SizedBox(
                           height: 50,
@@ -288,7 +294,9 @@ class _MapPolygonState extends State<MapPolygon> {
                                       msg: "Select forest first");
                                 }
                               },
-                              child: const Text("Save")),
+                              child: const Text("Save"),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Color(0xff65BFB8))),
                         ),
                         SizedBox(
                           height: 50,
@@ -318,37 +326,60 @@ class _MapPolygonState extends State<MapPolygon> {
                           height: 50,
                           width: 100,
                           child: ElevatedButton(
-                              onPressed: () {
-                                if (isCreatingAngat == true) {
-                                  setState(() {
-                                    _PolygonAngat.clear();
-                                    isCreatingAngat = false;
-                                    isCreatingLamesa = false;
-                                    isCreatingPantabangan = false;
-                                  });
-                                } else if (isCreatingLamesa == true) {
-                                  setState(() {
-                                    _PolygonLamesa.clear();
-                                    isCreatingAngat = false;
-                                    isCreatingLamesa = false;
-                                    isCreatingPantabangan = false;
-                                  });
-                                } else if (isCreatingPantabangan == true) {
-                                  setState(() {
-                                    _PolygonPantabangan.clear();
-                                    isCreatingAngat = false;
-                                    isCreatingLamesa = false;
-                                    isCreatingPantabangan = false;
-                                  });
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg: "Select forest first");
-                                }
-                              },
-                              child: const Text("Cancel")),
+                            onPressed: () {
+                              if (isCreatingAngat == true) {
+                                setState(() {
+                                  _PolygonAngat.clear();
+                                  isCreatingAngat = false;
+                                  isCreatingLamesa = false;
+                                  isCreatingPantabangan = false;
+                                });
+                              } else if (isCreatingLamesa == true) {
+                                setState(() {
+                                  _PolygonLamesa.clear();
+                                  isCreatingAngat = false;
+                                  isCreatingLamesa = false;
+                                  isCreatingPantabangan = false;
+                                });
+                              } else if (isCreatingPantabangan == true) {
+                                setState(() {
+                                  _PolygonPantabangan.clear();
+                                  isCreatingAngat = false;
+                                  isCreatingLamesa = false;
+                                  isCreatingPantabangan = false;
+                                });
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "Select forest first");
+                              }
+                            },
+                            child: const Text(
+                              "Cancel",
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: const Color(0xffFF673A)),
+                          ),
                         )
                       ],
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Zoom',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Slider(
+                        value: zooming,
+                        min: 1,
+                        max: 20,
+                        onChanged: (zoom1) {
+                          setState(() {
+                            zooming = zoom1;
+                            _mapctl.move(_mapctl.center, zooming);
+                          });
+                        })
                   ],
                 ),
               ),
@@ -360,7 +391,7 @@ class _MapPolygonState extends State<MapPolygon> {
                   mapController: _mapctl,
                   options: MapOptions(
                     center: _initialCameraPosition,
-                    zoom: 5,
+                    zoom: zooming,
                     onLongPress: (tapPosition, point) {
                       if (isCreatingAngat == true) {
                         setState(() {
@@ -395,18 +426,6 @@ class _MapPolygonState extends State<MapPolygon> {
                       attributionBuilder: (_) {
                         return Text("© OpenStreetMap contributors");
                       },
-                    ),
-                    MarkerLayerOptions(
-                      markers: [
-                        Marker(
-                          width: 80.0,
-                          height: 80.0,
-                          point: LatLng(14.5995, 120.9842),
-                          builder: (ctx) => Container(
-                            child: Icon(Icons.control_point),
-                          ),
-                        ),
-                      ],
                     ),
                     PolygonLayerOptions(
                       polygons: [
