@@ -60,6 +60,7 @@ dependencies:
   flutter_map: ^0.14.0
   positioned_tap_detector_2: ^1.0.4
   
+  
 
 dev_dependencies:
   flutter_test:
