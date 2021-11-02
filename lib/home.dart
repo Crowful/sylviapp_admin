@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sylviapp_admin/map.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({Key? key}) : super(key: key);
@@ -15,7 +14,7 @@ class _AdminHomeState extends State<AdminHome> {
   bool onHov = false;
   @override
   Widget build(BuildContext context) {
-    final now = new DateTime.now();
+    final now = DateTime.now();
     String formatter = DateFormat.yMMMMd('en_US').format(now);
     return SafeArea(
       child: Scaffold(
@@ -86,13 +85,14 @@ class _AdminHomeState extends State<AdminHome> {
                     children: [
                       Container(
                         height: 60,
-                        decoration: BoxDecoration(color: Color(0xffF6F8FA)),
+                        decoration:
+                            const BoxDecoration(color: Color(0xffF6F8FA)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               formatter,
-                              style: TextStyle(color: Colors.black54),
+                              style: const TextStyle(color: Colors.black54),
                             )
                           ],
                         ),
@@ -201,7 +201,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(10)),
                                                 color: Colors.white),
-                                            child: Center(
+                                            child: const Center(
                                               child: Text(
                                                 'Create Polygon',
                                                 style: TextStyle(
@@ -283,7 +283,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                                 snaphots) {
                                                           if (!snaphots
                                                               .hasData) {
-                                                            return Container(
+                                                            return const SizedBox(
                                                               height: 10,
                                                               width: 10,
                                                               child:
@@ -402,7 +402,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                                           15),
                                                                 );
                                                               } else {
-                                                                return Container(
+                                                                return const SizedBox(
                                                                     height: 10,
                                                                     width: 10,
                                                                     child:
@@ -441,7 +441,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                                           15),
                                                                 );
                                                               } else {
-                                                                return Container(
+                                                                return const SizedBox(
                                                                     width: 10,
                                                                     height: 10,
                                                                     child:

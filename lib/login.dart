@@ -58,12 +58,12 @@ class _LoginAdminState extends State<LoginAdmin> {
                                 controller: passwordController,
                                 decoration: const InputDecoration(
                                     hintText: "Password")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Color(0xff65BFB8)),
+                                    primary: const Color(0xff65BFB8)),
                                 onPressed: () {
                                   if (usernameController.text == "admin" &&
                                       passwordController.text == "123456") {

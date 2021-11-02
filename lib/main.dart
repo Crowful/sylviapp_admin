@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+
 import 'package:sylviapp_admin/analytics.dart';
 import 'package:sylviapp_admin/campaignrequests.dart';
 import 'package:sylviapp_admin/home.dart';
@@ -15,7 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
         "/map_polygon": (_) => const MapPolygon(),
         "/new_map": (_) => const MapCampaignRequest()
       },
-      home: LoginAdmin(),
+      home: const LoginAdmin(),
     );
   }
 }

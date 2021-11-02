@@ -71,7 +71,7 @@ class _ManageUsersState extends State<ManageUsers> {
             } else {
               return Align(
                 alignment: Alignment.center,
-                child: Container(
+                child: SizedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -113,12 +113,12 @@ class _ManageUsersState extends State<ManageUsers> {
                                 height: 100,
                                 margin: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
                                     color: status == true
                                         ? Colors.green[50]
                                         : Colors.orange[50],
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
                                         color: Color(0xffE7E6E9),
                                         blurRadius: 4,
@@ -179,7 +179,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                         ),
                                       ],
                                     ),
-                                    Container(
+                                    SizedBox(
                                       child: Row(
                                         children: [
                                           InkWell(
@@ -193,7 +193,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                               decoration: BoxDecoration(
                                                   color: Colors.red[400],
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                      const BorderRadius.all(
                                                           Radius.circular(5))),
                                               width: 100,
                                               child: const Center(
@@ -208,7 +208,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           InkWell(
@@ -237,7 +237,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           InkWell(
@@ -272,7 +272,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                         ],
@@ -306,11 +306,11 @@ class _ManageUsersState extends State<ManageUsers> {
 //                               title: Text(name),
 //                             ),
   getAllUsers(AsyncSnapshot<QuerySnapshot> snapshot) {
-    return Container(
+    return SizedBox(
       height: 200,
       width: 800,
       child: Row(
-        children: [
+        children: const [
           Text(""),
           SizedBox(
             width: 200,
