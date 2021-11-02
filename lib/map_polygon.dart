@@ -177,7 +177,7 @@ class _MapPolygonState extends State<MapPolygon> {
                               },
                               child: const Text("In Lamesa"),
                               style: ElevatedButton.styleFrom(
-                                  primary: Color(0xff65BFB8))),
+                                  primary: const Color(0xff65BFB8))),
                         ),
                         SizedBox(
                           height: 70,
@@ -242,7 +242,7 @@ class _MapPolygonState extends State<MapPolygon> {
                               },
                               child: const Text("Undo"),
                               style: ElevatedButton.styleFrom(
-                                  primary: Color(0xffFFD54C))),
+                                  primary: const Color(0xffFFD54C))),
                         ),
                         SizedBox(
                           height: 50,
@@ -302,7 +302,7 @@ class _MapPolygonState extends State<MapPolygon> {
                               },
                               child: const Text("Save"),
                               style: ElevatedButton.styleFrom(
-                                  primary: Color(0xff65BFB8))),
+                                  primary: const Color(0xff65BFB8))),
                         ),
                         SizedBox(
                           height: 50,
@@ -386,6 +386,12 @@ class _MapPolygonState extends State<MapPolygon> {
                             cntrler.move(cntrler.center, zooming);
                           });
                         }),
+                    const Text('Manage Campaign Requests',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('admin_campaign_requests')
@@ -394,12 +400,167 @@ class _MapPolygonState extends State<MapPolygon> {
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           return Expanded(
                             child: Container(
+                              padding: const EdgeInsets.all(5),
                               decoration: const BoxDecoration(
                                 color: Color(0xff65BFB8),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
                               ),
-                              child: Column(),
+                              child: ListView(
+                                children: snapshot.data!.docs.map((e) {
+                                  String campaignAddress = e['address'];
+                                  String campaignID = e['campaignID'];
+                                  String campaignName = e['campaign_name'];
+                                  String campaignCity = e['city'];
+                                  double campaignCurrentDonation =
+                                      e['current_donations'];
+                                  int campaignCurrentVolunteers =
+                                      e['current_volunteers'];
+                                  String campaignDateCreated =
+                                      e['date_created'];
+                                  String campaignDateEnded = e['date_ended'];
+                                  String campaignDateStart = e['date_start'];
+                                  String campaignDescription = e['description'];
+                                  double campaignLatitude = e['latitude'];
+                                  double campaignlongitude = e['longitude'];
+                                  double campaignMaxDonation =
+                                      e['max_donation'];
+                                  int campaignNumberOfSeeds =
+                                      e['number_of_seeds'];
+                                  int campaignNumberVolunteers =
+                                      e['number_volunteers'];
+                                  String campaignTime = e['time'];
+                                  String campaignUID = e['uid'];
+                                  String campaignUsername = e['username'];
+
+                                  return Container(
+                                    padding: const EdgeInsets.all(20),
+                                    height: 100,
+                                    margin:
+                                        const EdgeInsets.fromLTRB(5, 5, 5, 7),
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        color: Colors.white,
+                                        boxShadow: []),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  e['campaign_name'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  e['city'],
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 13,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                cntrler.move(
+                                                    lt.LatLng(e['latitude'],
+                                                        e['longitude']),
+                                                    zooming);
+                                              },
+                                              child: Container(
+                                                height: 50,
+                                                decoration: const BoxDecoration(
+                                                    color: Color(0xff65BFB8),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5))),
+                                                width: 100,
+                                                child: const Center(
+                                                  child: Text(
+                                                    'View in Map',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read(authserviceProvider)
+                                                    .createCampaign(
+                                                        campaignName,
+                                                        campaignDescription,
+                                                        campaignID,
+                                                        campaignDateCreated,
+                                                        campaignDateStart,
+                                                        campaignDateEnded,
+                                                        campaignAddress,
+                                                        campaignCity,
+                                                        campaignTime,
+                                                        campaignUID,
+                                                        campaignUsername,
+                                                        campaignLatitude,
+                                                        campaignlongitude,
+                                                        campaignNumberOfSeeds,
+                                                        campaignCurrentDonation,
+                                                        campaignMaxDonation,
+                                                        campaignCurrentVolunteers,
+                                                        campaignNumberVolunteers);
+                                              },
+                                              child: Container(
+                                                height: 50,
+                                                decoration: const BoxDecoration(
+                                                    color: Color(0xff65BFB8),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5))),
+                                                width: 100,
+                                                child: const Center(
+                                                  child: Text(
+                                                    'Campaign',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           );
                         })
