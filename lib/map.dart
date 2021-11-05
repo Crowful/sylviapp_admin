@@ -70,7 +70,7 @@ class _MapAdminState extends State<MapAdmin> {
         body: Stack(children: [
       HtmlElementView(viewType: htmlId),
       Container(
-          margin: EdgeInsets.fromLTRB(400, 400, 0, 0),
+          margin: const EdgeInsets.fromLTRB(400, 400, 0, 0),
           child: ElevatedButton(onPressed: () {}, child: Text("TESTING"))),
     ]));
   }

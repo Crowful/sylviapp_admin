@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' as fmap;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as lt;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/providers/providers.dart';
+import 'package:sylviapp_admin/show_campaign_request.dart';
 
 class MapPolygon extends StatefulWidget {
   const MapPolygon({Key? key}) : super(key: key);
@@ -24,6 +29,12 @@ class _MapPolygonState extends State<MapPolygon> {
   List<lt.LatLng> _PolygonPantabangan = List.empty(growable: true);
   List<lt.LatLng> _PolygonAngat = List.empty(growable: true);
 
+  List<lt.LatLng> fromAngatDB = List.empty(growable: true);
+  List<lt.LatLng> fromPantabanganDB = List.empty(growable: true);
+  List<lt.LatLng> fromLamesaDB = List.empty(growable: true);
+  List<dynamic> latlng = List.empty(growable: true);
+  List<dynamic> latlng2 = List.empty(growable: true);
+  List<dynamic> latlng3 = List.empty(growable: true);
   bool isCreatingLamesa = false;
   bool isCreatingPantabangan = false;
   bool isCreatingAngat = false;
@@ -59,71 +70,81 @@ class _MapPolygonState extends State<MapPolygon> {
                             )),
                         const Text('Create Polygon',
                             style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold))
+                                fontSize: 20, fontWeight: FontWeight.bold))
                       ],
                     ),
                     const SizedBox(
-                      height: 80,
+                      height: 40,
                     ),
                     const Text(
                       'View Forest',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SizedBox(
-                          height: 70,
-                          width: 150,
+                          height: 50,
+                          width: 112,
                           child: ElevatedButton(
                             onPressed: () {
                               cntrler.move(
                                   lt.LatLng(14.918990, 121.165563), zooming);
                             },
-                            child: const Center(child: Text("Angat Forest")),
+                            child: const Center(
+                                child: Text(
+                              "Angat Forest",
+                              style: TextStyle(fontSize: 13),
+                            )),
                             style: ElevatedButton.styleFrom(
                                 primary: const Color(0xff65BFB8)),
                           ),
                         ),
                         SizedBox(
-                          height: 70,
-                          width: 150,
+                          height: 50,
+                          width: 112,
                           child: ElevatedButton(
                               onPressed: () {
                                 cntrler.move(
                                     lt.LatLng(14.7452, 121.0984), zooming);
                               },
-                              child: const Text("Lamesa Forest"),
+                              child: const Text(
+                                "Lamesa Forest",
+                                style: TextStyle(fontSize: 13),
+                              ),
                               style: ElevatedButton.styleFrom(
                                   primary: const Color(0xff65BFB8))),
                         ),
                         SizedBox(
-                          height: 70,
-                          width: 150,
+                          height: 50,
+                          width: 112,
                           child: ElevatedButton(
                               onPressed: () {
                                 cntrler.move(
                                     lt.LatLng(15.780574, 121.121838), zooming);
                               },
-                              child: const Text("Pantabangan Forest"),
+                              child: const Text(
+                                "Pantabangan Forest",
+                                style: TextStyle(fontSize: 13),
+                              ),
                               style: ElevatedButton.styleFrom(
                                   primary: const Color(0xff65BFB8))),
                         ),
                       ],
                     ),
                     const SizedBox(
-                      height: 60,
+                      height: 20,
                     ),
                     const Text(
                       'Create Polygon Points',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -134,8 +155,8 @@ class _MapPolygonState extends State<MapPolygon> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SizedBox(
-                          height: 70,
-                          width: 150,
+                          height: 50,
+                          width: 112,
                           child: ElevatedButton(
                               onPressed: () {
                                 cntrler.move(
@@ -152,13 +173,16 @@ class _MapPolygonState extends State<MapPolygon> {
                                   isCreatingPantabangan = true;
                                 });
                               },
-                              child: const Text("In Pantabangan"),
+                              child: const Text(
+                                "In \nPantabangan",
+                                style: TextStyle(fontSize: 13),
+                              ),
                               style: ElevatedButton.styleFrom(
                                   primary: const Color(0xff65BFB8))),
                         ),
                         SizedBox(
-                          height: 70,
-                          width: 150,
+                          height: 50,
+                          width: 112,
                           child: ElevatedButton(
                               onPressed: () {
                                 cntrler.move(
@@ -175,13 +199,16 @@ class _MapPolygonState extends State<MapPolygon> {
                                   isCreatingPantabangan = false;
                                 });
                               },
-                              child: const Text("In Lamesa"),
+                              child: const Text(
+                                "In Lamesa",
+                                style: TextStyle(fontSize: 13),
+                              ),
                               style: ElevatedButton.styleFrom(
                                   primary: const Color(0xff65BFB8))),
                         ),
                         SizedBox(
-                          height: 70,
-                          width: 150,
+                          height: 50,
+                          width: 112,
                           child: ElevatedButton(
                               onPressed: () {
                                 cntrler.move(
@@ -198,29 +225,32 @@ class _MapPolygonState extends State<MapPolygon> {
                                   isCreatingPantabangan = false;
                                 });
                               },
-                              child: const Text("In Angat"),
+                              child: const Text(
+                                "In Angat",
+                                style: TextStyle(fontSize: 13),
+                              ),
                               style: ElevatedButton.styleFrom(
                                   primary: const Color(0xff65BFB8))),
                         )
                       ],
                     ),
                     const SizedBox(
-                      height: 60,
+                      height: 20,
                     ),
                     const Text(
                       'Controls',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SizedBox(
-                          height: 50,
-                          width: 100,
+                          height: 40,
+                          width: 80,
                           child: ElevatedButton(
                               onPressed: () {
                                 if (isCreatingAngat == true) {
@@ -245,8 +275,8 @@ class _MapPolygonState extends State<MapPolygon> {
                                   primary: const Color(0xffFFD54C))),
                         ),
                         SizedBox(
-                          height: 50,
-                          width: 100,
+                          height: 40,
+                          width: 80,
                           child: ElevatedButton(
                               onPressed: () {
                                 if (isCreatingAngat == true) {
@@ -305,8 +335,8 @@ class _MapPolygonState extends State<MapPolygon> {
                                   primary: const Color(0xff65BFB8))),
                         ),
                         SizedBox(
-                          height: 50,
-                          width: 100,
+                          height: 40,
+                          width: 80,
                           child: ElevatedButton(
                               onPressed: () {
                                 if (isCreatingAngat == true) {
@@ -329,8 +359,8 @@ class _MapPolygonState extends State<MapPolygon> {
                               child: const Text("Clear")),
                         ),
                         SizedBox(
-                          height: 50,
-                          width: 100,
+                          height: 40,
+                          width: 80,
                           child: ElevatedButton(
                             onPressed: () {
                               if (isCreatingAngat == true) {
@@ -371,26 +401,40 @@ class _MapPolygonState extends State<MapPolygon> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Zoom',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    SizedBox(
+                      width: 400,
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Zoom',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: Slider(
+                                  value: zooming,
+                                  min: 1,
+                                  max: 20,
+                                  onChanged: (zoom1) {
+                                    setState(() {
+                                      zooming = zoom1;
+                                      cntrler.move(cntrler.center, zooming);
+                                    });
+                                  }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Slider(
-                        value: zooming,
-                        min: 1,
-                        max: 20,
-                        onChanged: (zoom1) {
-                          setState(() {
-                            zooming = zoom1;
-                            cntrler.move(cntrler.center, zooming);
-                          });
-                        }),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     const Text('Manage Campaign Requests',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20)),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
@@ -398,513 +442,543 @@ class _MapPolygonState extends State<MapPolygon> {
                             .snapshots(),
                         builder:
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                          return Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                color: Color(0xff65BFB8),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              child: ListView(
-                                children: snapshot.data!.docs.map((e) {
-                                  String campaignAddress = e['address'];
-                                  String campaignID = e['campaignID'];
-                                  String campaignName = e['campaign_name'];
-                                  String campaignCity = e['city'];
-                                  double campaignCurrentDonation =
-                                      e['current_donations'];
-                                  int campaignCurrentVolunteers =
-                                      e['current_volunteers'];
-                                  String campaignDateCreated =
-                                      e['date_created'];
-                                  String campaignDateEnded = e['date_ended'];
-                                  String campaignDateStart = e['date_start'];
-                                  String campaignDescription = e['description'];
-                                  double campaignLatitude = e['latitude'];
-                                  double campaignlongitude = e['longitude'];
-                                  double campaignMaxDonation =
-                                      e['max_donation'];
-                                  int campaignNumberOfSeeds =
-                                      e['number_of_seeds'];
-                                  int campaignNumberVolunteers =
-                                      e['number_volunteers'];
-                                  String campaignTime = e['time'];
-                                  String campaignUID = e['uid'];
-                                  String campaignUsername = e['username'];
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xff65BFB8),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: ListView(
+                                  scrollDirection: Axis.vertical,
+                                  children: snapshot.data!.docs.map((e) {
+                                    String campaignAddress = e['address'];
+                                    String campaignID = e['campaignID'];
+                                    String campaignName = e['campaign_name'];
+                                    String campaignCity = e['city'];
+                                    double campaignCurrentDonation =
+                                        e['current_donations'];
+                                    int campaignCurrentVolunteers =
+                                        e['current_volunteers'];
+                                    String campaignDateCreated =
+                                        e['date_created'];
+                                    String campaignDateEnded = e['date_ended'];
+                                    String campaignDateStart = e['date_start'];
+                                    String campaignDescription =
+                                        e['description'];
+                                    double campaignLatitude = e['latitude'];
+                                    double campaignlongitude = e['longitude'];
+                                    double campaignMaxDonation =
+                                        e['max_donation'];
+                                    int campaignNumberOfSeeds =
+                                        e['number_of_seeds'];
+                                    int campaignNumberVolunteers =
+                                        e['number_volunteers'];
+                                    String campaignTime = e['time'];
+                                    String campaignUID = e['uid'];
+                                    String campaignUsername = e['username'];
 
-                                  return Container(
-                                    padding: const EdgeInsets.all(20),
-                                    height: 100,
-                                    margin:
-                                        const EdgeInsets.fromLTRB(5, 5, 5, 7),
-                                    decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                        color: Colors.white,
-                                        boxShadow: []),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  e['campaign_name'],
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
+                                    return Container(
+                                      padding: const EdgeInsets.all(10),
+                                      height: 100,
+                                      margin:
+                                          const EdgeInsets.fromLTRB(5, 5, 5, 7),
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(2.5)),
+                                          color: Colors.white,
+                                          boxShadow: []),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    e['campaign_name'],
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 18,
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  e['city'],
-                                                  style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 13,
+                                                  Text(
+                                                    e['city'],
+                                                    style: const TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 13,
+                                                    ),
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                cntrler.move(
-                                                    lt.LatLng(e['latitude'],
-                                                        e['longitude']),
-                                                    zooming);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                decoration: const BoxDecoration(
-                                                    color: Color(0xff65BFB8),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5))),
-                                                width: 100,
-                                                child: const Center(
-                                                  child: Text(
-                                                    'View in Map',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
+                                                  Text(
+                                                    e['username'],
+                                                    style: const TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 13,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  cntrler.move(
+                                                      lt.LatLng(e['latitude'],
+                                                          e['longitude']),
+                                                      zooming);
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 100,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color(0xff65BFB8),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          5))),
+                                                  child: const Center(
+                                                    child: Text(
+                                                      'View in Map',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            InkWell(
-                                              onTap: () {
-                                                context
-                                                    .read(authserviceProvider)
-                                                    .createCampaign(
-                                                        campaignName,
-                                                        campaignDescription,
-                                                        campaignID,
-                                                        campaignDateCreated,
-                                                        campaignDateStart,
-                                                        campaignDateEnded,
-                                                        campaignAddress,
-                                                        campaignCity,
-                                                        campaignTime,
-                                                        campaignUID,
-                                                        campaignUsername,
-                                                        campaignLatitude,
-                                                        campaignlongitude,
-                                                        campaignNumberOfSeeds,
-                                                        campaignCurrentDonation,
-                                                        campaignMaxDonation,
-                                                        campaignCurrentVolunteers,
-                                                        campaignNumberVolunteers);
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                decoration: const BoxDecoration(
-                                                    color: Color(0xff65BFB8),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                5))),
-                                                width: 100,
-                                                child: const Center(
-                                                  child: Text(
-                                                    'Campaign',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
+                                              const SizedBox(height: 5),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      HeroDialogRoute(
+                                                          builder: (context) {
+                                                    return ShowCampaign(
+                                                        campaignId:
+                                                            e["campaignID"]);
+                                                  }));
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 100,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color(0xff65BFB8),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          5))),
+                                                  child: const Center(
+                                                    child: Text(
+                                                      'Details',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         })
                   ],
                 ),
               ),
             ),
-            Expanded(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("admin_campaign_requests")
-                        .get()
-                        .asStream(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        snapshot.data!.docs.forEach((doc) {
-                          var campaignLat = doc.get("latitude");
-                          var campaignLon = doc.get("longitude");
-                          var campaignRad = doc.get("radius");
-                          var campaignUid = doc.id;
-
-                          circleMarkersCampaigns.add({
-                            "latitude": campaignLat as double,
-                            "longitude": campaignLon as double,
-                            "radius": campaignRad as double,
-                            "uid": campaignUid
-                          });
-                        });
-                        return fmap.FlutterMap(
-                          mapController: cntrler,
-                          options: fmap.MapOptions(
-                            center: _initialCameraPosition,
-                            zoom: zooming,
-                            onLongPress: (tapPosition, point) {
-                              if (isCreatingAngat == true) {
-                                setState(() {
-                                  _PolygonAngat.add(lt.LatLng(
-                                      point.latitude, point.longitude));
-                                });
-                                Fluttertoast.showToast(msg: "Point added");
-                              } else if (isCreatingLamesa == true) {
-                                setState(() {
-                                  _PolygonLamesa.add(lt.LatLng(
-                                      point.latitude, point.longitude));
-                                });
-                                Fluttertoast.showToast(msg: "Point added");
-                              } else if (isCreatingPantabangan == true) {
-                                setState(() {
-                                  _PolygonPantabangan.add(lt.LatLng(
-                                      point.latitude, point.longitude));
-                                });
-                                Fluttertoast.showToast(msg: "Point added");
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "Select forest first");
+            StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("polygon")
+                    .doc('Lamesa_Forest')
+                    .snapshots(),
+                builder: (context, lamesa) {
+                  if (!lamesa.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    latlng = List<dynamic>.from(lamesa.data!["points"]);
+                    for (var points in latlng) {
+                      fromLamesaDB.add(
+                          lt.LatLng(points['latitude'], points['longitude']));
+                    }
+                    return Expanded(
+                      child: StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("polygon")
+                              .doc('Angat_Forest')
+                              .snapshots(),
+                          builder:
+                              (context, AsyncSnapshot<DocumentSnapshot> angat) {
+                            if (!angat.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else {
+                              latlng2 =
+                                  List<dynamic>.from(angat.data!["points"]);
+                              for (var points in latlng2) {
+                                fromAngatDB.add(lt.LatLng(
+                                    points['latitude'], points['longitude']));
                               }
-
-                              print(_PolygonAngat);
-                            },
-                          ),
-                          children: [
-                            fmap.TileLayerWidget(
-                              options: fmap.TileLayerOptions(
-                                urlTemplate:
-                                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                subdomains: ['a', 'b', 'c'],
-                                attributionBuilder: (_) {
-                                  return const Text(
-                                      "© OpenStreetMap contributors");
-                                },
-                              ),
-                            ),
-                            for (var item in circleMarkersCampaigns)
-                              fmap.CircleLayerWidget(
-                                options: fmap.CircleLayerOptions(
-                                  circles: [
-                                    fmap.CircleMarker(
-                                        point: lt.LatLng(
-                                            item.values.elementAt(0),
-                                            item.values.elementAt(1)),
-                                        radius: item.values.elementAt(2) * 100,
-                                        color: Colors.red)
-                                  ],
-                                ),
-                              ),
-                            for (var item in circleMarkersCampaigns)
-                              fmap.MarkerLayerWidget(
-                                options: fmap.MarkerLayerOptions(markers: [
-                                  fmap.Marker(
-                                      point: lt.LatLng(item.values.elementAt(0),
-                                          item.values.elementAt(1)),
-                                      builder: (context) {
-                                        return StreamBuilder<DocumentSnapshot>(
+                              return StreamBuilder<DocumentSnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection("polygon")
+                                      .doc('Pantabangan_Forest')
+                                      .snapshots(),
+                                  builder: (context, pantabangan) {
+                                    if (!pantabangan.hasData) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else {
+                                      latlng3 = List<dynamic>.from(
+                                          pantabangan.data!["points"]);
+                                      for (var points in latlng3) {
+                                        fromPantabanganDB.add(lt.LatLng(
+                                            points['latitude'],
+                                            points['longitude']));
+                                      }
+                                      return SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        child: StreamBuilder<QuerySnapshot>(
                                             stream: FirebaseFirestore.instance
                                                 .collection(
                                                     "admin_campaign_requests")
-                                                .doc(item.values.elementAt(3))
-                                                .snapshots(),
+                                                .get()
+                                                .asStream(),
                                             builder: (context, snapshot) {
                                               if (!snapshot.hasData) {
                                                 return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
+                                                    child:
+                                                        CircularProgressIndicator());
                                               } else {
-                                                return GestureDetector(
-                                                  onTap: () => showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  100,
-                                                                  100,
-                                                                  100,
-                                                                  100),
-                                                          child: Card(
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                    snapshot
-                                                                        .data!
-                                                                        .get(
-                                                                            'campaign_name'),
-                                                                    style: const TextStyle(
-                                                                        color: Color(
-                                                                            0xff65BFB8),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize:
-                                                                            30)),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'address')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'campaignID')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'city')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'current_donations')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'current_volunteers')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'date_created')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'date_ended')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'date_start')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'description')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'latitude')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'longitude')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'max_donation')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'number_of_seeds')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'number_volunteers')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'radius')
-                                                                    .toString()),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'time')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'uid')),
-                                                                Text(snapshot
-                                                                    .data!
-                                                                    .get(
-                                                                        'username')),
-                                                                const SizedBox(
-                                                                  height: 50,
-                                                                ),
-                                                                ElevatedButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .read(
-                                                                              authserviceProvider)
-                                                                          .createCampaign(
-                                                                              snapshot.data!.get('campaign_name'),
-                                                                              snapshot.data!.get('description'),
-                                                                              snapshot.data!.get('campaignID'),
-                                                                              snapshot.data!.get('date_created'),
-                                                                              snapshot.data!.get('date_start'),
-                                                                              snapshot.data!.get('date_ended'),
-                                                                              snapshot.data!.get('address'),
-                                                                              snapshot.data!.get('city'),
-                                                                              snapshot.data!.get('time'),
-                                                                              snapshot.data!.get('uid'),
-                                                                              snapshot.data!.get('username'),
-                                                                              snapshot.data!.get('latitude'),
-                                                                              snapshot.data!.get('longitude'),
-                                                                              snapshot.data!.get('number_of_seeds'),
-                                                                              snapshot.data!.get('current_donations'),
-                                                                              snapshot.data!.get('max_donation'),
-                                                                              snapshot.data!.get('current_volunteers'),
-                                                                              snapshot.data!.get('number_volunteers'))
-                                                                          .whenComplete(() => Navigator.pushNamed(context, '/map'));
-                                                                    },
-                                                                    child: const Text(
-                                                                        "Approve This Campaign")),
-                                                                ElevatedButton(
-                                                                    style: ElevatedButton.styleFrom(
-                                                                        primary:
-                                                                            Colors
-                                                                                .red),
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .read(
-                                                                              authserviceProvider)
-                                                                          .declineCampaign(snapshot
-                                                                              .data!
-                                                                              .id)
-                                                                          .whenComplete(() => Navigator.pushNamed(
-                                                                              context,
-                                                                              '/new_map'));
-                                                                    },
-                                                                    child: const Text(
-                                                                        "Decline This Campaign")),
-                                                                ElevatedButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            context),
-                                                                    child: const Text(
-                                                                        "Back"))
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }),
-                                                  child: Icon(
-                                                    Icons.circle_outlined,
-                                                    size: item.values
-                                                            .elementAt(2) *
-                                                        100,
+                                                for (var doc
+                                                    in snapshot.data!.docs) {
+                                                  var campaignLat =
+                                                      doc.get("latitude");
+                                                  var campaignLon =
+                                                      doc.get("longitude");
+                                                  var campaignRad =
+                                                      doc.get("radius");
+                                                  var campaignUid = doc.id;
+
+                                                  circleMarkersCampaigns.add({
+                                                    "latitude":
+                                                        campaignLat as double,
+                                                    "longitude":
+                                                        campaignLon as double,
+                                                    "radius":
+                                                        campaignRad as double,
+                                                    "uid": campaignUid
+                                                  });
+                                                }
+                                                return fmap.FlutterMap(
+                                                  mapController: cntrler,
+                                                  options: fmap.MapOptions(
+                                                    center:
+                                                        _initialCameraPosition,
+                                                    zoom: zooming,
+                                                    onLongPress:
+                                                        (tapPosition, point) {
+                                                      if (isCreatingAngat ==
+                                                          true) {
+                                                        setState(() {
+                                                          _PolygonAngat.add(
+                                                              lt.LatLng(
+                                                                  point
+                                                                      .latitude,
+                                                                  point
+                                                                      .longitude));
+                                                        });
+                                                        Fluttertoast.showToast(
+                                                            msg: "Point added");
+                                                      } else if (isCreatingLamesa ==
+                                                          true) {
+                                                        setState(() {
+                                                          _PolygonLamesa.add(
+                                                              lt.LatLng(
+                                                                  point
+                                                                      .latitude,
+                                                                  point
+                                                                      .longitude));
+                                                        });
+                                                        Fluttertoast.showToast(
+                                                            msg: "Point added");
+                                                      } else if (isCreatingPantabangan ==
+                                                          true) {
+                                                        setState(() {
+                                                          _PolygonPantabangan
+                                                              .add(lt.LatLng(
+                                                                  point
+                                                                      .latitude,
+                                                                  point
+                                                                      .longitude));
+                                                        });
+                                                        Fluttertoast.showToast(
+                                                            msg: "Point added");
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "Select forest first");
+                                                      }
+                                                    },
                                                   ),
+                                                  children: [
+                                                    fmap.TileLayerWidget(
+                                                      options:
+                                                          fmap.TileLayerOptions(
+                                                        urlTemplate:
+                                                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                                        subdomains: [
+                                                          'a',
+                                                          'b',
+                                                          'c'
+                                                        ],
+                                                        attributionBuilder:
+                                                            (_) {
+                                                          return const Text(
+                                                              "© OpenStreetMap contributors");
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  layers: [
+                                                    fmap.TileLayerOptions(
+                                                      urlTemplate:
+                                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                                      subdomains: [
+                                                        'a',
+                                                        'b',
+                                                        'c'
+                                                      ],
+                                                      attributionBuilder: (_) {
+                                                        return const Text(
+                                                            "© OpenStreetMap contributors");
+                                                      },
+                                                    ),
+                                                    fmap.PolygonLayerOptions(
+                                                      polygons: [
+                                                        fmap.Polygon(
+                                                            points:
+                                                                _PolygonAngat,
+                                                            color: Colors.green
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderColor:
+                                                                Colors.green,
+                                                            borderStrokeWidth:
+                                                                0),
+                                                        fmap.Polygon(
+                                                            points:
+                                                                _PolygonLamesa,
+                                                            color: Colors.yellow
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderColor:
+                                                                Colors.yellow,
+                                                            borderStrokeWidth:
+                                                                2.0),
+                                                        fmap.Polygon(
+                                                            points:
+                                                                _PolygonPantabangan,
+                                                            color: Colors.red
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderColor:
+                                                                Colors.red,
+                                                            borderStrokeWidth:
+                                                                2.0),
+                                                        fmap.Polygon(
+                                                            points: fromAngatDB,
+                                                            color: Colors.yellow
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderColor:
+                                                                Colors.yellow,
+                                                            borderStrokeWidth:
+                                                                2),
+                                                        fmap.Polygon(
+                                                            points:
+                                                                fromPantabanganDB,
+                                                            color: Colors.red
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderColor:
+                                                                Colors.red,
+                                                            borderStrokeWidth:
+                                                                2),
+                                                        fmap.Polygon(
+                                                            points:
+                                                                fromLamesaDB,
+                                                            color: Colors.blue
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            borderColor:
+                                                                Colors.blue,
+                                                            borderStrokeWidth:
+                                                                2),
+                                                      ],
+                                                    ),
+                                                    for (var item
+                                                        in circleMarkersCampaigns)
+                                                      fmap.CircleLayerOptions(
+                                                        circles: [
+                                                          fmap.CircleMarker(
+                                                              point: lt.LatLng(
+                                                                  item.values
+                                                                      .elementAt(
+                                                                          0),
+                                                                  item.values
+                                                                      .elementAt(
+                                                                          1)),
+                                                              radius: item
+                                                                      .values
+                                                                      .elementAt(
+                                                                          2) *
+                                                                  100,
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              borderColor:
+                                                                  Colors.red,
+                                                              borderStrokeWidth:
+                                                                  1)
+                                                        ],
+                                                      ),
+                                                    for (var item
+                                                        in circleMarkersCampaigns)
+                                                      fmap.MarkerLayerOptions(
+                                                          markers: [
+                                                            fmap.Marker(
+                                                                point: lt.LatLng(
+                                                                    item.values
+                                                                        .elementAt(
+                                                                            0),
+                                                                    item.values
+                                                                        .elementAt(
+                                                                            1)),
+                                                                builder:
+                                                                    (context) {
+                                                                  return StreamBuilder<
+                                                                          DocumentSnapshot>(
+                                                                      stream: FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              "admin_campaign_requests")
+                                                                          .doc(item.values.elementAt(
+                                                                              3))
+                                                                          .snapshots(),
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshot) {
+                                                                        if (!snapshot
+                                                                            .hasData) {
+                                                                          return const Center(
+                                                                            child:
+                                                                                CircularProgressIndicator(),
+                                                                          );
+                                                                        } else {
+                                                                          return InkWell(
+                                                                              onTap: () {
+                                                                                Navigator.of(context).push(HeroDialogRoute(builder: (context) {
+                                                                                  return ShowCampaign(campaignId: item.values.elementAt(3));
+                                                                                }));
+                                                                              },
+                                                                              // onHover: (hover) {
+                                                                              //   Navigator.of(context).push(
+                                                                              //       HeroDialogRoute(
+                                                                              //           builder: (context) {
+                                                                              //     return ShowCampaign(
+                                                                              //         campaignId: item
+                                                                              //             .values
+                                                                              //             .elementAt(3));
+                                                                              //   }));
+                                                                              // },
+                                                                              child: Tooltip(
+                                                                                message: item.values.elementAt(1).toString() + "  " + item.values.elementAt(0).toString(),
+                                                                                child: const Icon(
+                                                                                  Icons.help_rounded,
+                                                                                  color: Colors.transparent,
+                                                                                  size: 13,
+                                                                                ),
+                                                                              ));
+                                                                        }
+                                                                      });
+                                                                })
+                                                          ]),
+                                                  ],
                                                 );
                                               }
-                                            });
-                                      })
-                                ]),
-                              )
-                          ],
-                          layers: [
-                            fmap.TileLayerOptions(
-                              urlTemplate:
-                                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                              subdomains: ['a', 'b', 'c'],
-                              attributionBuilder: (_) {
-                                return const Text(
-                                    "© OpenStreetMap contributors");
-                              },
-                            ),
-                            fmap.PolygonLayerOptions(
-                              polygons: [
-                                fmap.Polygon(
-                                    points: _PolygonAngat,
-                                    isDotted: true,
-                                    color: Colors.green.withOpacity(0.5),
-                                    borderColor: Colors.green,
-                                    borderStrokeWidth: 2.0),
-                                fmap.Polygon(
-                                    points: _PolygonLamesa,
-                                    isDotted: true,
-                                    color: Colors.yellow.withOpacity(0.5),
-                                    borderColor: Colors.yellow,
-                                    borderStrokeWidth: 2.0),
-                                fmap.Polygon(
-                                    points: _PolygonPantabangan,
-                                    isDotted: true,
-                                    color: Colors.red.withOpacity(0.5),
-                                    borderColor: Colors.red,
-                                    borderStrokeWidth: 2.0)
-                              ],
-                            ),
-                          ],
-                        );
-                      }
-                    }),
-              ),
-            ),
+                                            }),
+                                      );
+                                    }
+                                  });
+                            }
+                          }),
+                    );
+                  }
+                }),
           ],
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [],
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              elevation: 2,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                height: 100,
+                width: 300,
+                decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Legends",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         )
       ]),
