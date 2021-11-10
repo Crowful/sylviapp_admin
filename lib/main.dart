@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-
 import 'package:sylviapp_admin/analytics.dart';
 import 'package:sylviapp_admin/campaignrequests.dart';
 import 'package:sylviapp_admin/home.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/manage_users.dart';
-import 'package:sylviapp_admin/map.dart';
 import 'package:sylviapp_admin/map_new.dart';
 import 'package:sylviapp_admin/map_polygon.dart';
 import 'package:sylviapp_admin/verification_info.dart';
@@ -36,7 +34,6 @@ class MyApp extends StatelessWidget {
         "/login": (_) => const LoginAdmin(),
         "/analytics": (_) => const AdminAnalytics(),
         "/manage_users": (_) => const ManageUsers(),
-        "/map": (_) => const MapAdmin(),
         "/verify_users": (_) => const VerifyUsers(),
         "/verification_info": (_) => VerificationInfo(
               userUID: "",

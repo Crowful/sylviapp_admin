@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sylviapp_admin/charts.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({Key? key}) : super(key: key);
@@ -90,10 +91,10 @@ class _AdminHomeState extends State<AdminHome> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              formatter,
-                              style: const TextStyle(color: Colors.black54),
-                            )
+                            Text(formatter,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold))
                           ],
                         ),
                       ),
@@ -152,31 +153,25 @@ class _AdminHomeState extends State<AdminHome> {
                                                 context, '/campaignrequest');
                                           },
                                           child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 5),
                                             height: 250,
                                             width: 310,
-                                            decoration: const BoxDecoration(
+                                            decoration: BoxDecoration(
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Color(0xffE7E6E9),
+                                                    color:
+                                                        const Color(0xff778ba5)
+                                                            .withOpacity(0.4),
                                                     blurRadius: 4,
-                                                    offset: Offset(2,
+                                                    offset: const Offset(2,
                                                         5), // Shadow position
                                                   ),
                                                 ],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
                                                 color: Colors.white),
-                                            child: const Center(
-                                              child: Text(
-                                                'Manage Campaign Requests',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xff65BFB8),
-                                                    fontSize: 20),
-                                              ),
-                                            ),
+                                            child:
+                                                const FittedBox(child: Chart()),
                                           ),
                                         ),
                                         InkWell(
@@ -189,27 +184,25 @@ class _AdminHomeState extends State<AdminHome> {
                                                 horizontal: 5, vertical: 5),
                                             height: 250,
                                             width: 310,
-                                            decoration: const BoxDecoration(
+                                            decoration: BoxDecoration(
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Color(0xffE7E6E9),
+                                                    color:
+                                                        const Color(0xff778ba5)
+                                                            .withOpacity(0.4),
                                                     blurRadius: 4,
-                                                    offset: Offset(2,
+                                                    offset: const Offset(2,
                                                         5), // Shadow position
                                                   ),
                                                 ],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
                                                 color: Colors.white),
                                             child: const Center(
-                                              child: Text(
-                                                'Create Polygon',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xff65BFB8),
-                                                    fontSize: 20),
-                                              ),
-                                            ),
+                                                child: FittedBox(
+                                              child: Chart(),
+                                            )),
                                           ),
                                         ),
                                         Column(
@@ -222,17 +215,19 @@ class _AdminHomeState extends State<AdminHome> {
                                                       vertical: 5),
                                               height: 120,
                                               width: 350,
-                                              decoration: const BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Color(0xffE7E6E9),
+                                                      color: const Color(
+                                                              0xff778ba5)
+                                                          .withOpacity(0.4),
                                                       blurRadius: 4,
-                                                      offset: Offset(2,
+                                                      offset: const Offset(2,
                                                           5), // Shadow position
                                                     ),
                                                   ],
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                      const BorderRadius.all(
                                                           Radius.circular(10)),
                                                   color: Colors.white),
                                               child: Column(
@@ -322,17 +317,19 @@ class _AdminHomeState extends State<AdminHome> {
                                                       vertical: 5),
                                               height: 120,
                                               width: 350,
-                                              decoration: const BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Color(0xffE7E6E9),
+                                                      color: const Color(
+                                                              0xff778ba5)
+                                                          .withOpacity(0.4),
                                                       blurRadius: 4,
-                                                      offset: Offset(2,
+                                                      offset: const Offset(2,
                                                           5), // Shadow position
                                                     ),
                                                   ],
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                      const BorderRadius.all(
                                                           Radius.circular(10)),
                                                   color: Colors.white),
                                               child: Column(
@@ -464,7 +461,7 @@ class _AdminHomeState extends State<AdminHome> {
                                           child: InkWell(
                                             onTap: () {
                                               Navigator.pushNamed(
-                                                  context, "/new_map");
+                                                  context, "/map_polygon");
                                             },
                                             child: Container(
                                               margin:
@@ -473,21 +470,23 @@ class _AdminHomeState extends State<AdminHome> {
                                                       vertical: 5),
                                               height: 250,
                                               width: 100,
-                                              decoration: const BoxDecoration(
-                                                  image: DecorationImage(
+                                              decoration: BoxDecoration(
+                                                  image: const DecorationImage(
                                                       fit: BoxFit.cover,
                                                       image: AssetImage(
                                                           "assets/images/map.png")),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Color(0xffE7E6E9),
+                                                      color: const Color(
+                                                              0xff778ba5)
+                                                          .withOpacity(0.4),
                                                       blurRadius: 4,
-                                                      offset: Offset(2,
+                                                      offset: const Offset(2,
                                                           5), // Shadow position
                                                     ),
                                                   ],
                                                   borderRadius:
-                                                      BorderRadius.all(
+                                                      const BorderRadius.all(
                                                           Radius.circular(10)),
                                                   color: Colors.white),
                                               child: ClipRRect(
@@ -499,7 +498,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                       end: Alignment.topCenter,
                                                       colors: [
                                                         const Color(0xff65BFB8)
-                                                            .withOpacity(0.4),
+                                                            .withOpacity(0.3),
                                                         Colors.transparent,
                                                       ],
                                                     ),
@@ -535,18 +534,21 @@ class _AdminHomeState extends State<AdminHome> {
                                                 horizontal: 5, vertical: 5),
                                             height: 250,
                                             width: 350,
-                                            decoration: const BoxDecoration(
+                                            decoration: BoxDecoration(
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: Color(0xffE7E6E9),
-                                                    blurRadius: 3,
-                                                    offset: Offset(2,
+                                                    color:
+                                                        const Color(0xff778ba5)
+                                                            .withOpacity(0.3),
+                                                    blurRadius: 4,
+                                                    offset: const Offset(2,
                                                         5), // Shadow position
                                                   ),
                                                 ],
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                                color: Color(0xff65BFB8)),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                color: const Color(0xff65BFB8)),
                                             child: const Center(
                                               child: Text(
                                                 'Manage Users',

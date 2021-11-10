@@ -1,17 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sylviapp_admin/providers/providers.dart';
 
 class ShowCampaign extends StatefulWidget {
   final String campaignId;
-  const ShowCampaign({Key? key, required this.campaignId}) : super(key: key);
+  final String? organizerId;
+  const ShowCampaign({Key? key, required this.campaignId, this.organizerId})
+      : super(key: key);
 
   @override
   ShowCampaignState createState() => ShowCampaignState();
 }
 
 class ShowCampaignState extends State<ShowCampaign> {
+  String? taske;
+  String? errorText;
+  String urlTest = "";
+  showProfile(uid) async {
+    String fileName = "pic";
+    String destination = 'files/users/$uid/ProfilePicture/$fileName';
+    Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
+    try {
+      taske = await firebaseStorageRef.getDownloadURL();
+    } catch (e) {
+      setState(() {
+        errorText = e.toString();
+      });
+    }
+    setState(() {
+      urlTest = taske.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    showProfile(widget.organizerId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
@@ -297,14 +326,9 @@ class ShowCampaignState extends State<ShowCampaign> {
                           padding: const EdgeInsets.all(5),
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle, color: Colors.white),
-                          child: const CircleAvatar(
+                          child: CircleAvatar(
                             radius: 70,
-                            backgroundColor: Color(0xff65BFB8),
-                            child: Icon(
-                              Icons.person,
-                              size: 120,
-                              color: Color(0xfffefefe),
-                            ),
+                            backgroundImage: NetworkImage(urlTest),
                           ),
                         ),
                         Padding(
@@ -312,10 +336,15 @@ class ShowCampaignState extends State<ShowCampaign> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Icon(
+                                Icons.person,
+                                size: 120,
+                                color: Color(0xfffefefe),
+                              ),
+                              const Text(
                                 // snapshot.data!.get('campaign_name'),
                                 "Reforestation on Pantabangan!",
-                                style: const TextStyle(
+                                style: TextStyle(
                                     color: Color(0xff65BFB8),
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),

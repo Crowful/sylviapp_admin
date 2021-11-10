@@ -3,7 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:encrypt/encrypt.dart' as enc;
@@ -22,7 +21,6 @@ class _ManageUsersState extends State<ManageUsers> {
   String? errorText;
   String urlTest = "";
   String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
-  late String Future;
   showProfile(uid) async {
     String fileName = "pic";
     String destination = 'files/users/$uid/ProfilePicture/$fileName';

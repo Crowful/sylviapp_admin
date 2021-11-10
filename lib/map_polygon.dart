@@ -21,6 +21,8 @@ class MapPolygon extends StatefulWidget {
 class _MapPolygonState extends State<MapPolygon> {
   List<Map<String, dynamic>> circleMarkersCampaigns =
       List.empty(growable: true);
+  List<Map<String, dynamic>> circleMarkersCampaignsNonRequest =
+      List.empty(growable: true);
   double zooming = 5;
   lt.LatLng? _initialCameraPosition = lt.LatLng(14.5995, 120.9842);
 
@@ -695,6 +697,7 @@ class _MapPolygonState extends State<MapPolygon> {
                                                   var campaignRad =
                                                       doc.get("radius");
                                                   var campaignUid = doc.id;
+                                                  var orgId = doc.get('uid');
 
                                                   circleMarkersCampaigns.add({
                                                     "latitude":
@@ -703,245 +706,349 @@ class _MapPolygonState extends State<MapPolygon> {
                                                         campaignLon as double,
                                                     "radius":
                                                         campaignRad as double,
-                                                    "uid": campaignUid
+                                                    "uid": campaignUid,
+                                                    "userid": orgId
                                                   });
                                                 }
-                                                return fmap.FlutterMap(
-                                                  mapController: cntrler,
-                                                  options: fmap.MapOptions(
-                                                    center:
-                                                        _initialCameraPosition,
-                                                    zoom: zooming,
-                                                    onLongPress:
-                                                        (tapPosition, point) {
-                                                      if (isCreatingAngat ==
-                                                          true) {
-                                                        setState(() {
-                                                          _PolygonAngat.add(
-                                                              lt.LatLng(
-                                                                  point
-                                                                      .latitude,
-                                                                  point
-                                                                      .longitude));
-                                                        });
-                                                        Fluttertoast.showToast(
-                                                            msg: "Point added");
-                                                      } else if (isCreatingLamesa ==
-                                                          true) {
-                                                        setState(() {
-                                                          _PolygonLamesa.add(
-                                                              lt.LatLng(
-                                                                  point
-                                                                      .latitude,
-                                                                  point
-                                                                      .longitude));
-                                                        });
-                                                        Fluttertoast.showToast(
-                                                            msg: "Point added");
-                                                      } else if (isCreatingPantabangan ==
-                                                          true) {
-                                                        setState(() {
-                                                          _PolygonPantabangan
-                                                              .add(lt.LatLng(
-                                                                  point
-                                                                      .latitude,
-                                                                  point
-                                                                      .longitude));
-                                                        });
-                                                        Fluttertoast.showToast(
-                                                            msg: "Point added");
+                                                return StreamBuilder<
+                                                        QuerySnapshot>(
+                                                    stream: FirebaseFirestore
+                                                        .instance
+                                                        .collection("campaigns")
+                                                        .get()
+                                                        .asStream(),
+                                                    builder: (context,
+                                                        snapshotCampaign) {
+                                                      if (snapshotCampaign
+                                                          .hasData) {
+                                                        for (var doc
+                                                            in snapshotCampaign
+                                                                .data!.docs) {
+                                                          doc.get("latitude");
+                                                          var campaignLat = doc
+                                                              .get("latitude");
+                                                          var campaignLon = doc
+                                                              .get("longitude");
+                                                          var campaignRad =
+                                                              doc.get("radius");
+                                                          var campaignUid =
+                                                              doc.id;
+                                                          circleMarkersCampaignsNonRequest
+                                                              .add({
+                                                            "latitude":
+                                                                campaignLat
+                                                                    as double,
+                                                            "longitude":
+                                                                campaignLon
+                                                                    as double,
+                                                            "radius":
+                                                                campaignRad
+                                                                    as double,
+                                                            "uid": campaignUid
+                                                          });
+                                                        }
+                                                        // circleMarkersCampaignsNonRequest =
+                                                        return fmap.FlutterMap(
+                                                          mapController:
+                                                              cntrler,
+                                                          options:
+                                                              fmap.MapOptions(
+                                                            center:
+                                                                _initialCameraPosition,
+                                                            zoom: zooming,
+                                                            onLongPress:
+                                                                (tapPosition,
+                                                                    point) {
+                                                              if (isCreatingAngat ==
+                                                                  true) {
+                                                                setState(() {
+                                                                  _PolygonAngat.add(
+                                                                      lt.LatLng(
+                                                                          point
+                                                                              .latitude,
+                                                                          point
+                                                                              .longitude));
+                                                                });
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                        msg:
+                                                                            "Point added");
+                                                              } else if (isCreatingLamesa ==
+                                                                  true) {
+                                                                setState(() {
+                                                                  _PolygonLamesa.add(
+                                                                      lt.LatLng(
+                                                                          point
+                                                                              .latitude,
+                                                                          point
+                                                                              .longitude));
+                                                                });
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                        msg:
+                                                                            "Point added");
+                                                              } else if (isCreatingPantabangan ==
+                                                                  true) {
+                                                                setState(() {
+                                                                  _PolygonPantabangan.add(
+                                                                      lt.LatLng(
+                                                                          point
+                                                                              .latitude,
+                                                                          point
+                                                                              .longitude));
+                                                                });
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                        msg:
+                                                                            "Point added");
+                                                              } else {
+                                                                Fluttertoast
+                                                                    .showToast(
+                                                                        msg:
+                                                                            "Select forest first");
+                                                              }
+                                                            },
+                                                          ),
+                                                          children: [
+                                                            fmap.TileLayerWidget(
+                                                              options: fmap
+                                                                  .TileLayerOptions(
+                                                                urlTemplate:
+                                                                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                                                subdomains: [
+                                                                  'a',
+                                                                  'b',
+                                                                  'c'
+                                                                ],
+                                                                attributionBuilder:
+                                                                    (_) {
+                                                                  return const Text(
+                                                                      "© OpenStreetMap contributors");
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                          layers: [
+                                                            fmap.TileLayerOptions(
+                                                              urlTemplate:
+                                                                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                                              subdomains: [
+                                                                'a',
+                                                                'b',
+                                                                'c'
+                                                              ],
+                                                              attributionBuilder:
+                                                                  (_) {
+                                                                return const Text(
+                                                                    "© OpenStreetMap contributors");
+                                                              },
+                                                            ),
+                                                            fmap.PolygonLayerOptions(
+                                                              polygons: [
+                                                                fmap.Polygon(
+                                                                    points:
+                                                                        _PolygonAngat,
+                                                                    color: Colors
+                                                                        .green
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .green,
+                                                                    borderStrokeWidth:
+                                                                        0),
+                                                                fmap.Polygon(
+                                                                    points:
+                                                                        _PolygonLamesa,
+                                                                    color: Colors
+                                                                        .yellow
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .yellow,
+                                                                    borderStrokeWidth:
+                                                                        2.0),
+                                                                fmap.Polygon(
+                                                                    points:
+                                                                        _PolygonPantabangan,
+                                                                    color: Colors
+                                                                        .red
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    borderStrokeWidth:
+                                                                        2.0),
+                                                                fmap.Polygon(
+                                                                    points:
+                                                                        fromAngatDB,
+                                                                    color: Colors
+                                                                        .yellow
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .yellow,
+                                                                    borderStrokeWidth:
+                                                                        2),
+                                                                fmap.Polygon(
+                                                                    points:
+                                                                        fromPantabanganDB,
+                                                                    color: Colors
+                                                                        .red
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    borderStrokeWidth:
+                                                                        2),
+                                                                fmap.Polygon(
+                                                                    points:
+                                                                        fromLamesaDB,
+                                                                    color: Colors
+                                                                        .blue
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    borderColor:
+                                                                        Colors
+                                                                            .blue,
+                                                                    borderStrokeWidth:
+                                                                        2),
+                                                              ],
+                                                            ),
+                                                            for (var item
+                                                                in circleMarkersCampaigns)
+                                                              fmap.CircleLayerOptions(
+                                                                circles: [
+                                                                  fmap.CircleMarker(
+                                                                      point: lt.LatLng(
+                                                                          item.values.elementAt(
+                                                                              0),
+                                                                          item.values.elementAt(
+                                                                              1)),
+                                                                      radius:
+                                                                          item.values.elementAt(2) *
+                                                                              100,
+                                                                      color: Colors
+                                                                          .red
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      borderColor:
+                                                                          Colors
+                                                                              .red,
+                                                                      borderStrokeWidth:
+                                                                          1)
+                                                                ],
+                                                              ),
+                                                            for (var item
+                                                                in circleMarkersCampaignsNonRequest)
+                                                              fmap.CircleLayerOptions(
+                                                                circles: [
+                                                                  fmap.CircleMarker(
+                                                                      point: lt.LatLng(
+                                                                          item.values.elementAt(
+                                                                              0),
+                                                                          item.values.elementAt(
+                                                                              1)),
+                                                                      radius:
+                                                                          item.values.elementAt(2) *
+                                                                              10,
+                                                                      color: Colors
+                                                                          .blue
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      borderColor:
+                                                                          Colors
+                                                                              .blue,
+                                                                      borderStrokeWidth:
+                                                                          1)
+                                                                ],
+                                                              ),
+                                                            for (var item
+                                                                in circleMarkersCampaigns)
+                                                              fmap.MarkerLayerOptions(
+                                                                  markers: [
+                                                                    fmap.Marker(
+                                                                        point: lt.LatLng(
+                                                                            item.values.elementAt(
+                                                                                0),
+                                                                            item.values.elementAt(
+                                                                                1)),
+                                                                        builder:
+                                                                            (context) {
+                                                                          return StreamBuilder<DocumentSnapshot>(
+                                                                              stream: FirebaseFirestore.instance.collection("admin_campaign_requests").doc(item.values.elementAt(3)).snapshots(),
+                                                                              builder: (context, snapshot) {
+                                                                                if (!snapshot.hasData) {
+                                                                                  return const Center(
+                                                                                    child: CircularProgressIndicator(),
+                                                                                  );
+                                                                                } else {
+                                                                                  return InkWell(
+                                                                                      onTap: () {
+                                                                                        Navigator.of(context).push(HeroDialogRoute(builder: (context) {
+                                                                                          return ShowCampaign(
+                                                                                            campaignId: item.values.elementAt(3),
+                                                                                            organizerId: item.values.elementAt(4),
+                                                                                          );
+                                                                                        }));
+                                                                                      },
+                                                                                      child: Tooltip(
+                                                                                        message: item.values.elementAt(1).toString() + "  " + item.values.elementAt(0).toString(),
+                                                                                        child: const Icon(
+                                                                                          Icons.help_rounded,
+                                                                                          color: Colors.transparent,
+                                                                                          size: 13,
+                                                                                        ),
+                                                                                      ));
+                                                                                }
+                                                                              });
+                                                                        })
+                                                                  ]),
+                                                            for (var item
+                                                                in circleMarkersCampaignsNonRequest)
+                                                              fmap.MarkerLayerOptions(
+                                                                  markers: [
+                                                                    fmap.Marker(
+                                                                        point: lt.LatLng(
+                                                                            item.values.elementAt(
+                                                                                0),
+                                                                            item.values.elementAt(
+                                                                                1)),
+                                                                        builder:
+                                                                            (context) {
+                                                                          return StreamBuilder<DocumentSnapshot>(
+                                                                              stream: FirebaseFirestore.instance.collection("campaigns").doc(item.values.elementAt(3)).snapshots(),
+                                                                              builder: (context, snapshot) {
+                                                                                if (!snapshot.hasData) {
+                                                                                  return const Center(
+                                                                                    child: CircularProgressIndicator(),
+                                                                                  );
+                                                                                } else {
+                                                                                  return Tooltip(
+                                                                                    message: item.values.elementAt(1).toString() + "  " + item.values.elementAt(0).toString(),
+                                                                                    child: const Icon(
+                                                                                      Icons.help_rounded,
+                                                                                      color: Colors.transparent,
+                                                                                      size: 13,
+                                                                                    ),
+                                                                                  );
+                                                                                }
+                                                                              });
+                                                                        })
+                                                                  ]),
+                                                          ],
+                                                        );
                                                       } else {
-                                                        Fluttertoast.showToast(
-                                                            msg:
-                                                                "Select forest first");
+                                                        return const Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        );
                                                       }
-                                                    },
-                                                  ),
-                                                  children: [
-                                                    fmap.TileLayerWidget(
-                                                      options:
-                                                          fmap.TileLayerOptions(
-                                                        urlTemplate:
-                                                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                                        subdomains: [
-                                                          'a',
-                                                          'b',
-                                                          'c'
-                                                        ],
-                                                        attributionBuilder:
-                                                            (_) {
-                                                          return const Text(
-                                                              "© OpenStreetMap contributors");
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                  layers: [
-                                                    fmap.TileLayerOptions(
-                                                      urlTemplate:
-                                                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                                      subdomains: [
-                                                        'a',
-                                                        'b',
-                                                        'c'
-                                                      ],
-                                                      attributionBuilder: (_) {
-                                                        return const Text(
-                                                            "© OpenStreetMap contributors");
-                                                      },
-                                                    ),
-                                                    fmap.PolygonLayerOptions(
-                                                      polygons: [
-                                                        fmap.Polygon(
-                                                            points:
-                                                                _PolygonAngat,
-                                                            color: Colors.green
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderColor:
-                                                                Colors.green,
-                                                            borderStrokeWidth:
-                                                                0),
-                                                        fmap.Polygon(
-                                                            points:
-                                                                _PolygonLamesa,
-                                                            color: Colors.yellow
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderColor:
-                                                                Colors.yellow,
-                                                            borderStrokeWidth:
-                                                                2.0),
-                                                        fmap.Polygon(
-                                                            points:
-                                                                _PolygonPantabangan,
-                                                            color: Colors.red
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderColor:
-                                                                Colors.red,
-                                                            borderStrokeWidth:
-                                                                2.0),
-                                                        fmap.Polygon(
-                                                            points: fromAngatDB,
-                                                            color: Colors.yellow
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderColor:
-                                                                Colors.yellow,
-                                                            borderStrokeWidth:
-                                                                2),
-                                                        fmap.Polygon(
-                                                            points:
-                                                                fromPantabanganDB,
-                                                            color: Colors.red
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderColor:
-                                                                Colors.red,
-                                                            borderStrokeWidth:
-                                                                2),
-                                                        fmap.Polygon(
-                                                            points:
-                                                                fromLamesaDB,
-                                                            color: Colors.blue
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            borderColor:
-                                                                Colors.blue,
-                                                            borderStrokeWidth:
-                                                                2),
-                                                      ],
-                                                    ),
-                                                    for (var item
-                                                        in circleMarkersCampaigns)
-                                                      fmap.CircleLayerOptions(
-                                                        circles: [
-                                                          fmap.CircleMarker(
-                                                              point: lt.LatLng(
-                                                                  item.values
-                                                                      .elementAt(
-                                                                          0),
-                                                                  item.values
-                                                                      .elementAt(
-                                                                          1)),
-                                                              radius: item
-                                                                      .values
-                                                                      .elementAt(
-                                                                          2) *
-                                                                  100,
-                                                              color: Colors.red
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              borderColor:
-                                                                  Colors.red,
-                                                              borderStrokeWidth:
-                                                                  1)
-                                                        ],
-                                                      ),
-                                                    for (var item
-                                                        in circleMarkersCampaigns)
-                                                      fmap.MarkerLayerOptions(
-                                                          markers: [
-                                                            fmap.Marker(
-                                                                point: lt.LatLng(
-                                                                    item.values
-                                                                        .elementAt(
-                                                                            0),
-                                                                    item.values
-                                                                        .elementAt(
-                                                                            1)),
-                                                                builder:
-                                                                    (context) {
-                                                                  return StreamBuilder<
-                                                                          DocumentSnapshot>(
-                                                                      stream: FirebaseFirestore
-                                                                          .instance
-                                                                          .collection(
-                                                                              "admin_campaign_requests")
-                                                                          .doc(item.values.elementAt(
-                                                                              3))
-                                                                          .snapshots(),
-                                                                      builder:
-                                                                          (context,
-                                                                              snapshot) {
-                                                                        if (!snapshot
-                                                                            .hasData) {
-                                                                          return const Center(
-                                                                            child:
-                                                                                CircularProgressIndicator(),
-                                                                          );
-                                                                        } else {
-                                                                          return InkWell(
-                                                                              onTap: () {
-                                                                                Navigator.of(context).push(HeroDialogRoute(builder: (context) {
-                                                                                  return ShowCampaign(campaignId: item.values.elementAt(3));
-                                                                                }));
-                                                                              },
-                                                                              // onHover: (hover) {
-                                                                              //   Navigator.of(context).push(
-                                                                              //       HeroDialogRoute(
-                                                                              //           builder: (context) {
-                                                                              //     return ShowCampaign(
-                                                                              //         campaignId: item
-                                                                              //             .values
-                                                                              //             .elementAt(3));
-                                                                              //   }));
-                                                                              // },
-                                                                              child: Tooltip(
-                                                                                message: item.values.elementAt(1).toString() + "  " + item.values.elementAt(0).toString(),
-                                                                                child: const Icon(
-                                                                                  Icons.help_rounded,
-                                                                                  color: Colors.transparent,
-                                                                                  size: 13,
-                                                                                ),
-                                                                              ));
-                                                                        }
-                                                                      });
-                                                                })
-                                                          ]),
-                                                  ],
-                                                );
+                                                    });
                                               }
                                             }),
                                       );
