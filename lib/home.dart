@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sylviapp_admin/charts.dart';
@@ -12,7 +13,21 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  late String _chosenValue = " ";
   bool onHov = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    FirebaseFirestore.instance
+        .collection('quarantineStatus')
+        .doc('status')
+        .get()
+        .then((value) => _chosenValue = value.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -89,12 +104,52 @@ class _AdminHomeState extends State<AdminHome> {
                         decoration:
                             const BoxDecoration(color: Color(0xffF6F8FA)),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            const Icon(
+                              Icons.arrow_right_alt,
+                              color: Colors.transparent,
+                            ),
                             Text(formatter,
                                 style: const TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.bold))
+                                    fontWeight: FontWeight.bold)),
+                            DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: null,
+                              style: const TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.black,
+                              items: <String>[
+                                'MECQ',
+                                'ECQ',
+                                'GCQ',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                _chosenValue,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  _chosenValue = value!;
+
+                                  FirebaseFirestore.instance
+                                      .collection('quarantineStatus')
+                                      .doc('status')
+                                      .set({'status': _chosenValue});
+                                });
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -153,6 +208,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                 context, '/campaignrequest');
                                           },
                                           child: Container(
+                                            padding: const EdgeInsets.all(20),
                                             height: 250,
                                             width: 310,
                                             decoration: BoxDecoration(
@@ -170,8 +226,21 @@ class _AdminHomeState extends State<AdminHome> {
                                                     const BorderRadius.all(
                                                         Radius.circular(10)),
                                                 color: Colors.white),
-                                            child:
-                                                const FittedBox(child: Chart()),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: const [
+                                                Text(
+                                                  "Community Quarantine Status",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         InkWell(
