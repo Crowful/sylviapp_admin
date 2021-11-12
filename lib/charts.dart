@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -29,7 +28,6 @@ class _ChartState extends State<Chart> {
             .where('inProgress', isEqualTo: true)
             .snapshots(),
         builder: (context, inProgressSnap) {
-          _chartData.clear();
           if (inProgressSnap.hasData) {
             _chartData
                 .add(CampaignData('In Progress', inProgressSnap.data!.size));

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -445,6 +446,7 @@ class _MapPolygonState extends State<MapPolygon> {
                         builder:
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (!snapshot.hasData) {
+                            print('walawalabingbang');
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
@@ -620,10 +622,12 @@ class _MapPolygonState extends State<MapPolygon> {
                 ),
               ),
             ),
-            StreamBuilder<DocumentSnapshot>(
+            StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection("polygon")
                     .doc('Lamesa_Forest')
+                    .collection('polygons')
+                    .where('points', isNull: false)
                     .snapshots(),
                 builder: (context, lamesa) {
                   if (!lamesa.hasData) {
@@ -631,34 +635,44 @@ class _MapPolygonState extends State<MapPolygon> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    latlng = List<dynamic>.from(lamesa.data!["points"]);
+                    for (var element in lamesa.data!.docs) {
+                      latlng = List<dynamic>.from(element['points']);
+                    }
+
                     for (var points in latlng) {
                       fromLamesaDB.add(
                           lt.LatLng(points['latitude'], points['longitude']));
                     }
+                    print(fromLamesaDB);
                     return Expanded(
-                      child: StreamBuilder<DocumentSnapshot>(
+                      child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection("polygon")
                               .doc('Angat_Forest')
+                              .collection('polygons')
+                              .where('points', isNull: false)
                               .snapshots(),
-                          builder:
-                              (context, AsyncSnapshot<DocumentSnapshot> angat) {
+                          builder: (context, angat) {
                             if (!angat.hasData) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else {
-                              latlng2 =
-                                  List<dynamic>.from(angat.data!["points"]);
+                              for (var angatPoints in angat.data!.docs) {
+                                latlng2 =
+                                    List<dynamic>.from(angatPoints['points']);
+                              }
+
                               for (var points in latlng2) {
                                 fromAngatDB.add(lt.LatLng(
                                     points['latitude'], points['longitude']));
                               }
-                              return StreamBuilder<DocumentSnapshot>(
+                              return StreamBuilder<QuerySnapshot>(
                                   stream: FirebaseFirestore.instance
                                       .collection("polygon")
                                       .doc('Pantabangan_Forest')
+                                      .collection('polygons')
+                                      .where('points', isNull: false)
                                       .snapshots(),
                                   builder: (context, pantabangan) {
                                     if (!pantabangan.hasData) {
@@ -666,10 +680,14 @@ class _MapPolygonState extends State<MapPolygon> {
                                         child: CircularProgressIndicator(),
                                       );
                                     } else {
-                                      latlng3 = List<dynamic>.from(
-                                          pantabangan.data!["points"]);
+                                      for (var pantabanganPoints
+                                          in pantabangan.data!.docs) {
+                                        latlng3 = List<dynamic>.from(
+                                            pantabanganPoints['points']);
+                                      }
+
                                       for (var points in latlng3) {
-                                        fromPantabanganDB.add(lt.LatLng(
+                                        fromAngatDB.add(lt.LatLng(
                                             points['latitude'],
                                             points['longitude']));
                                       }

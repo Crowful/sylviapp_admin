@@ -150,7 +150,11 @@ class DatabaseService {
     String forestname,
     points,
   ) async {
-    return await polygonCollection.doc(forestname).set({
+    return await polygonCollection
+        .doc(forestname)
+        .collection('polygons')
+        .doc()
+        .set({
       'points': points,
     });
   }

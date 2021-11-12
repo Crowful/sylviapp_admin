@@ -123,6 +123,7 @@ class _AdminHomeState extends State<AdminHome> {
                                 'MECQ',
                                 'ECQ',
                                 'GCQ',
+                                'No Quarantine'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -226,21 +227,37 @@ class _AdminHomeState extends State<AdminHome> {
                                                     const BorderRadius.all(
                                                         Radius.circular(10)),
                                                 color: Colors.white),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: const [
-                                                Text(
-                                                  "Community Quarantine Status",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                ),
-                                              ],
-                                            ),
+                                            child: StreamBuilder<
+                                                    DocumentSnapshot>(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection(
+                                                        'quarantineStatus')
+                                                    .doc('status')
+                                                    .snapshots(),
+                                                builder:
+                                                    (context, snapshotStatus) {
+                                                  var statuss = snapshotStatus
+                                                      .data!
+                                                      .get('status');
+                                                  return Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Text(
+                                                        "Community Quarantine Status",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18),
+                                                      ),
+                                                      Text(statuss)
+                                                    ],
+                                                  );
+                                                }),
                                           ),
                                         ),
                                         Container(
