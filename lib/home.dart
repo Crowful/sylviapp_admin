@@ -243,36 +243,29 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, "/map_polygon");
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 5),
-                                            height: 250,
-                                            width: 310,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color:
-                                                        const Color(0xff778ba5)
-                                                            .withOpacity(0.4),
-                                                    blurRadius: 4,
-                                                    offset: const Offset(2,
-                                                        5), // Shadow position
-                                                  ),
-                                                ],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                                color: Colors.white),
-                                            child: const Center(
-                                                child: FittedBox(
-                                              child: Chart(),
-                                            )),
-                                          ),
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 5),
+                                          height: 250,
+                                          width: 310,
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color(0xff778ba5)
+                                                      .withOpacity(0.4),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(
+                                                      2, 5), // Shadow position
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10)),
+                                              color: Colors.white),
+                                          child: const Center(
+                                              child: FittedBox(
+                                            child: Chart(),
+                                          )),
                                         ),
                                         Column(
                                           children: [
