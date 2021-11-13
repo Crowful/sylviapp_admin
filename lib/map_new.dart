@@ -34,7 +34,7 @@ class _MapCampaignRequestState extends State<MapCampaignRequest> {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             } else {
-              snapshot.data!.docs.forEach((doc) {
+              for (var doc in snapshot.data!.docs) {
                 var campaignLat = doc.get("latitude");
                 var campaignLon = doc.get("longitude");
                 var campaignRad = doc.get("radius");
@@ -46,7 +46,7 @@ class _MapCampaignRequestState extends State<MapCampaignRequest> {
                   "radius": campaignRad as double,
                   "uid": campaignUid
                 });
-              });
+              }
               return Stack(children: [
                 Row(
                   children: [

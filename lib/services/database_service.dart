@@ -153,7 +153,7 @@ class DatabaseService {
     return await polygonCollection
         .doc(forestname)
         .collection('polygons')
-        .doc()
+        .doc('1')
         .set({
       'points': points,
     });
