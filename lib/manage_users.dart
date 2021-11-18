@@ -21,25 +21,20 @@ class _ManageUsersState extends State<ManageUsers> {
   String? errorText;
   String urlTest = "";
   String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
-  Future<String> showProfile(uid) async {
+  showProfile(uid) async {
     String fileName = "pic";
     String destination = 'files/users/$uid/ProfilePicture/$fileName';
     Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
     try {
       taske = await firebaseStorageRef.getDownloadURL();
-      return taske.toString();
     } catch (e) {
       setState(() {
         errorText = e.toString();
-        return null;
       });
     }
     setState(() {
       urlTest = taske.toString();
-      setOfUID.add(urlTest);
     });
-    print(taske.toString());
-    return taske.toString();
   }
 
   Set<String> setOfUID = {};
@@ -53,8 +48,8 @@ class _ManageUsersState extends State<ManageUsers> {
     final now = DateTime.now();
     String formatter = DateFormat.yMMMMd('en_US').format(now);
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      body: FutureBuilder<QuerySnapshot>(
+          future: FirebaseFirestore.instance.collection('users').get(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -110,8 +105,10 @@ class _ManageUsersState extends State<ManageUsers> {
                                   enc.Encrypted.fromBase64(e['fullname']));
                               String email = e['email'];
                               bool status = e['isVerify'];
-                              String url = "";
-
+                              showProfile(e.id.toString());
+                              String url = urlTest;
+                              print("hey " + e.id);
+                              print("hey " + urlTest);
                               return Container(
                                 padding: const EdgeInsets.all(20),
                                 height: 100,

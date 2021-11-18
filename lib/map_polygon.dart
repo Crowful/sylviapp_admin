@@ -516,12 +516,17 @@ class _MapPolygonState extends State<MapPolygon> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    e['campaign_name'],
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 18,
+                                                  SizedBox(
+                                                    width: 170,
+                                                    child: Text(
+                                                      e['campaign_name'],
+                                                      style: const TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 18,
+                                                      ),
                                                     ),
                                                   ),
                                                   Text(
@@ -946,9 +951,9 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                               0),
                                                                           item.values.elementAt(
                                                                               1)),
-                                                                      radius:
-                                                                          item.values.elementAt(2) *
-                                                                              100,
+                                                                      radius: item.values.elementAt(
+                                                                              2) *
+                                                                          .0050,
                                                                       color: Colors
                                                                           .red
                                                                           .withOpacity(
