@@ -204,71 +204,48 @@ class _AdminHomeState extends State<AdminHome> {
                                     Row(
                                       children: [
                                         InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, '/campaignrequest');
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(20),
-                                            height: 250,
-                                            width: 310,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color:
-                                                        const Color(0xff778ba5)
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, '/feedback');
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                height: 250,
+                                                width: 310,
+                                                decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color(
+                                                                0xff778ba5)
                                                             .withOpacity(0.4),
-                                                    blurRadius: 4,
-                                                    offset: const Offset(2,
-                                                        5), // Shadow position
-                                                  ),
-                                                ],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                                color: Colors.white),
-                                            child:
-                                                StreamBuilder<DocumentSnapshot>(
-                                                    stream: FirebaseFirestore
-                                                        .instance
-                                                        .collection(
-                                                            'quarantineStatus')
-                                                        .doc('status')
-                                                        .snapshots(),
-                                                    builder: (context,
-                                                        snapshotStatus) {
-                                                      if (!snapshotStatus
-                                                          .hasData) {
-                                                        return Center(
-                                                            child: Text(
-                                                                "No Data At The Moment"));
-                                                      } else {
-                                                        var statuss =
-                                                            snapshotStatus.data!
-                                                                .get('status');
-                                                        return Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            const Text(
-                                                              "Community Quarantine Status",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            Text(statuss)
-                                                          ],
-                                                        );
-                                                      }
-                                                    }),
-                                          ),
-                                        ),
+                                                        blurRadius: 4,
+                                                        offset: const Offset(2,
+                                                            5), // Shadow position
+                                                      ),
+                                                    ],
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                    color: Colors.white),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      "Feedbacks of Users",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                        'feedback list of users to be considered')
+                                                  ],
+                                                ))),
                                         Container(
                                           margin: const EdgeInsets.symmetric(
                                               horizontal: 5, vertical: 5),
