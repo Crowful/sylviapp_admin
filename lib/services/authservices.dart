@@ -160,7 +160,8 @@ class AuthService extends ChangeNotifier {
       double currentDonations,
       double maxDonations,
       int currentVolunteers,
-      int numberVolunteers) async {
+      int numberVolunteers,
+      double radius) async {
     try {
       await DatabaseService(uid: "admin")
           .addCampaign(
@@ -181,7 +182,8 @@ class AuthService extends ChangeNotifier {
               currentDonations,
               maxDonations,
               currentVolunteers,
-              numberVolunteers)
+              numberVolunteers,
+              radius)
           .whenComplete(() =>
               Fluttertoast.showToast(msg: "Campaign Successfully Published"));
       await DatabaseService(uid: "admin").deleteRequestCampaign(campaignID);

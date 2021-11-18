@@ -21,25 +21,30 @@ class _ManageUsersState extends State<ManageUsers> {
   String? errorText;
   String urlTest = "";
   String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
-  showProfile(uid) async {
+  Future<String> showProfile(uid) async {
     String fileName = "pic";
     String destination = 'files/users/$uid/ProfilePicture/$fileName';
     Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
     try {
       taske = await firebaseStorageRef.getDownloadURL();
+      return taske.toString();
     } catch (e) {
       setState(() {
         errorText = e.toString();
+        return null;
       });
     }
     setState(() {
       urlTest = taske.toString();
+      setOfUID.add(urlTest);
     });
+    print(taske.toString());
+    return taske.toString();
   }
 
+  Set<String> setOfUID = {};
   @override
   void initState() {
-    showProfile(uid);
     super.initState();
   }
 
@@ -105,6 +110,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                   enc.Encrypted.fromBase64(e['fullname']));
                               String email = e['email'];
                               bool status = e['isVerify'];
+                              String url = "";
 
                               return Container(
                                 padding: const EdgeInsets.all(20),
@@ -141,8 +147,7 @@ class _ManageUsersState extends State<ManageUsers> {
                                               color: Colors.red,
                                               image: DecorationImage(
                                                   fit: BoxFit.cover,
-                                                  image:
-                                                      NetworkImage(urlTest))),
+                                                  image: NetworkImage(url))),
                                         ),
                                         const SizedBox(
                                           width: 20,

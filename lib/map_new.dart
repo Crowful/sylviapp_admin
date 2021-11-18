@@ -255,7 +255,8 @@ class _MapCampaignRequestState extends State<MapCampaignRequest> {
                                                                                 snapshot.data!.get('current_donations'),
                                                                                 snapshot.data!.get('max_donation'),
                                                                                 snapshot.data!.get('current_volunteers'),
-                                                                                snapshot.data!.get('number_volunteers'))
+                                                                                snapshot.data!.get('number_volunteers'),
+                                                                                snapshot.data!.get('radius'))
                                                                             .whenComplete(() => Navigator.pushNamed(context, '/map'));
                                                                       },
                                                                       child: Text(

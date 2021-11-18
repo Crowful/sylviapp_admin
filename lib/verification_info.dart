@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/showFull.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -30,12 +31,15 @@ class _VerificationInfoState extends State<VerificationInfo> {
     String destination = 'files/users/$uid/verification/facePic/$fileName';
 
     Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
-    firebaseStorageRef
-        .getDownloadURL()
-        .then((value) => setState(() => link = value));
+
     try {
       taske = await firebaseStorageRef.getDownloadURL();
-    } catch (e) {
+    } on FirebaseException catch (e) {
+      switch (e.code) {
+        case 'invalid-url':
+          Fluttertoast.showToast(msg: e.message.toString());
+          break;
+      }
       setState(() {
         errorText = e.toString();
       });
@@ -54,10 +58,6 @@ class _VerificationInfoState extends State<VerificationInfo> {
     String destination = 'files/users/$uid/verification/validID/$fileName';
     Reference firebaseStorageRef = FirebaseStorage.instance.ref(destination);
 
-    firebaseStorageRef
-        .getDownloadURL()
-        .then((value) => setState(() => link1 = value));
-
     try {
       taske2 = await firebaseStorageRef.getDownloadURL();
     } catch (e) {
@@ -72,6 +72,8 @@ class _VerificationInfoState extends State<VerificationInfo> {
 
   @override
   void initState() {
+    showFaceURL(widget.userUID);
+    showvalidID(widget.userUID);
     super.initState();
   }
 
@@ -99,24 +101,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Column(
                   children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(HeroDialogRoute(builder: (context) {
-                            return ImageFullScreen(
-                              imgLink: link!,
-                            );
-                          }));
-                        },
-                        child: Text("IMAGE")),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [CircularProgressIndicator()],
-                      ),
-                    )
+                    Text("THIS USER DIDN'T SUBMIT APPLICATION"),
                   ],
                 ),
               ),
@@ -130,7 +115,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
             backgroundColor: Colors.transparent,
             child: SingleChildScrollView(
               child: Container(
-                width: 400,
+                width: 500,
                 height: 700,
                 decoration: const BoxDecoration(
                     shape: BoxShape.rectangle,
@@ -147,7 +132,19 @@ class _VerificationInfoState extends State<VerificationInfo> {
                             );
                           }));
                         },
-                        child: Text("IMAGE")),
+                        child: urlTest != ""
+                            ? Container(
+                                height: 200,
+                                width: 300,
+                                child: Image.network(urlTest))
+                            : Container(
+                                height: 200,
+                                width: 300,
+                                child: Center(
+                                    child: Icon(
+                                  Icons.image_rounded,
+                                  size: 100,
+                                )))),
                     Container(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -169,7 +166,12 @@ class _VerificationInfoState extends State<VerificationInfo> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff65BFB8)),
                           ),
-                          Text(snapshot.data!.get('reasonForApplication')),
+                          Container(
+                              color: Colors.white38,
+                              height: 90,
+                              width: 300,
+                              child: Text(
+                                  snapshot.data!.get('reasonForApplication'))),
                           const SizedBox(
                             height: 20,
                           ),
@@ -186,13 +188,32 @@ class _VerificationInfoState extends State<VerificationInfo> {
                                 height: 200,
                                 width: 200,
                                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: Text("IMAGE")),
+                                child: urlTest2 != ""
+                                    ? Container(
+                                        height: 200,
+                                        width: 300,
+                                        child: Image.network(urlTest2))
+                                    : Container(
+                                        height: 200,
+                                        width: 300,
+                                        child: Center(
+                                            child: Icon(
+                                          Icons.image_rounded,
+                                          size: 100,
+                                        )))),
                           ),
-                          ElevatedButton(
-                              onPressed: () async {
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Back"))
+                          Container(
+                            height: 50,
+                            width: 100,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(0xff65BFB8),
+                                    shape: StadiumBorder()),
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Back")),
+                          )
                         ],
                       ),
                     )

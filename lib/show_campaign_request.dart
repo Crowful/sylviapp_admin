@@ -267,7 +267,8 @@ class ShowCampaignState extends State<ShowCampaign> {
                                         snapshot.data!.get('max_donation'),
                                         snapshot.data!
                                             .get('current_volunteers'),
-                                        snapshot.data!.get('number_volunteers'))
+                                        snapshot.data!.get('number_volunteers'),
+                                        snapshot.data!.get('radius'))
                                     .whenComplete(() =>
                                         Navigator.pushNamed(context, '/map'));
                               },

@@ -52,6 +52,7 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                             double campaignLatitude = e['latitude'];
                             double campaignlongitude = e['longitude'];
                             double campaignMaxDonation = e['max_donation'];
+                            double campaignRadius = e['radius'];
                             int campaignNumberOfSeeds = e['number_of_seeds'];
                             int campaignNumberVolunteers =
                                 e['number_volunteers'];
@@ -130,7 +131,8 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                                               campaignCurrentDonation,
                                               campaignMaxDonation,
                                               campaignCurrentVolunteers,
-                                              campaignNumberVolunteers);
+                                              campaignNumberVolunteers,
+                                              campaignRadius);
                                     },
                                     child: Container(
                                       height: 50,

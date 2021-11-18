@@ -227,37 +227,46 @@ class _AdminHomeState extends State<AdminHome> {
                                                     const BorderRadius.all(
                                                         Radius.circular(10)),
                                                 color: Colors.white),
-                                            child: StreamBuilder<
-                                                    DocumentSnapshot>(
-                                                stream: FirebaseFirestore
-                                                    .instance
-                                                    .collection(
-                                                        'quarantineStatus')
-                                                    .doc('status')
-                                                    .snapshots(),
-                                                builder:
-                                                    (context, snapshotStatus) {
-                                                  var statuss = snapshotStatus
-                                                      .data!
-                                                      .get('status');
-                                                  return Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Text(
-                                                        "Community Quarantine Status",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 18),
-                                                      ),
-                                                      Text(statuss)
-                                                    ],
-                                                  );
-                                                }),
+                                            child:
+                                                StreamBuilder<DocumentSnapshot>(
+                                                    stream: FirebaseFirestore
+                                                        .instance
+                                                        .collection(
+                                                            'quarantineStatus')
+                                                        .doc('status')
+                                                        .snapshots(),
+                                                    builder: (context,
+                                                        snapshotStatus) {
+                                                      if (!snapshotStatus
+                                                          .hasData) {
+                                                        return Center(
+                                                            child: Text(
+                                                                "No Data At The Moment"));
+                                                      } else {
+                                                        var statuss =
+                                                            snapshotStatus.data!
+                                                                .get('status');
+                                                        return Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            const Text(
+                                                              "Community Quarantine Status",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 18),
+                                                            ),
+                                                            Text(statuss)
+                                                          ],
+                                                        );
+                                                      }
+                                                    }),
                                           ),
                                         ),
                                         Container(

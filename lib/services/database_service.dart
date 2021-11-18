@@ -107,7 +107,8 @@ class DatabaseService {
       double currentDonations,
       double maxDonations,
       int currentVolunteers,
-      int numberVolunteers) async {
+      int numberVolunteers,
+      double radius) async {
     return await campaignCollection.doc(campaignID).set({
       'campaignID': campaignID,
       'campaign_name': title,
@@ -127,6 +128,7 @@ class DatabaseService {
       'max_donation': maxDonations,
       'current_volunteers': currentVolunteers,
       'number_volunteers': numberVolunteers,
+      'radius': radius,
     });
   }
 
