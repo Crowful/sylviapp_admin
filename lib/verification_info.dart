@@ -93,135 +93,159 @@ class _VerificationInfoState extends State<VerificationInfo> {
             backgroundColor: Colors.transparent,
             child: SingleChildScrollView(
               child: Container(
-                width: 400,
-                height: 700,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Column(
-                  children: [
-                    Text("THIS USER DIDN'T SUBMIT APPLICATION"),
-                  ],
-                ),
-              ),
+                  width: 400,
+                  height: 700,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Container(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator())),
             ),
           );
         } else {
-          return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            child: SingleChildScrollView(
-              child: Container(
-                width: 500,
-                height: 700,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Column(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(HeroDialogRoute(builder: (context) {
-                            return ImageFullScreen(
-                              imgLink: link!,
-                            );
-                          }));
-                        },
-                        child: urlTest != ""
-                            ? Container(
-                                height: 200,
-                                width: 300,
-                                child: Image.network(urlTest))
-                            : Container(
-                                height: 200,
-                                width: 300,
-                                child: Center(
-                                    child: Icon(
-                                  Icons.image_rounded,
-                                  size: 100,
-                                )))),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.name,
-                              style: const TextStyle(
-                                  fontSize: 30,
+          if (snapshot.data!.exists) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              child: SingleChildScrollView(
+                child: Container(
+                  width: 500,
+                  height: 700,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Column(
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(HeroDialogRoute(builder: (context) {
+                              return ImageFullScreen(
+                                imgLink: link!,
+                              );
+                            }));
+                          },
+                          child: urlTest != ""
+                              ? Container(
+                                  height: 200,
+                                  width: 300,
+                                  child: Image.network(urlTest))
+                              : Container(
+                                  height: 200,
+                                  width: 300,
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.image_rounded,
+                                    size: 100,
+                                  )))),
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.name,
+                                style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff65BFB8))),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Reason:',
+                              style: TextStyle(
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xff65BFB8))),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            'Reason:',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff65BFB8)),
-                          ),
-                          Container(
-                              color: Colors.white38,
-                              height: 90,
-                              width: 300,
-                              child: Text(
-                                  snapshot.data!.get('reasonForApplication'))),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            'Valid Id: ',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff65BFB8)),
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                                height: 200,
-                                width: 200,
-                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: urlTest2 != ""
-                                    ? Container(
-                                        height: 200,
-                                        width: 300,
-                                        child: Image.network(urlTest2))
-                                    : Container(
-                                        height: 200,
-                                        width: 300,
-                                        child: Center(
-                                            child: Icon(
-                                          Icons.image_rounded,
-                                          size: 100,
-                                        )))),
-                          ),
-                          Container(
-                            height: 50,
-                            width: 100,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Color(0xff65BFB8),
-                                    shape: StadiumBorder()),
-                                onPressed: () async {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Back")),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                                  color: Color(0xff65BFB8)),
+                            ),
+                            Container(
+                                color: Colors.white38,
+                                height: 90,
+                                width: 300,
+                                child: Text(snapshot.data!
+                                    .get('reasonForApplication'))),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Valid Id: ',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff65BFB8)),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                  height: 200,
+                                  width: 200,
+                                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: urlTest2 != ""
+                                      ? Container(
+                                          height: 200,
+                                          width: 300,
+                                          child: Image.network(urlTest2))
+                                      : Container(
+                                          height: 200,
+                                          width: 300,
+                                          child: Center(
+                                              child: Icon(
+                                            Icons.image_rounded,
+                                            size: 100,
+                                          )))),
+                            ),
+                            Container(
+                              height: 50,
+                              width: 100,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Color(0xff65BFB8),
+                                      shape: StadiumBorder()),
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Back")),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          } else {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              child: SingleChildScrollView(
+                child: Container(
+                  width: 400,
+                  height: 700,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("THIS USER DIDN'T SUBMIT AN APPLICATION"),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
         }
       },
     );
