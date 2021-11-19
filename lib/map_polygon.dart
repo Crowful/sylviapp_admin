@@ -42,6 +42,52 @@ class _MapPolygonState extends State<MapPolygon> {
   bool isCreatingAngat = false;
 
   @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('polygon')
+        .doc('Angat_Forest')
+        .collection('polygons')
+        .doc('1')
+        .get()
+        .then((value) {
+      List<dynamic> test = value.get('points');
+      test.forEach((element) {
+        _PolygonAngat.add(lt.LatLng(element['latitude'], element['longitude']));
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('polygon')
+        .doc('Lamesa_Forest')
+        .collection('polygons')
+        .doc('1')
+        .get()
+        .then((value) {
+      List<dynamic> test = value.get('points');
+      test.forEach((element) {
+        _PolygonLamesa.add(
+            lt.LatLng(element['latitude'], element['longitude']));
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('polygon')
+        .doc('Pantabangan_Forest')
+        .collection('polygons')
+        .doc('1')
+        .get()
+        .then((value) {
+      List<dynamic> test = value.get('points');
+      test.forEach((element) {
+        _PolygonPantabangan.add(
+            lt.LatLng(element['latitude'], element['longitude']));
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
