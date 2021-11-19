@@ -695,12 +695,11 @@ class _MapPolygonState extends State<MapPolygon> {
                                       return SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height,
-                                        child: StreamBuilder<QuerySnapshot>(
-                                            stream: FirebaseFirestore.instance
+                                        child: FutureBuilder<QuerySnapshot>(
+                                            future: FirebaseFirestore.instance
                                                 .collection(
                                                     "admin_campaign_requests")
-                                                .get()
-                                                .asStream(),
+                                                .get(),
                                             builder: (context, snapshot) {
                                               if (!snapshot.hasData) {
                                                 return const Center(
@@ -729,13 +728,12 @@ class _MapPolygonState extends State<MapPolygon> {
                                                     "userid": orgId
                                                   });
                                                 }
-                                                return StreamBuilder<
+                                                return FutureBuilder<
                                                         QuerySnapshot>(
-                                                    stream: FirebaseFirestore
+                                                    future: FirebaseFirestore
                                                         .instance
                                                         .collection("campaigns")
-                                                        .get()
-                                                        .asStream(),
+                                                        .get(),
                                                     builder: (context,
                                                         snapshotCampaign) {
                                                       if (snapshotCampaign
