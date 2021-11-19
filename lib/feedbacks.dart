@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:encrypt/encrypt.dart' as enc;
+import 'package:flutter_riverpod/src/provider.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
+import 'package:sylviapp_admin/providers/providers.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -192,7 +194,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                                                     Colors.red,
                                                                 shape:
                                                                     const StadiumBorder()),
-                                                        onPressed: () {},
+                                                        onPressed: () async {
+                                                          await context
+                                                              .read(
+                                                                  authserviceProvider)
+                                                              .removeFeedback(
+                                                                  e.id);
+                                                        },
                                                         child: const Text(
                                                             "Delete")),
                                                   ),

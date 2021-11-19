@@ -237,6 +237,14 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  removeFeedback(String id) async {
+    try {
+      await DatabaseService(uid: "admin").clearFeedback(id);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   createPolygon(String forestname, points) async {
     try {
       await DatabaseService(uid: "admin")
