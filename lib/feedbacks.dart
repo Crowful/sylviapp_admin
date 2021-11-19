@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:encrypt/encrypt.dart' as enc;
+import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -19,56 +22,189 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              const Text(
-                'Feedbacks Of Users',
-                style: TextStyle(
-                    color: Color(0xff65BFB8),
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back)),
+                  const Text(
+                    'Feedbacks Of Users',
+                    style: TextStyle(
+                        color: Color(0xff65BFB8),
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Colors.transparent,
+                      )),
+                ],
               ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('feedbacks')
                         .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                            child: Container(
+                    builder: (context, snapshotFeedbacks) {
+                      if (!snapshotFeedbacks.hasData) {
+                        return const Center(
+                            child: SizedBox(
                                 height: 100,
                                 width: 100,
                                 child: CircularProgressIndicator()));
                       } else {
-                        return SizedBox(
-                            child: ListView.builder(
-                                itemCount: snapshot.data!.size,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                    child: Card(
-                                      elevation: 4,
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text("NAME OF THE VOLUNTEER"),
-                                              Text("SENTENCE SENTENCE SENTENCE")
-                                            ],
+                        return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 400, vertical: 100),
+                            child: ListView(
+                                children: snapshotFeedbacks.data!.docs.map((e) {
+                              var string = e['date'];
+                              var reportMessage = e['feedback'];
+                              print(e.id.toString());
+                              return StreamBuilder<DocumentSnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(e['uid'])
+                                      .snapshots(),
+                                  builder: (context, userSnaps) {
+                                    if (!userSnaps.hasData) {
+                                      return const CircularProgressIndicator();
+                                    } else {
+                                      String name = AESCryptography()
+                                          .decryptAES(enc.Encrypted.fromBase64(
+                                              userSnaps.data!.get('fullname')));
+                                      String email =
+                                          userSnaps.data!.get('email');
+                                      return SizedBox(
+                                        child: Card(
+                                          elevation: 4,
+                                          child: Container(
+                                            margin: const EdgeInsets.all(20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          name,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 18),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          email,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 15),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text(
+                                                          'Date Issued: ' +
+                                                              string,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Text(
+                                                          'Feedback Message:',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 13),
+                                                        ),
+                                                        Container(
+                                                          height: 200,
+                                                          width: 400,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          10))),
+                                                          child: Text(
+                                                            reportMessage,
+                                                            style: const TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .clip),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                                Center(
+                                                  child: SizedBox(
+                                                    height: 50,
+                                                    width: 100,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary:
+                                                                    Colors.red,
+                                                                shape:
+                                                                    const StadiumBorder()),
+                                                        onPressed: () {},
+                                                        child: const Text(
+                                                            "Delete")),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          SizedBox(
-                                            width: 100,
-                                          ),
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.red,
-                                                  shape: StadiumBorder()),
-                                              onPressed: () {},
-                                              child: Text("Delete"))
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }));
+                                        ),
+                                      );
+                                    }
+                                  });
+                            }).toList()));
                       }
                     }),
               )

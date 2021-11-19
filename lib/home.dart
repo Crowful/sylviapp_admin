@@ -228,22 +228,38 @@ class _AdminHomeState extends State<AdminHome> {
                                                         const BorderRadius.all(
                                                             Radius.circular(
                                                                 10)),
-                                                    color: Colors.white),
+                                                    color: const Color(
+                                                        0xffFF673A)),
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Text(
-                                                      "Feedbacks of Users",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18),
-                                                    ),
+                                                  children: const [
                                                     Text(
-                                                        'feedback list of users to be considered')
+                                                      "Handle Feedbacks",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 20),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Center(
+                                                      child: Text(
+                                                        'List of feedbacks by users to be \nconsidered.',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w100),
+                                                      ),
+                                                    )
                                                   ],
                                                 ))),
                                         Container(
