@@ -209,65 +209,32 @@ class _AdminHomeState extends State<AdminHome> {
                                                 context, '/campaignrequest');
                                           },
                                           child: Container(
-                                            padding: const EdgeInsets.all(20),
-                                            height: 250,
-                                            width: 310,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color:
-                                                        const Color(0xff778ba5)
-                                                            .withOpacity(0.4),
-                                                    blurRadius: 4,
-                                                    offset: const Offset(2,
-                                                        5), // Shadow position
-                                                  ),
-                                                ],
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10)),
-                                                color: Colors.white),
-                                            child:
-                                                StreamBuilder<DocumentSnapshot>(
-                                                    stream: FirebaseFirestore
-                                                        .instance
-                                                        .collection(
-                                                            'quarantineStatus')
-                                                        .doc('status')
-                                                        .snapshots(),
-                                                    builder: (context,
-                                                        snapshotStatus) {
-                                                      if (!snapshotStatus
-                                                          .hasData) {
-                                                        return Center(
-                                                            child: Text(
-                                                                "No Data At The Moment"));
-                                                      } else {
-                                                        var statuss =
-                                                            snapshotStatus.data!
-                                                                .get('status');
-                                                        return Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            const Text(
-                                                              "Community Quarantine Status",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 18),
-                                                            ),
-                                                            Text(statuss)
-                                                          ],
-                                                        );
-                                                      }
-                                                    }),
-                                          ),
+                                              padding: const EdgeInsets.all(20),
+                                              height: 250,
+                                              width: 310,
+                                              decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: const Color(
+                                                              0xff778ba5)
+                                                          .withOpacity(0.4),
+                                                      blurRadius: 4,
+                                                      offset: const Offset(2,
+                                                          5), // Shadow position
+                                                    ),
+                                                  ],
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  color: Color(0xffFF673A)),
+                                              child: const Center(
+                                                  child: Text(
+                                                'Handle Reports',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ))),
                                         ),
                                         Container(
                                           margin: const EdgeInsets.symmetric(
