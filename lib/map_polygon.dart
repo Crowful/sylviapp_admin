@@ -23,7 +23,7 @@ class _MapPolygonState extends State<MapPolygon> {
       List.empty(growable: true);
   List<Map<String, dynamic>> circleMarkersCampaignsNonRequest =
       List.empty(growable: true);
-  double zooming = 5;
+  double zooming = 13;
   lt.LatLng? _initialCameraPosition = lt.LatLng(14.5995, 120.9842);
 
   fmap.MapController cntrler = fmap.MapController();
@@ -419,10 +419,7 @@ class _MapPolygonState extends State<MapPolygon> {
                                   min: 1,
                                   max: 20,
                                   onChanged: (zoom1) {
-                                    setState(() {
-                                      zooming = zoom1;
-                                      cntrler.move(cntrler.center, zooming);
-                                    });
+                                    cntrler.move(cntrler.center, zoom1);
                                   }),
                             ),
                           ),
@@ -975,9 +972,10 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                               0),
                                                                           item.values.elementAt(
                                                                               1)),
-                                                                      radius:
-                                                                          item.values.elementAt(2) *
-                                                                              10,
+                                                                      radius: item
+                                                                          .values
+                                                                          .elementAt(
+                                                                              2),
                                                                       color: Colors
                                                                           .blue
                                                                           .withOpacity(
