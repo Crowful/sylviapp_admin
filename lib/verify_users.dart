@@ -19,6 +19,7 @@ class _VerifyUsersState extends State<VerifyUsers> {
   String? errorText;
   String urlTest = "";
   String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
+  // ignore: non_constant_identifier_names
   late String Future;
   showProfile(uid) async {
     String fileName = "pic";
@@ -71,7 +72,7 @@ class _VerifyUsersState extends State<VerifyUsers> {
             } else {
               return Align(
                 alignment: Alignment.center,
-                child: Container(
+                child: SizedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -224,11 +225,11 @@ class _VerifyUsersState extends State<VerifyUsers> {
 //                               title: Text(name),
 //                             ),
   getAllUsers(AsyncSnapshot<QuerySnapshot> snapshot) {
-    return Container(
+    return SizedBox(
       height: 200,
       width: 800,
       child: Row(
-        children: [
+        children: const [
           Text(""),
           SizedBox(
             width: 200,

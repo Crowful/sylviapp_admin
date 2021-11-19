@@ -1,3 +1,4 @@
+// ignore: unused_element
 class _CampaignData {
   _CampaignData(this.year, this.sales);
 

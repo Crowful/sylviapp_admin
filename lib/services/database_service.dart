@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: unused_import
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+// ignore: unused_import
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 
 class DatabaseService {
@@ -115,7 +117,11 @@ class DatabaseService {
       double maxDonations,
       int currentVolunteers,
       int numberVolunteers,
-      double radius) async {
+      double radius,
+      bool isActive,
+      bool inProgress,
+      bool isCompleted,
+      String deviceTokenofOrganizer) async {
     return await campaignCollection.doc(campaignID).set({
       'campaignID': campaignID,
       'campaign_name': title,
@@ -136,6 +142,10 @@ class DatabaseService {
       'current_volunteers': currentVolunteers,
       'number_volunteers': numberVolunteers,
       'radius': radius,
+      'isActive': isActive,
+      'inProgress': inProgress,
+      'isCompleted': isCompleted,
+      'deviceTokenofOrganizer': deviceTokenofOrganizer
     });
   }
 

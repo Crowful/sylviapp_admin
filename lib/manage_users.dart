@@ -107,8 +107,6 @@ class _ManageUsersState extends State<ManageUsers> {
                               bool status = e['isVerify'];
                               showProfile(e.id.toString());
                               String url = urlTest;
-                              print("hey " + e.id);
-                              print("hey " + urlTest);
                               return Container(
                                 padding: const EdgeInsets.all(20),
                                 height: 100,

@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sylviapp_admin/home.dart';
-import 'package:sylviapp_admin/map_polygon.dart';
 import 'package:sylviapp_admin/providers/providers.dart';
 
 class ShowCampaign extends StatefulWidget {
@@ -38,7 +36,6 @@ class ShowCampaignState extends State<ShowCampaign> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     showProfile(widget.organizerId);
   }
@@ -52,8 +49,7 @@ class ShowCampaignState extends State<ShowCampaign> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            print('ay yawa');
-            return Text('');
+            return const Text('');
           } else if (snapshot.hasData) {
             return Dialog(
               elevation: 0,
@@ -254,26 +250,31 @@ class ShowCampaignState extends State<ShowCampaign> {
                                 context
                                     .read(authserviceProvider)
                                     .createCampaign(
-                                        snapshot.data!.get('campaign_name'),
-                                        snapshot.data!.get('description'),
-                                        snapshot.data!.get('campaignID'),
-                                        snapshot.data!.get('date_created'),
-                                        snapshot.data!.get('date_start'),
-                                        snapshot.data!.get('date_ended'),
-                                        snapshot.data!.get('address'),
-                                        snapshot.data!.get('city'),
-                                        snapshot.data!.get('time'),
-                                        snapshot.data!.get('uid'),
-                                        snapshot.data!.get('username'),
-                                        snapshot.data!.get('latitude'),
-                                        snapshot.data!.get('longitude'),
-                                        snapshot.data!.get('number_of_seeds'),
-                                        snapshot.data!.get('current_donations'),
-                                        snapshot.data!.get('max_donation'),
-                                        snapshot.data!
-                                            .get('current_volunteers'),
-                                        snapshot.data!.get('number_volunteers'),
-                                        snapshot.data!.get('radius'))
+                                      snapshot.data!.get('campaign_name'),
+                                      snapshot.data!.get('description'),
+                                      snapshot.data!.get('campaignID'),
+                                      snapshot.data!.get('date_created'),
+                                      snapshot.data!.get('date_start'),
+                                      snapshot.data!.get('date_ended'),
+                                      snapshot.data!.get('address'),
+                                      snapshot.data!.get('city'),
+                                      snapshot.data!.get('time'),
+                                      snapshot.data!.get('uid'),
+                                      snapshot.data!.get('username'),
+                                      snapshot.data!.get('latitude'),
+                                      snapshot.data!.get('longitude'),
+                                      snapshot.data!.get('number_of_seeds'),
+                                      snapshot.data!.get('current_donations'),
+                                      snapshot.data!.get('max_donation'),
+                                      snapshot.data!.get('current_volunteers'),
+                                      snapshot.data!.get('number_volunteers'),
+                                      snapshot.data!.get('radius'),
+                                      true,
+                                      false,
+                                      false,
+                                      snapshot.data!
+                                          .get('deviceTokenofOrganizer'),
+                                    )
                                     .whenComplete(() =>
                                         Navigator.pushNamed(context, '/map'))
                                     .whenComplete(() => Navigator.pop(context));
@@ -343,15 +344,9 @@ class ShowCampaignState extends State<ShowCampaign> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(
-                                Icons.person,
-                                size: 120,
-                                color: Color(0xfffefefe),
-                              ),
-                              const Text(
-                                // snapshot.data!.get('campaign_name'),
-                                "Reforestation on Pantabangan!",
-                                style: TextStyle(
+                              Text(
+                                snapshot.data!.get('campaign_name'),
+                                style: const TextStyle(
                                     color: Color(0xff65BFB8),
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),
@@ -390,7 +385,7 @@ class ShowCampaignState extends State<ShowCampaign> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [CircularProgressIndicator()],
+                  children: const [CircularProgressIndicator()],
                 ),
               ),
             );

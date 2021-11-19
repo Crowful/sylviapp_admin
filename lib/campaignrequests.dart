@@ -59,6 +59,7 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                             String campaignTime = e['time'];
                             String campaignUID = e['uid'];
                             String campaignUsername = e['username'];
+                            String deviceToken = e['deviceTokenOfOrganizer'];
                             return Container(
                               padding: const EdgeInsets.all(20),
                               height: 100,
@@ -132,7 +133,11 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                                               campaignMaxDonation,
                                               campaignCurrentVolunteers,
                                               campaignNumberVolunteers,
-                                              campaignRadius);
+                                              campaignRadius,
+                                              true,
+                                              false,
+                                              false,
+                                              deviceToken);
                                     },
                                     child: Container(
                                       height: 50,

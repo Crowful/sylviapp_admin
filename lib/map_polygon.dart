@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' as fmap;
@@ -24,7 +21,7 @@ class _MapPolygonState extends State<MapPolygon> {
   List<Map<String, dynamic>> circleMarkersCampaignsNonRequest =
       List.empty(growable: true);
   double zooming = 13;
-  lt.LatLng? _initialCameraPosition = lt.LatLng(14.5995, 120.9842);
+  final lt.LatLng? _initialCameraPosition = lt.LatLng(14.5995, 120.9842);
 
   fmap.MapController cntrler = fmap.MapController();
   List<lt.LatLng> _PolygonLamesa = List.empty(growable: true);
@@ -51,9 +48,9 @@ class _MapPolygonState extends State<MapPolygon> {
         .get()
         .then((value) {
       List<dynamic> test = value.get('points');
-      test.forEach((element) {
+      for (var element in test) {
         _PolygonAngat.add(lt.LatLng(element['latitude'], element['longitude']));
-      });
+      }
     });
 
     FirebaseFirestore.instance
@@ -64,10 +61,10 @@ class _MapPolygonState extends State<MapPolygon> {
         .get()
         .then((value) {
       List<dynamic> test = value.get('points');
-      test.forEach((element) {
+      for (var element in test) {
         _PolygonLamesa.add(
             lt.LatLng(element['latitude'], element['longitude']));
-      });
+      }
     });
 
     FirebaseFirestore.instance
@@ -78,10 +75,10 @@ class _MapPolygonState extends State<MapPolygon> {
         .get()
         .then((value) {
       List<dynamic> test = value.get('points');
-      test.forEach((element) {
+      for (var element in test) {
         _PolygonPantabangan.add(
             lt.LatLng(element['latitude'], element['longitude']));
-      });
+      }
     });
 
     super.initState();
@@ -487,10 +484,10 @@ class _MapPolygonState extends State<MapPolygon> {
                     const SizedBox(
                       height: 10,
                     ),
-                    FutureBuilder<QuerySnapshot>(
-                        future: FirebaseFirestore.instance
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
                             .collection('admin_campaign_requests')
-                            .get(),
+                            .snapshots(),
                         builder:
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (!snapshot.hasData) {
@@ -669,7 +666,6 @@ class _MapPolygonState extends State<MapPolygon> {
                       fromLamesaDB.add(
                           lt.LatLng(points['latitude'], points['longitude']));
                     }
-                    print(fromLamesaDB);
                     return Expanded(
                       child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
@@ -720,11 +716,11 @@ class _MapPolygonState extends State<MapPolygon> {
                                       return SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height,
-                                        child: FutureBuilder<QuerySnapshot>(
-                                            future: FirebaseFirestore.instance
+                                        child: StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance
                                                 .collection(
                                                     "admin_campaign_requests")
-                                                .get(),
+                                                .snapshots(),
                                             builder: (context, snapshot) {
                                               if (!snapshot.hasData) {
                                                 return const Center(
@@ -995,7 +991,7 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                                     child: CircularProgressIndicator(),
                                                                                   );
                                                                                 } else if (snapshot.hasError) {
-                                                                                  return Text('Error Occurred');
+                                                                                  return const Text('Error Occurred');
                                                                                 } else {
                                                                                   return InkWell(
                                                                                       onTap: () {

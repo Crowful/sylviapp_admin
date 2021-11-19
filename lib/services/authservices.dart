@@ -1,5 +1,6 @@
+// ignore_for_file: empty_catches
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,11 +11,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 //Get Firestore Collection (USER)
+// ignore: unused_element
 final CollectionReference _firestoreUser = _firestore.collection('users');
 
 class AuthService extends ChangeNotifier {
   //instance
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //getUI
   static String? userUid = FirebaseAuth.instance.currentUser!.uid;
@@ -64,21 +66,23 @@ class AuthService extends ChangeNotifier {
       final signedInUser = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       _loggedInUser = signedInUser.user!;
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    } on PlatformException catch (e) {
-      print(e.message);
     }
+    // ignore: unused_catch_clause
+    on FirebaseAuthException catch (e) {
+    }
+    // ignore: unused_catch_clause
+    on PlatformException catch (e) {}
   }
 
   Future signOut() async {
     try {
       await _auth.signOut();
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    } on PlatformException catch (e) {
-      print(e.message);
     }
+    // ignore: unused_catch_clause
+    on FirebaseAuthException catch (e) {
+    }
+    // ignore: unused_catch_clause
+    on PlatformException catch (e) {}
   }
 
   Future signUp(String email, String password, String fullname, String address,
@@ -91,11 +95,12 @@ class AuthService extends ChangeNotifier {
 
       await DatabaseService(uid: _loggedInUser!.uid)
           .addUserData(email, fullname, address, gender, phoneNumber, username);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    } on PlatformException catch (e) {
-      print(e.message);
     }
+    // ignore: unused_catch_clause
+    on FirebaseAuthException catch (e) {
+    }
+    // ignore: unused_catch_clause
+    on PlatformException catch (e) {}
   }
 
   Future resetPass(String email) async {
@@ -103,11 +108,11 @@ class AuthService extends ChangeNotifier {
       await _auth
           .sendPasswordResetEmail(email: email)
           .whenComplete(() => print("Successully Sent"));
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    } on PlatformException catch (e) {
-      print(e.message);
     }
+    // ignore: unused_catch_clause
+    on FirebaseAuthException catch (e) {
+      // ignore: unused_catch_clause
+    } on PlatformException catch (e) {}
   }
 
   Future deleteAcc() async {
@@ -115,11 +120,10 @@ class AuthService extends ChangeNotifier {
       await DatabaseService(uid: _loggedInUser!.uid)
           .deleteUserData()
           .whenComplete(() => _loggedInUser!.delete());
+      // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
-      print(e.message);
-    } on PlatformException catch (e) {
-      print(e.message);
-    }
+      // ignore: unused_catch_clause
+    } on PlatformException catch (e) {}
   }
 
   Future updateAcc(
@@ -128,18 +132,15 @@ class AuthService extends ChangeNotifier {
       await _loggedInUser!.updateEmail(newEmail);
       await DatabaseService(uid: _loggedInUser!.uid)
           .updateUserData(newEmail, newFullName, newAddress);
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   Future updatePassword(String newpass) async {
     try {
       await _loggedInUser!.updatePassword(newpass).whenComplete(
           () => Fluttertoast.showToast(msg: "Password Sucessfully Changed"));
-    } catch (e) {
-      print(e);
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   Future createCampaign(
@@ -161,7 +162,11 @@ class AuthService extends ChangeNotifier {
       double maxDonations,
       int currentVolunteers,
       int numberVolunteers,
-      double radius) async {
+      double radius,
+      bool isActive,
+      bool inProgress,
+      bool isCompleted,
+      String deviceTokenofOrganizer) async {
     try {
       await DatabaseService(uid: "admin")
           .addCampaign(
@@ -183,7 +188,11 @@ class AuthService extends ChangeNotifier {
               maxDonations,
               currentVolunteers,
               numberVolunteers,
-              radius)
+              radius,
+              isActive,
+              inProgress,
+              isCompleted,
+              deviceTokenofOrganizer)
           .whenComplete(() =>
               Fluttertoast.showToast(msg: "Campaign Successfully Published"));
       await DatabaseService(uid: "admin").deleteRequestCampaign(campaignID);
@@ -224,25 +233,19 @@ class AuthService extends ChangeNotifier {
       await DatabaseService(uid: "admin")
           .verifyTheUser(id)
           .whenComplete(() => DatabaseService(uid: "admin").verify(id));
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   removerVerification(String id) async {
     try {
       await DatabaseService(uid: "admin").unVerifyUser(id);
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   removeFeedback(String id) async {
     try {
       await DatabaseService(uid: "admin").clearFeedback(id);
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   createPolygon(String forestname, points) async {
@@ -250,8 +253,6 @@ class AuthService extends ChangeNotifier {
       await DatabaseService(uid: "admin")
           .savePolygonLamesa(forestname, points)
           .whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS"));
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 }

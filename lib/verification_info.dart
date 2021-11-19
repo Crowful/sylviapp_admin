@@ -1,19 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/showFull.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'providers/providers.dart';
 
 class VerificationInfo extends StatefulWidget {
   final String userUID;
   final String name;
   final String email;
+  // ignore: prefer_const_constructors_in_immutables
   VerificationInfo(
-      {required this.userUID, required this.name, required this.email});
+      {Key? key,
+      required this.userUID,
+      required this.name,
+      required this.email})
+      : super(key: key);
 
   @override
   _VerificationInfoState createState() => _VerificationInfoState();
@@ -99,7 +103,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                       shape: BoxShape.rectangle,
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Container(
+                  child: const SizedBox(
                       height: 50,
                       width: 50,
                       child: CircularProgressIndicator())),
@@ -132,11 +136,11 @@ class _VerificationInfoState extends State<VerificationInfo> {
                             }));
                           },
                           child: urlTest != ""
-                              ? Container(
+                              ? SizedBox(
                                   height: 200,
                                   width: 300,
                                   child: Image.network(urlTest))
-                              : Container(
+                              : const SizedBox(
                                   height: 200,
                                   width: 300,
                                   child: Center(
@@ -188,11 +192,11 @@ class _VerificationInfoState extends State<VerificationInfo> {
                                   width: 200,
                                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                   child: urlTest2 != ""
-                                      ? Container(
+                                      ? SizedBox(
                                           height: 200,
                                           width: 300,
                                           child: Image.network(urlTest2))
-                                      : Container(
+                                      : const SizedBox(
                                           height: 200,
                                           width: 300,
                                           child: Center(
@@ -201,13 +205,13 @@ class _VerificationInfoState extends State<VerificationInfo> {
                                             size: 100,
                                           )))),
                             ),
-                            Container(
+                            SizedBox(
                               height: 50,
                               width: 100,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      primary: Color(0xff65BFB8),
-                                      shape: StadiumBorder()),
+                                      primary: const Color(0xff65BFB8),
+                                      shape: const StadiumBorder()),
                                   onPressed: () async {
                                     Navigator.pop(context);
                                   },
@@ -238,7 +242,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+                    children: const [
                       Text("THIS USER DIDN'T SUBMIT AN APPLICATION"),
                     ],
                   ),
