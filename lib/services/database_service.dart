@@ -75,6 +75,13 @@ class DatabaseService {
         .update({'isVerify': false, 'isApplying': false});
   }
 
+  Future clearFeedback(String userUID) async {
+    return await FirebaseFirestore.instance
+        .collection('feedbacks')
+        .doc(userUID)
+        .delete();
+  }
+
   Future verifyTheUser(String userUID) async {
     return await userCollection
         .doc(userUID)
