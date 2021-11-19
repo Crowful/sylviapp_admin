@@ -204,38 +204,64 @@ class _AdminHomeState extends State<AdminHome> {
                                     Row(
                                       children: [
                                         InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, '/campaignrequest');
-                                          },
-                                          child: Container(
-                                              padding: const EdgeInsets.all(20),
-                                              height: 250,
-                                              width: 310,
-                                              decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: const Color(
-                                                              0xff778ba5)
-                                                          .withOpacity(0.4),
-                                                      blurRadius: 4,
-                                                      offset: const Offset(2,
-                                                          5), // Shadow position
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, '/feedback');
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                height: 250,
+                                                width: 310,
+                                                decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color(
+                                                                0xff778ba5)
+                                                            .withOpacity(0.4),
+                                                        blurRadius: 4,
+                                                        offset: const Offset(2,
+                                                            5), // Shadow position
+                                                      ),
+                                                    ],
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                    color: const Color(
+                                                        0xffFF673A)),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: const [
+                                                    Text(
+                                                      "Handle Feedbacks",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 20),
                                                     ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Center(
+                                                      child: Text(
+                                                        'List of feedbacks by users to be \nconsidered.',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w100),
+                                                      ),
+                                                    )
                                                   ],
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                  color: Color(0xffFF673A)),
-                                              child: const Center(
-                                                  child: Text(
-                                                'Handle Reports',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
-                                              ))),
-                                        ),
+                                                ))),
                                         Container(
                                           margin: const EdgeInsets.symmetric(
                                               horizontal: 5, vertical: 5),

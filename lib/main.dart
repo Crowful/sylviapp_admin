@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:sylviapp_admin/analytics.dart';
 import 'package:sylviapp_admin/campaignrequests.dart';
+import 'package:sylviapp_admin/feedbacks.dart';
 import 'package:sylviapp_admin/home.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/manage_users.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
             ),
         "/campaignrequest": (_) => const ShowCampaigneRequests(),
         "/map_polygon": (_) => const MapPolygon(),
-        "/new_map": (_) => const MapCampaignRequest()
+        "/new_map": (_) => const MapCampaignRequest(),
+        "/feedback": (_) => const FeedbackScreen(),
       },
       home: const LoginAdmin(),
     );
