@@ -281,7 +281,9 @@ class _MapPolygonState extends State<MapPolygon> {
                           width: 80,
                           child: ElevatedButton(
                               onPressed: () {
-                                if (isCreatingAngat == true) {
+                                if (isCreatingAngat == true &&
+                                    isCreatingLamesa == false &&
+                                    isCreatingPantabangan == false) {
                                   iteratePointsPolygonAngat() {
                                     dynamic polymap = _PolygonAngat.map((e) {
                                       return {
@@ -296,7 +298,9 @@ class _MapPolygonState extends State<MapPolygon> {
                                       .read(authserviceProvider)
                                       .createPolygon("Angat_Forest",
                                           iteratePointsPolygonAngat());
-                                } else if (isCreatingLamesa == true) {
+                                } else if (isCreatingAngat == false &&
+                                    isCreatingLamesa == true &&
+                                    isCreatingPantabangan == false) {
                                   iteratePointsPolygonLamesa() {
                                     dynamic polymap = _PolygonLamesa.map((e) {
                                       return {
@@ -311,7 +315,9 @@ class _MapPolygonState extends State<MapPolygon> {
                                       .read(authserviceProvider)
                                       .createPolygon("Lamesa_Forest",
                                           iteratePointsPolygonLamesa());
-                                } else if (isCreatingPantabangan == true) {
+                                } else if (isCreatingAngat == false &&
+                                    isCreatingLamesa == false &&
+                                    isCreatingPantabangan == true) {
                                   iteratePointsPolygonPantabangan() {
                                     dynamic polymap =
                                         _PolygonPantabangan.map((e) {
@@ -900,42 +906,6 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                             .red,
                                                                     borderStrokeWidth:
                                                                         2.0),
-                                                                fmap.Polygon(
-                                                                    points:
-                                                                        fromAngatDB,
-                                                                    color: Colors
-                                                                        .yellow
-                                                                        .withOpacity(
-                                                                            0.5),
-                                                                    borderColor:
-                                                                        Colors
-                                                                            .yellow,
-                                                                    borderStrokeWidth:
-                                                                        2),
-                                                                fmap.Polygon(
-                                                                    points:
-                                                                        fromPantabanganDB,
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.5),
-                                                                    borderColor:
-                                                                        Colors
-                                                                            .red,
-                                                                    borderStrokeWidth:
-                                                                        2),
-                                                                fmap.Polygon(
-                                                                    points:
-                                                                        fromLamesaDB,
-                                                                    color: Colors
-                                                                        .blue
-                                                                        .withOpacity(
-                                                                            0.5),
-                                                                    borderColor:
-                                                                        Colors
-                                                                            .blue,
-                                                                    borderStrokeWidth:
-                                                                        2),
                                                               ],
                                                             ),
                                                             for (var item
