@@ -487,14 +487,13 @@ class _MapPolygonState extends State<MapPolygon> {
                     const SizedBox(
                       height: 10,
                     ),
-                    StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
+                    FutureBuilder<QuerySnapshot>(
+                        future: FirebaseFirestore.instance
                             .collection('admin_campaign_requests')
-                            .snapshots(),
+                            .get(),
                         builder:
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (!snapshot.hasData) {
-                            print('walawalabingbang');
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
@@ -510,32 +509,6 @@ class _MapPolygonState extends State<MapPolygon> {
                                 child: ListView(
                                   scrollDirection: Axis.vertical,
                                   children: snapshot.data!.docs.map((e) {
-                                    String campaignAddress = e['address'];
-                                    String campaignID = e['campaignID'];
-                                    String campaignName = e['campaign_name'];
-                                    String campaignCity = e['city'];
-                                    double campaignCurrentDonation =
-                                        e['current_donations'];
-                                    int campaignCurrentVolunteers =
-                                        e['current_volunteers'];
-                                    String campaignDateCreated =
-                                        e['date_created'];
-                                    String campaignDateEnded = e['date_ended'];
-                                    String campaignDateStart = e['date_start'];
-                                    String campaignDescription =
-                                        e['description'];
-                                    double campaignLatitude = e['latitude'];
-                                    double campaignlongitude = e['longitude'];
-                                    double campaignMaxDonation =
-                                        e['max_donation'];
-                                    int campaignNumberOfSeeds =
-                                        e['number_of_seeds'];
-                                    int campaignNumberVolunteers =
-                                        e['number_volunteers'];
-                                    String campaignTime = e['time'];
-                                    String campaignUID = e['uid'];
-                                    String campaignUsername = e['username'];
-
                                     return Container(
                                       padding: const EdgeInsets.all(10),
                                       height: 100,
@@ -765,7 +738,7 @@ class _MapPolygonState extends State<MapPolygon> {
                                                   var campaignLon =
                                                       doc.get("longitude");
                                                   var campaignRad =
-                                                      doc.get("radius");
+                                                      doc.get("radius") * 100;
                                                   var campaignUid = doc.id;
                                                   var orgId = doc.get('uid');
 
@@ -799,7 +772,8 @@ class _MapPolygonState extends State<MapPolygon> {
                                                           var campaignLon = doc
                                                               .get("longitude");
                                                           var campaignRad =
-                                                              doc.get("radius");
+                                                              doc.get("radius") *
+                                                                  .2;
                                                           var campaignUid =
                                                               doc.id;
                                                           circleMarkersCampaignsNonRequest
@@ -1020,6 +994,8 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                                   return const Center(
                                                                                     child: CircularProgressIndicator(),
                                                                                   );
+                                                                                } else if (snapshot.hasError) {
+                                                                                  return Text('Error Occurred');
                                                                                 } else {
                                                                                   return InkWell(
                                                                                       onTap: () {

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sylviapp_admin/home.dart';
+import 'package:sylviapp_admin/map_polygon.dart';
 import 'package:sylviapp_admin/providers/providers.dart';
 
 class ShowCampaign extends StatefulWidget {
@@ -49,7 +51,10 @@ class ShowCampaignState extends State<ShowCampaign> {
             .doc(widget.campaignId)
             .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (!snapshot.hasData) {
+            print('ay yawa');
+            return Text('');
+          } else if (snapshot.hasData) {
             return Dialog(
               elevation: 0,
               backgroundColor: Colors.transparent,
@@ -270,7 +275,8 @@ class ShowCampaignState extends State<ShowCampaign> {
                                         snapshot.data!.get('number_volunteers'),
                                         snapshot.data!.get('radius'))
                                     .whenComplete(() =>
-                                        Navigator.pushNamed(context, '/map'));
+                                        Navigator.pushNamed(context, '/map'))
+                                    .whenComplete(() => Navigator.pop(context));
                               },
                               child: Container(
                                 height: 50,
