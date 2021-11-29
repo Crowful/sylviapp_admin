@@ -13,10 +13,10 @@ class ShowCampaigneRequests extends StatefulWidget {
 class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
+    return FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance
             .collection('admin_campaign_requests')
-            .snapshots(),
+            .get(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return Scaffold(
             body: SafeArea(

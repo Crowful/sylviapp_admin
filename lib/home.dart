@@ -191,9 +191,15 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ],
                                         ),
-                                        IconButton(
-                                            onPressed: () {},
-                                            icon: const Icon(Icons.menu))
+                                        IgnorePointer(
+                                          ignoring: true,
+                                          child: IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.menu,
+                                                color: Colors.transparent,
+                                              )),
+                                        )
                                       ],
                                     ),
                                     const SizedBox(
@@ -429,12 +435,16 @@ class _AdminHomeState extends State<AdminHome> {
                                                                 FontWeight
                                                                     .bold),
                                                       ),
-                                                      IconButton(
-                                                          onPressed: () {},
-                                                          icon: const Icon(
-                                                            Icons.menu,
-                                                            size: 20,
-                                                          ))
+                                                      Tooltip(
+                                                        message:
+                                                            "Total Users in the system Sylviapp",
+                                                        child: Icon(
+                                                          Icons.help_rounded,
+                                                          color: Colors.black
+                                                              .withOpacity(0.7),
+                                                          size: 13,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                   const SizedBox(
