@@ -61,6 +61,7 @@ dependencies:
   positioned_tap_detector_2: ^1.0.4
   syncfusion_flutter_charts: ^19.3.48
   firebase_core_web: ^1.2.0
+  rate_limiter: ^0.1.1
   
   
 

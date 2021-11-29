@@ -44,12 +44,20 @@ class _AdminHomeState extends State<AdminHome> {
                 decoration: const BoxDecoration(color: Color(0xffFFFFFF)),
                 height: MediaQuery.of(context).size.height,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.travel_explore,
-                      size: 30,
-                      color: Color(0xff65BFB8),
+                    Row(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      AssetImage("assets/images/logoblue.png"),
+                                  fit: BoxFit.contain)),
+                        ),
+                      ],
                     ),
                     Expanded(
                       child: SizedBox(
@@ -58,25 +66,15 @@ class _AdminHomeState extends State<AdminHome> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: const [
                             Icon(
-                              Icons.travel_explore,
+                              Icons.home,
                               size: 30,
+                              color: Color(0xff2b2b2b),
                             ),
-                            Icon(
-                              Icons.travel_explore,
-                              size: 30,
+                            SizedBox(
+                              height: 10,
                             ),
-                            Icon(
-                              Icons.travel_explore,
-                              size: 30,
-                            ),
-                            Icon(
-                              Icons.travel_explore,
-                              size: 30,
-                            ),
-                            Icon(
-                              Icons.travel_explore,
-                              size: 30,
-                            ),
+                            Icon(Icons.analytics,
+                                size: 30, color: Color(0xff65BFB8)),
                           ],
                         ),
                       ),

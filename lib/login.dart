@@ -1,6 +1,12 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rate_limiter/rate_limiter.dart';
+import 'package:sylviapp_admin/domain/aes_cryptography.dart';
+import 'package:sylviapp_admin/home.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 
 class LoginAdmin extends StatefulWidget {
   const LoginAdmin({Key? key}) : super(key: key);
@@ -10,16 +16,42 @@ class LoginAdmin extends StatefulWidget {
 }
 
 class _LoginAdminState extends State<LoginAdmin> {
+  late String adminUser = "";
+  late String adminPass = "";
   bool isHovering1 = false;
+  int i = 0;
   final double _blur = 5.0;
+
   final double _size = 20;
+  final throttledPerformPunch = throttle(
+    () {
+      print('Performed one punch to the opponent');
+    },
+    const Duration(seconds: 15),
+  );
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('admin')
+        .doc('admin')
+        .get()
+        .then((value) {
+      adminUser = AESCryptography()
+          .decryptAES(enc.Encrypted.fromBase64(value["admin_user"]));
+      adminPass = AESCryptography()
+          .decryptAES(enc.Encrypted.fromBase64(value["admin_pass"]));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool pending = throttledPerformPunch.isPending;
     return SafeArea(
       child: Scaffold(
+        key: widget.key,
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -54,6 +86,34 @@ class _LoginAdminState extends State<LoginAdmin> {
                                   const InputDecoration(hintText: "Username"),
                             ),
                             TextField(
+                                onSubmitted: (value) {
+                                  if (usernameController.text.toString() ==
+                                          adminUser &&
+                                      passwordController.text.toString() ==
+                                          adminPass) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminHome()));
+                                  } else {
+                                    i++;
+
+                                    if (i == 5) {
+                                      setState(() {
+                                        throttledPerformPunch();
+                                        i = 0;
+
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                'You are blocked for 15 seconds',
+                                            toastLength: Toast.LENGTH_SHORT);
+                                      });
+                                    }
+                                    usernameController.clear();
+                                    passwordController.clear();
+                                  }
+                                },
                                 obscureText: true,
                                 controller: passwordController,
                                 decoration: const InputDecoration(
@@ -61,19 +121,50 @@ class _LoginAdminState extends State<LoginAdmin> {
                             const SizedBox(
                               height: 10,
                             ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: const Color(0xff65BFB8)),
-                                onPressed: () {
-                                  if (usernameController.text == "admin" &&
-                                      passwordController.text == "123456") {
-                                    Navigator.pushNamed(context, "/admin_home");
+                            AbsorbPointer(
+                              absorbing: pending ? true : false,
+                              child: InkWell(
+                                onTap: () async {
+                                  if (usernameController.text.toString() ==
+                                          adminUser &&
+                                      passwordController.text.toString() ==
+                                          adminPass) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminHome()));
                                   } else {
-                                    // ignore: avoid_print
-                                    print("auth failed");
+                                    i++;
+
+                                    if (i == 5) {
+                                      setState(() {
+                                        throttledPerformPunch();
+                                        i = 0;
+
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                'You are blocked for 15 seconds',
+                                            toastLength: Toast.LENGTH_SHORT);
+                                      });
+                                    }
+                                    usernameController.clear();
+                                    passwordController.clear();
                                   }
                                 },
-                                child: const Text("Login"))
+                                child: Container(
+                                  height: 40,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      color: pending
+                                          ? Colors.grey
+                                          : const Color(0xff65BFB8),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(2.5))),
+                                  child: const Center(child: Text("Login")),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
