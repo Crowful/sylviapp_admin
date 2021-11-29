@@ -462,15 +462,22 @@ class _MapPolygonState extends State<MapPolygon> {
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Expanded(
-                            child: SizedBox(
-                              child: Slider(
-                                  value: zooming,
-                                  min: 1,
-                                  max: 20,
-                                  onChanged: (zoom1) {
-                                    cntrler.move(cntrler.center, zoom1);
-                                  }),
-                            ),
+                            child: StatefulBuilder(builder:
+                                (BuildContext context, StateSetter setState) {
+                              return SizedBox(
+                                child: Slider(
+                                    value: zooming,
+                                    min: 1,
+                                    max: 20,
+                                    onChanged: (zoom1) {
+                                      setState(() {
+                                        zooming = zoom1;
+
+                                        cntrler.move(cntrler.center, zoom1);
+                                      });
+                                    }),
+                              );
+                            }),
                           ),
                         ],
                       ),
@@ -645,13 +652,13 @@ class _MapPolygonState extends State<MapPolygon> {
                 ),
               ),
             ),
-            StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
+            FutureBuilder<QuerySnapshot>(
+                future: FirebaseFirestore.instance
                     .collection("polygon")
                     .doc('Lamesa_Forest')
                     .collection('polygons')
                     .where('points', isNull: false)
-                    .snapshots(),
+                    .get(),
                 builder: (context, lamesa) {
                   if (!lamesa.hasData) {
                     return const Center(
@@ -667,13 +674,13 @@ class _MapPolygonState extends State<MapPolygon> {
                           lt.LatLng(points['latitude'], points['longitude']));
                     }
                     return Expanded(
-                      child: StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
+                      child: FutureBuilder<QuerySnapshot>(
+                          future: FirebaseFirestore.instance
                               .collection("polygon")
                               .doc('Angat_Forest')
                               .collection('polygons')
                               .where('points', isNull: false)
-                              .snapshots(),
+                              .get(),
                           builder: (context, angat) {
                             if (!angat.hasData) {
                               return const Center(
@@ -689,13 +696,13 @@ class _MapPolygonState extends State<MapPolygon> {
                                 fromAngatDB.add(lt.LatLng(
                                     points['latitude'], points['longitude']));
                               }
-                              return StreamBuilder<QuerySnapshot>(
-                                  stream: FirebaseFirestore.instance
+                              return FutureBuilder<QuerySnapshot>(
+                                  future: FirebaseFirestore.instance
                                       .collection("polygon")
                                       .doc('Pantabangan_Forest')
                                       .collection('polygons')
                                       .where('points', isNull: false)
-                                      .snapshots(),
+                                      .get(),
                                   builder: (context, pantabangan) {
                                     if (!pantabangan.hasData) {
                                       return const Center(
@@ -716,11 +723,11 @@ class _MapPolygonState extends State<MapPolygon> {
                                       return SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height,
-                                        child: StreamBuilder<QuerySnapshot>(
-                                            stream: FirebaseFirestore.instance
+                                        child: FutureBuilder<QuerySnapshot>(
+                                            future: FirebaseFirestore.instance
                                                 .collection(
                                                     "admin_campaign_requests")
-                                                .snapshots(),
+                                                .get(),
                                             builder: (context, snapshot) {
                                               if (!snapshot.hasData) {
                                                 return const Center(
@@ -983,8 +990,8 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                                 1)),
                                                                         builder:
                                                                             (context) {
-                                                                          return StreamBuilder<DocumentSnapshot>(
-                                                                              stream: FirebaseFirestore.instance.collection("admin_campaign_requests").doc(item.values.elementAt(3)).snapshots(),
+                                                                          return FutureBuilder<DocumentSnapshot>(
+                                                                              future: FirebaseFirestore.instance.collection("admin_campaign_requests").doc(item.values.elementAt(3)).get(),
                                                                               builder: (context, snapshot) {
                                                                                 if (!snapshot.hasData) {
                                                                                   return const Center(
@@ -1026,8 +1033,8 @@ class _MapPolygonState extends State<MapPolygon> {
                                                                                 1)),
                                                                         builder:
                                                                             (context) {
-                                                                          return StreamBuilder<DocumentSnapshot>(
-                                                                              stream: FirebaseFirestore.instance.collection("campaigns").doc(item.values.elementAt(3)).snapshots(),
+                                                                          return FutureBuilder<DocumentSnapshot>(
+                                                                              future: FirebaseFirestore.instance.collection("campaigns").doc(item.values.elementAt(3)).get(),
                                                                               builder: (context, snapshot) {
                                                                                 if (!snapshot.hasData) {
                                                                                   return const Center(
