@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefService {
-  Future createCache(String storeToken) async {
+  Future<void> createCache(String storeToken) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     _preferences.setString("storeToken", storeToken);
   }
@@ -12,8 +12,8 @@ class PrefService {
     return cache;
   }
 
-  Future removeCache(String storeToken) async {
+  Future<void> removeCache(String storeToken) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    _preferences.remove("storeToken");
+    _preferences.remove(storeToken);
   }
 }

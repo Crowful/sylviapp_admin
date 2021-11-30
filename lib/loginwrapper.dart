@@ -18,7 +18,7 @@ class _LoginWrapperState extends State<LoginWrapper> {
   @override
   void initState() {
     super.initState();
-    _prefService.readCache("password").then((value) {
+    _prefService.readCache("storeToken").then((value) {
       print(value.toString());
       if (value != null) {
         return Timer(
@@ -29,7 +29,7 @@ class _LoginWrapperState extends State<LoginWrapper> {
         return Timer(
             const Duration(seconds: 2),
             () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const AdminHome())));
+                MaterialPageRoute(builder: (context) => const LoginAdmin())));
       }
     });
     super.initState();

@@ -146,7 +146,7 @@ class _LoginAdminState extends State<LoginAdmin> {
                                     storeToken = AESCryptography()
                                         .encryptAES(_randomValue);
 
-                                    _prefService
+                                    await _prefService
                                         .createCache(storeToken.toString());
 
                                     Navigator.push(
