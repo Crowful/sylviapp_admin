@@ -38,10 +38,28 @@ class _LoginWrapperState extends State<LoginWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-          child: Icon(
-        Icons.app_blocking,
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 200,
+            width: 200,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/logoblue.png'),
+                    fit: BoxFit.contain)),
+          ),
+          const Text(
+            'Sylviapp',
+            style: TextStyle(
+                fontSize: 45,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff65BFB8)),
+          )
+        ],
       )),
     );
   }
