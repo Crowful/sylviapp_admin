@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +24,11 @@ class _AdminHomeState extends State<AdminHome> {
   late String _chosenValue = " ";
   bool onHov = false;
   late String statos = "";
-
+  Timer _timer = Timer(const Duration(milliseconds: 1), () {});
   @override
   void initState() {
     super.initState();
-
+    _initializeTimer();
     FirebaseFirestore.instance
         .collection('quarantineStatus')
         .doc('status')
@@ -34,15 +36,37 @@ class _AdminHomeState extends State<AdminHome> {
         .then((value) => _chosenValue = value.toString());
   }
 
+  void _initializeTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+
+    _timer = Timer(const Duration(minutes: 2), () => _handleInactivity());
+  }
+
+  void _handleInactivity() async {
+    _timer.cancel();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear().whenComplete(() => Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const LoginWrapper())));
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
     String formatter = DateFormat.yMMMMd('en_US').format(now);
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: SafeArea(
+    return SafeArea(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          _initializeTimer();
+        },
+        onPanDown: (panDown) {
+          _initializeTimer();
+        },
+        onPanUpdate: (panDown) {
+          _initializeTimer();
+        },
         child: Scaffold(
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -701,48 +725,6 @@ class _AdminHomeState extends State<AdminHome> {
                                               child: const Center(
                                                 child: Text(
                                                   'Manage Users',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CampaignReports())),
-                                            onHover: (hover) {},
-                                            child: Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 5),
-                                              height: 250,
-                                              width: 350,
-                                              decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: const Color(
-                                                              0xff778ba5)
-                                                          .withOpacity(0.3),
-                                                      blurRadius: 4,
-                                                      offset: const Offset(2,
-                                                          5), // Shadow position
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                  color:
-                                                      const Color(0xffffBF2a)),
-                                              child: const Center(
-                                                child: Text(
-                                                  'Reports',
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
