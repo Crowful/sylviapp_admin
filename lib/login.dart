@@ -17,11 +17,6 @@ class LoginAdmin extends StatefulWidget {
 }
 
 class _LoginAdminState extends State<LoginAdmin> {
-<<<<<<< HEAD
-=======
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
->>>>>>> 24c6d7943d6c9a4e5ab4e679afca819f78a1e08f
   late String adminUser = "";
   late String adminPass = "";
   late String storeToken = "";
