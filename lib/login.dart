@@ -100,14 +100,16 @@ class _LoginAdminState extends State<LoginAdmin> {
                                         adminUser &&
                                     passwordController.text.toString() ==
                                         adminPass) {
-                                  storeToken = AESCryptography()
-                                      .encryptAES(_randomValue);
-                                  prefs.setString('storeToken', storeToken);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AdminHome()));
+                                  setState(() {
+                                    storeToken = AESCryptography()
+                                        .encryptAES(_randomValue());
+                                    prefs.setString('storeToken', storeToken);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminHome()));
+                                  });
                                 } else {
                                   i++;
 
@@ -153,7 +155,7 @@ class _LoginAdminState extends State<LoginAdmin> {
                                           adminPass) {
                                     setState(() {
                                       storeToken = AESCryptography()
-                                          .encryptAES(_randomValue);
+                                          .encryptAES(_randomValue.toString());
                                       prefs.setString('storeToken', storeToken);
                                       Navigator.push(
                                           context,
