@@ -647,8 +647,43 @@ class _AdminHomeState extends State<AdminHome> {
                                             ),
                                           ),
                                         ),
+                                        InkWell(
+                                          onTap: () => Navigator.pushNamed(
+                                              context, "/manage_users"),
+                                          onHover: (hover) {},
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 5),
+                                            height: 250,
+                                            width: 350,
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color:
+                                                        const Color(0xff778ba5)
+                                                            .withOpacity(0.3),
+                                                    blurRadius: 4,
+                                                    offset: const Offset(2,
+                                                        5), // Shadow position
+                                                  ),
+                                                ],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                color: const Color(0xff65BFB8)),
+                                            child: const Center(
+                                              child: Text(
+                                                'Reports',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
