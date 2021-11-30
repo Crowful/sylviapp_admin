@@ -127,12 +127,12 @@ class _LoginAdminState extends State<LoginAdmin> {
                                   passwordController.clear();
                                 }
                               },
-                              obscureText: showPass ? true : false,
+                              obscureText: showPass ? false : true,
                               controller: passwordController,
                               decoration: InputDecoration(
                                   suffixIcon: showPass
-                                      ? const Icon(Icons.visibility_off)
-                                      : const Icon(Icons.visibility),
+                                      ? const Icon(Icons.visibility)
+                                      : const Icon(Icons.visibility_off),
                                   hintText: "Password"),
                               onTap: () {
                                 setState(() {

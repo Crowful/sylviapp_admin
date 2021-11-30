@@ -523,10 +523,10 @@ class _MapPolygonState extends State<MapPolygon> {
                       const SizedBox(
                         height: 10,
                       ),
-                      StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
+                      FutureBuilder<QuerySnapshot>(
+                          future: FirebaseFirestore.instance
                               .collection('admin_campaign_requests')
-                              .snapshots(),
+                              .get(),
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
