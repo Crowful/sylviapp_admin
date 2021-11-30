@@ -42,7 +42,7 @@ class _MapPolygonState extends State<MapPolygon> {
   bool isCreatingPantabangan = false;
   bool isCreatingAngat = false;
 
-  Timer _timer = Timer(const Duration(milliseconds: 1), () {});
+  Timer? _timer = Timer(const Duration(milliseconds: 1), () {});
   @override
   void initState() {
     _initializeTimer();
@@ -92,17 +92,27 @@ class _MapPolygonState extends State<MapPolygon> {
 
   void _initializeTimer() {
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
 
     _timer = Timer(const Duration(minutes: 2), () => _handleInactivity());
   }
 
   void _handleInactivity() async {
-    _timer.cancel();
+    _timer!.cancel();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear().whenComplete(() => Navigator.push(context,
         MaterialPageRoute(builder: (context) => const LoginWrapper())));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
   }
 
   @override

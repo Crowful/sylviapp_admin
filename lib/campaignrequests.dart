@@ -37,6 +37,7 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                       child: SizedBox(
                         child: ListView(
                           children: snapshot.data!.docs.map((e) {
+                            print((e['date_created'] as Timestamp).toDate());
                             String campaignAddress = e['address'];
                             String campaignID = e['campaignID'];
                             String campaignName = e['campaign_name'];
@@ -45,7 +46,8 @@ class _ShowCampaigneRequestsState extends State<ShowCampaigneRequests> {
                                 e['current_donations'];
                             int campaignCurrentVolunteers =
                                 e['current_volunteers'];
-                            String campaignDateCreated = e['date_created'];
+                            DateTime campaignDateCreated =
+                                (e['date_created'] as Timestamp).toDate();
                             String campaignDateEnded = e['date_ended'];
                             String campaignDateStart = e['date_start'];
                             String campaignDescription = e['description'];

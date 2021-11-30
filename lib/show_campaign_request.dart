@@ -255,7 +255,9 @@ class ShowCampaignState extends State<ShowCampaign> {
                                         snapshot.data!.get('campaign_name'),
                                         snapshot.data!.get('description'),
                                         snapshot.data!.get('campaignID'),
-                                        snapshot.data!.get('date_created'),
+                                        (snapshot.data!.get('date_created')
+                                                as Timestamp)
+                                            .toDate(),
                                         snapshot.data!.get('date_start'),
                                         snapshot.data!.get('date_ended'),
                                         snapshot.data!.get('address'),

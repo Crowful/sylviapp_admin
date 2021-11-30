@@ -22,7 +22,7 @@ class _VerifyUsersState extends State<VerifyUsers> {
   String? taske;
   String? errorText;
   String urlTest = "";
-  Timer _timer = Timer(const Duration(milliseconds: 1), () {});
+  Timer? _timer = Timer(const Duration(milliseconds: 1), () {});
   String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
   // ignore: non_constant_identifier_names
   late String Future;
@@ -48,16 +48,26 @@ class _VerifyUsersState extends State<VerifyUsers> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
+  }
+
   void _initializeTimer() {
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
 
     _timer = Timer(const Duration(minutes: 2), () => _handleInactivity());
   }
 
   void _handleInactivity() async {
-    _timer.cancel();
+    _timer!.cancel();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear().whenComplete(() => Navigator.push(context,
         MaterialPageRoute(builder: (context) => const LoginWrapper())));
