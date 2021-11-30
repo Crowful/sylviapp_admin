@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sylviapp_admin/campaign_reports.dart';
 import 'package:sylviapp_admin/charts.dart';
 
 class AdminHome extends StatefulWidget {
@@ -648,8 +649,11 @@ class _AdminHomeState extends State<AdminHome> {
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () => Navigator.pushNamed(
-                                              context, "/manage_users"),
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CampaignReports())),
                                           onHover: (hover) {},
                                           child: Container(
                                             margin: const EdgeInsets.symmetric(
