@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sylviapp_admin/campaign_reports.dart';
 import 'package:sylviapp_admin/charts.dart';
 
 class AdminHome extends StatefulWidget {
@@ -730,9 +731,53 @@ class _AdminHomeState extends State<AdminHome> {
                                             )
                                           ],
                                         ),
+<<<<<<< HEAD
                                       ),
                                     ),
                                   ),
+=======
+                                        InkWell(
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CampaignReports())),
+                                          onHover: (hover) {},
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 5),
+                                            height: 250,
+                                            width: 350,
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color:
+                                                        const Color(0xff778ba5)
+                                                            .withOpacity(0.3),
+                                                    blurRadius: 4,
+                                                    offset: const Offset(2,
+                                                        5), // Shadow position
+                                                  ),
+                                                ],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                color: const Color(0xff65BFB8)),
+                                            child: const Center(
+                                              child: Text(
+                                                'Reports',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+>>>>>>> 97e5169fe5e5c9028fdcd34bee86e66566893847
                                 ),
                               ),
                             ],
