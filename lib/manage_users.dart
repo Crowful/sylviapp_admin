@@ -21,7 +21,7 @@ class ManageUsers extends StatefulWidget {
 }
 
 class _ManageUsersState extends State<ManageUsers> {
-  Timer _timer = Timer(const Duration(milliseconds: 1), () {});
+  Timer? _timer = Timer(const Duration(milliseconds: 1), () {});
   String? taske;
   String? errorText;
   String urlTest = "";
@@ -51,17 +51,26 @@ class _ManageUsersState extends State<ManageUsers> {
 
   void _initializeTimer() {
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
 
     _timer = Timer(const Duration(minutes: 2), () => _handleInactivity());
   }
 
   void _handleInactivity() async {
-    _timer.cancel();
+    _timer!.cancel();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear().whenComplete(() => Navigator.push(context,
         MaterialPageRoute(builder: (context) => const LoginWrapper())));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
   }
 
   @override
