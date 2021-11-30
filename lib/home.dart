@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sylviapp_admin/campaign_reports.dart';
 import 'package:sylviapp_admin/charts.dart';
 import 'package:sylviapp_admin/charts/bar_graph.dart';
+import 'package:sylviapp_admin/charts/column_graph.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/loginwrapper.dart';
 
@@ -817,6 +818,7 @@ class _AdminHomeState extends State<AdminHome> {
                                           height: 100,
                                         ),
                                         Container(child: BarGraph()),
+                                        Container(child: ColumnGraph()),
                                       ],
                                     ),
                                   ),
