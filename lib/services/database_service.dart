@@ -59,6 +59,10 @@ class DatabaseService {
     return await adminCampaignCollection.doc(campaignID).delete();
   }
 
+  Future deleteCampaign(campaignID) async {
+    return await campaignCollection.doc(campaignID).delete();
+  }
+
   Future updateUserData(
     String email,
     String fullname,
