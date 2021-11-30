@@ -17,24 +17,25 @@ class _BarGraphState extends State<BarGraph> {
         child: SfCartesianChart(
             // Initialize category axis
             primaryXAxis: CategoryAxis(),
-            series: <BarSeries<SalesData, String>>[
-          BarSeries<SalesData, String>(
+            series: <BarSeries<CampaignData, String>>[
+          BarSeries<CampaignData, String>(
               // Bind data source
-              dataSource: <SalesData>[
-                SalesData('Jan', 35),
-                SalesData('Feb', 28),
-                SalesData('Mar', 34),
-                SalesData('Apr', 32),
-                SalesData('May', 40)
+              dataSource: <CampaignData>[
+                CampaignData('Jan', 35),
+                CampaignData('Feb', 28),
+                CampaignData('Mar', 34),
+                CampaignData('Apr', 32),
+                CampaignData('May', 40)
               ],
-              xValueMapper: (SalesData sales, _) => sales.year,
-              yValueMapper: (SalesData sales, _) => sales.sales)
+              xValueMapper: (CampaignData volunteers, _) => volunteers.year,
+              yValueMapper: (CampaignData volunteers, _) =>
+                  volunteers.volunteers)
         ]));
   }
 }
 
-class SalesData {
-  SalesData(this.year, this.sales);
+class CampaignData {
+  CampaignData(this.year, this.volunteers);
   final String year;
-  final double sales;
+  final double volunteers;
 }
