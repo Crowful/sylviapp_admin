@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sylviapp_admin/charts.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/loginwrapper.dart';
@@ -85,17 +86,15 @@ class _AdminHomeState extends State<AdminHome> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() async {
-                          await _prefService
-                              .removeCache("storeToken")
-                              .whenComplete(() {
+                      onTap: () async {
+                        SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                        await preferences.clear().whenComplete(() =>
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginAdmin()));
-                          });
-                        });
+                                    builder: (context) =>
+                                        const LoginWrapper())));
                       },
                       child: const Icon(
                         Icons.logout,

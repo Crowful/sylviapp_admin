@@ -19,6 +19,7 @@ class LoginAdmin extends StatefulWidget {
 }
 
 class _LoginAdminState extends State<LoginAdmin> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final PrefService _prefService = PrefService();
   late String adminUser = "";
   late String adminPass = "";
@@ -92,16 +93,23 @@ class _LoginAdminState extends State<LoginAdmin> {
                                   const InputDecoration(hintText: "Username"),
                             ),
                             TextField(
-                              onSubmitted: (value) {
+                              onSubmitted: (value) async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
                                 if (usernameController.text.toString() ==
                                         adminUser &&
                                     passwordController.text.toString() ==
                                         adminPass) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AdminHome()));
+                                  setState(() {
+                                    storeToken = AESCryptography()
+                                        .encryptAES(_randomValue);
+                                    prefs.setString('storeToken', storeToken);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminHome()));
+                                  });
                                 } else {
                                   i++;
 
@@ -139,21 +147,22 @@ class _LoginAdminState extends State<LoginAdmin> {
                               absorbing: pending ? true : false,
                               child: InkWell(
                                 onTap: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
                                   if (usernameController.text.toString() ==
                                           adminUser &&
                                       passwordController.text.toString() ==
                                           adminPass) {
-                                    storeToken = AESCryptography()
-                                        .encryptAES(_randomValue);
-
-                                    await _prefService
-                                        .createCache(storeToken.toString());
-
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AdminHome()));
+                                    setState(() {
+                                      storeToken = AESCryptography()
+                                          .encryptAES(_randomValue);
+                                      prefs.setString('storeToken', storeToken);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AdminHome()));
+                                    });
                                   } else {
                                     i++;
 
