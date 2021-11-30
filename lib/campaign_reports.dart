@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CampaignReports extends StatefulWidget {
@@ -29,7 +30,27 @@ class _CampaignReportsState extends State<CampaignReports> {
                       height: 200,
                       margin: EdgeInsets.fromLTRB(100, 0, 100, 10),
                       child: Card(
-                        child: Text(e.get('campaign_name')),
+                        child: Container(
+                            margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                            child: Row(children: [
+                              Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.get('campaign_name'),
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ]),
+                              ElevatedButton(
+                                  onPressed: null,
+                                  child: Text('delete campaign')),
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('info of organizer'))
+                            ])),
                       ),
                     );
                   }).toList(),

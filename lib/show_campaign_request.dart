@@ -373,7 +373,10 @@ class ShowCampaignState extends State<ShowCampaign> {
               );
             } else {
               return Container(
-                  width: 200, height: 200, child: CircularProgressIndicator());
+                  margin: EdgeInsets.fromLTRB(900, 400, 900, 400),
+                  width: 200,
+                  height: 200,
+                  child: CircularProgressIndicator());
             }
           } else {
             return Dialog(
