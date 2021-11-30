@@ -1,12 +1,15 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rate_limiter/rate_limiter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:sylviapp_admin/home.dart';
 import 'package:encrypt/encrypt.dart' as enc;
+import 'package:sylviapp_admin/providers/sharedpreference.dart';
 
 class LoginAdmin extends StatefulWidget {
   const LoginAdmin({Key? key}) : super(key: key);
@@ -16,17 +19,20 @@ class LoginAdmin extends StatefulWidget {
 }
 
 class _LoginAdminState extends State<LoginAdmin> {
+  final PrefService _prefService = PrefService();
   late String adminUser = "";
   late String adminPass = "";
+  late String storeToken = "";
+  late String storeAdminUser = "";
+  late String storeAdminPass = "";
   bool isHovering1 = false;
+  bool showPass = false;
   int i = 0;
   final double _blur = 5.0;
 
   final double _size = 20;
   final throttledPerformPunch = throttle(
-    () {
-      print('Performed one punch to the opponent');
-    },
+    () {},
     const Duration(seconds: 15),
   );
   TextEditingController usernameController = TextEditingController();
@@ -86,38 +92,46 @@ class _LoginAdminState extends State<LoginAdmin> {
                                   const InputDecoration(hintText: "Username"),
                             ),
                             TextField(
-                                onSubmitted: (value) {
-                                  if (usernameController.text.toString() ==
-                                          adminUser &&
-                                      passwordController.text.toString() ==
-                                          adminPass) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AdminHome()));
-                                  } else {
-                                    i++;
+                              onSubmitted: (value) {
+                                if (usernameController.text.toString() ==
+                                        adminUser &&
+                                    passwordController.text.toString() ==
+                                        adminPass) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AdminHome()));
+                                } else {
+                                  i++;
 
-                                    if (i == 5) {
-                                      setState(() {
-                                        throttledPerformPunch();
-                                        i = 0;
+                                  if (i == 5) {
+                                    setState(() {
+                                      throttledPerformPunch();
+                                      i = 0;
 
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                'You are blocked for 15 seconds',
-                                            toastLength: Toast.LENGTH_SHORT);
-                                      });
-                                    }
-                                    usernameController.clear();
-                                    passwordController.clear();
+                                      Fluttertoast.showToast(
+                                          msg: 'You are blocked for 15 seconds',
+                                          toastLength: Toast.LENGTH_SHORT);
+                                    });
                                   }
-                                },
-                                obscureText: true,
-                                controller: passwordController,
-                                decoration: const InputDecoration(
-                                    hintText: "Password")),
+                                  usernameController.clear();
+                                  passwordController.clear();
+                                }
+                              },
+                              obscureText: showPass ? true : false,
+                              controller: passwordController,
+                              decoration: InputDecoration(
+                                  suffixIcon: showPass
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Icons.visibility),
+                                  hintText: "Password"),
+                              onTap: () {
+                                setState(() {
+                                  showPass = !showPass;
+                                });
+                              },
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -129,6 +143,12 @@ class _LoginAdminState extends State<LoginAdmin> {
                                           adminUser &&
                                       passwordController.text.toString() ==
                                           adminPass) {
+                                    storeToken = AESCryptography()
+                                        .encryptAES(_randomValue);
+
+                                    _prefService
+                                        .createCache(storeToken.toString());
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -223,6 +243,15 @@ class _LoginAdminState extends State<LoginAdmin> {
         ),
       ),
     );
+  }
+
+  String _randomValue() {
+    final rand = Random();
+    final codeUnits = List.generate(20, (index) {
+      return rand.nextInt(26) + 65;
+    });
+
+    return String.fromCharCodes(codeUnits);
   }
 }
   //  
