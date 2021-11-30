@@ -12,51 +12,31 @@ class _CampaignReportsState extends State<CampaignReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Category 1'),
-                StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('campaigns')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return CircularProgressIndicator();
-                      } else {
-                        return ListView(
-                          children: snapshot.data!.docs.map((e) {
-                            return Card(
-                              child: Text(e.get('campaign_name').toString()),
-                            );
-                          }).toList(),
-                        );
-                      }
-                    })
-              ],
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [Text('Category 2')],
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [Text('Category 3')],
-            ),
-          ]),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: StreamBuilder<QuerySnapshot>(
+            stream:
+                FirebaseFirestore.instance.collection('campaigns').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              } else {
+                return ListView(
+                  children: snapshot.data!.docs.map((e) {
+                    return Container(
+                      width: 100,
+                      height: 200,
+                      margin: EdgeInsets.fromLTRB(100, 0, 100, 10),
+                      child: Card(
+                        child: Text(e.get('campaign_name')),
+                      ),
+                    );
+                  }).toList(),
+                );
+              }
+            }),
+      ),
     );
   }
 }
