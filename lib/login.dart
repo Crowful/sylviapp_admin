@@ -32,7 +32,7 @@ class _LoginAdminState extends State<LoginAdmin> {
   final double _blur = 5.0;
 
   final double _size = 20;
-  final throttledPerformPunch = throttle(
+  final throttledLogin = throttle(
     () {},
     const Duration(seconds: 15),
   );
@@ -55,7 +55,7 @@ class _LoginAdminState extends State<LoginAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    bool pending = throttledPerformPunch.isPending;
+    bool pending = throttledLogin.isPending;
     return SafeArea(
       child: Scaffold(
         key: widget.key,
@@ -100,22 +100,20 @@ class _LoginAdminState extends State<LoginAdmin> {
                                         adminUser &&
                                     passwordController.text.toString() ==
                                         adminPass) {
-                                  setState(() {
-                                    storeToken = AESCryptography()
-                                        .encryptAES(_randomValue);
-                                    prefs.setString('storeToken', storeToken);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AdminHome()));
-                                  });
+                                  storeToken = AESCryptography()
+                                      .encryptAES(_randomValue);
+                                  prefs.setString('storeToken', storeToken);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AdminHome()));
                                 } else {
                                   i++;
 
                                   if (i == 5) {
                                     setState(() {
-                                      throttledPerformPunch();
+                                      throttledLogin();
                                       i = 0;
 
                                       Fluttertoast.showToast(
@@ -168,7 +166,7 @@ class _LoginAdminState extends State<LoginAdmin> {
 
                                     if (i == 5) {
                                       setState(() {
-                                        throttledPerformPunch();
+                                        throttledLogin();
                                         i = 0;
 
                                         Fluttertoast.showToast(
