@@ -145,7 +145,10 @@ class DatabaseService {
       'isActive': isActive,
       'inProgress': inProgress,
       'isCompleted': isCompleted,
-      'deviceTokenofOrganizer': deviceTokenofOrganizer
+      'deviceTokenofOrganizer': deviceTokenofOrganizer,
+      'reportUIW': 0,
+      'reportAbuse': 0,
+      'reportScam': 0,
     });
   }
 

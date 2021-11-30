@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class _CampaignReportsState extends State<CampaignReports> {
                     return Container(
                       width: 100,
                       height: 200,
-                      margin: EdgeInsets.fromLTRB(100, 0, 100, 10),
+                      margin: EdgeInsets.fromLTRB(500, 0, 500, 10),
                       child: Card(
                         child: Container(
                             margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -40,16 +41,61 @@ class _CampaignReportsState extends State<CampaignReports> {
                                     Text(
                                       e.get('campaign_name'),
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          color: Color(0xff65BFB8),
+                                          fontSize: 25,
                                           fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Scam Report: ' +
+                                          e.get('reportScam').toString(),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Abuse Report: ' +
+                                          e.get('reportAbuse').toString(),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Inappropriate Words: ' +
+                                          e.get('reportUIW').toString(),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w300),
                                     )
                                   ]),
-                              ElevatedButton(
-                                  onPressed: null,
-                                  child: Text('delete campaign')),
-                              ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text('info of organizer'))
+                              SizedBox(
+                                width: 200,
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () {},
+                                        child: Text('delete campaign')),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {},
+                                        child: Text('info of organizer')),
+                                  ],
+                                ),
+                              )
                             ])),
                       ),
                     );
