@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:sylviapp_admin/home.dart';
 import 'package:encrypt/encrypt.dart' as enc;
-import 'package:sylviapp_admin/providers/sharedpreference.dart';
 
 class LoginAdmin extends StatefulWidget {
   const LoginAdmin({Key? key}) : super(key: key);
@@ -20,7 +18,7 @@ class LoginAdmin extends StatefulWidget {
 
 class _LoginAdminState extends State<LoginAdmin> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  final PrefService _prefService = PrefService();
+
   late String adminUser = "";
   late String adminPass = "";
   late String storeToken = "";
