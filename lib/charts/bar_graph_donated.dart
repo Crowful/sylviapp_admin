@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class BarGraph extends StatefulWidget {
-  const BarGraph({Key? key}) : super(key: key);
+class BarGraphDonated extends StatefulWidget {
+  const BarGraphDonated({Key? key}) : super(key: key);
 
   @override
-  _BarGraphState createState() => _BarGraphState();
+  _BarGraphDonatedState createState() => _BarGraphDonatedState();
 }
 
-class _BarGraphState extends State<BarGraph> {
+class _BarGraphDonatedState extends State<BarGraphDonated> {
   late List<CampaignData> _chartData;
   int numJan = 0;
   int numFeb = 0;
@@ -28,71 +28,78 @@ class _BarGraphState extends State<BarGraph> {
   @override
   void initState() {
     FirebaseFirestore.instance
-        .collection('campaigns')
+        .collection('users')
+        .doc()
+        .collection('recent_activities')
+        .where('type', isEqualTo: 'donated')
         .get()
         .then((value) => value.docs.forEach((element) {
-              Timestamp value = element.get('date_created');
+              int amount =
+                  element.get('amount') == null ? 0 : element.get('amount');
+              print('test' + amount.toString());
+              Timestamp valueDate = element.get('dateDonated');
+
               DateTime convertedValue =
-                  DateTime.parse(value.toDate().toString());
+                  DateTime.parse(valueDate.toDate().toString());
 
               if (convertedValue.month == 1) {
                 setState(() {
-                  numJan++;
+                  numJan = numJan + amount;
                 });
               }
               if (convertedValue.month == 2) {
                 setState(() {
-                  numFeb++;
+                  numFeb = numFeb + amount;
                 });
               }
               if (convertedValue.month == 3) {
                 setState(() {
-                  numMar++;
+                  numMar = numMar + amount;
                 });
               }
               if (convertedValue.month == 4) {
                 setState(() {
-                  numApr++;
+                  numApr = numApr + amount;
                 });
               }
               if (convertedValue.month == 5) {
                 setState(() {
-                  numMay++;
+                  numMay = numMay + amount;
                 });
               }
               if (convertedValue.month == 6) {
                 setState(() {
-                  numJun++;
+                  numJun = numJun + amount;
                 });
               }
               if (convertedValue.month == 7) {
                 setState(() {
-                  numJul++;
+                  numJul = numJul + amount;
                 });
               }
               if (convertedValue.month == 8) {
                 setState(() {
-                  numAug++;
+                  numAug = numAug + amount;
                 });
               }
               if (convertedValue.month == 9) {
                 setState(() {
-                  numSep++;
+                  numSep = numSep + amount;
                 });
               }
               if (convertedValue.month == 10) {
                 setState(() {
-                  numOct++;
+                  numOct = numOct + amount;
                 });
               }
               if (convertedValue.month == 11) {
                 setState(() {
-                  numNov++;
+                  numNov = numNov + amount;
                 });
               }
               if (convertedValue.month == 12) {
                 setState(() {
-                  numDec++;
+                  numDec = numDec + amount;
                 });
               }
             }));

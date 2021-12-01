@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class BarGraph extends StatefulWidget {
-  const BarGraph({Key? key}) : super(key: key);
+class BarGraphJoined extends StatefulWidget {
+  const BarGraphJoined({Key? key}) : super(key: key);
 
   @override
-  _BarGraphState createState() => _BarGraphState();
+  _BarGraphJoinedState createState() => _BarGraphJoinedState();
 }
 
-class _BarGraphState extends State<BarGraph> {
+class _BarGraphJoinedState extends State<BarGraphJoined> {
   late List<CampaignData> _chartData;
   int numJan = 0;
   int numFeb = 0;

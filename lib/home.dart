@@ -9,6 +9,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sylviapp_admin/campaign_reports.dart';
 import 'package:sylviapp_admin/charts.dart';
+import 'package:sylviapp_admin/charts/bar_graph.dart';
+import 'package:sylviapp_admin/charts/bar_graph_donated.dart';
+import 'package:sylviapp_admin/charts/bar_graph_joined.dart';
+import 'package:sylviapp_admin/charts/column_graph.dart';
 import 'package:sylviapp_admin/login.dart';
 import 'package:sylviapp_admin/loginwrapper.dart';
 
@@ -20,6 +24,9 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  final PageController homePageController = PageController(initialPage: 0);
+  int currentPage = 0;
+
   bool pageIsScrolling = false;
   PageController pageController = PageController();
   late String _chosenValue = " ";
@@ -29,6 +36,12 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   void initState() {
     super.initState();
+
+    currentPage = 0;
+    homePageController.addListener(() {
+      currentPage = homePageController.page!.toInt();
+    });
+
     _initializeTimer();
     FirebaseFirestore.instance
         .collection('quarantineStatus')
@@ -55,6 +68,7 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   void dispose() {
     super.dispose();
+    homePageController.dispose();
     if (_timer != null) {
       _timer!.cancel();
       _timer = null;
@@ -231,555 +245,659 @@ class _AdminHomeState extends State<AdminHome> {
                             decoration:
                                 const BoxDecoration(color: Color(0xffF6F8FA)),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ConstrainedBox(
                                   constraints:
                                       const BoxConstraints(maxWidth: 1000),
                                   child: Center(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                    child: PageView(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        controller: homePageController,
                                         children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: const [
-                                                  Text(
-                                                    'Dashboard',
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xff65BFB8),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 30),
-                                                  ),
-                                                  Text(
-                                                    'Welcome to Sylviapp Dashboard',
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                              IgnorePointer(
-                                                ignoring: true,
-                                                child: IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(
-                                                      Icons.menu,
-                                                      color: Colors.transparent,
-                                                    )),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 25,
-                                          ),
-                                          Row(
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.pushNamed(
-                                                        context, '/feedback');
-                                                  },
-                                                  child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20),
-                                                      height: 250,
-                                                      width: 315,
-                                                      decoration: BoxDecoration(
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: const Color(
-                                                                      0xff778ba5)
-                                                                  .withOpacity(
-                                                                      0.4),
-                                                              blurRadius: 4,
-                                                              offset: const Offset(
-                                                                  2,
-                                                                  5), // Shadow position
-                                                            ),
-                                                          ],
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                      .all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          10)),
-                                                          color: const Color(
-                                                              0xffFF673A)),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: const [
-                                                          Text(
-                                                            "Handle Feedbacks",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 20),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Center(
-                                                            child: Text(
-                                                              'List of feedbacks by users to be \nconsidered.',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w100),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ))),
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 5),
-                                                height: 250,
-                                                width: 312,
-                                                decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: const Color(
-                                                                0xff778ba5)
-                                                            .withOpacity(0.4),
-                                                        blurRadius: 4,
-                                                        offset: const Offset(2,
-                                                            5), // Shadow position
-                                                      ),
-                                                    ],
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                10)),
-                                                    color: Colors.white),
-                                                child: const Center(
-                                                    child: FittedBox(
-                                                  child: Chart(),
-                                                )),
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20),
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 5),
-                                                    width: 350,
-                                                    decoration: BoxDecoration(
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: const Color(
-                                                                    0xff778ba5)
-                                                                .withOpacity(
-                                                                    0.4),
-                                                            blurRadius: 4,
-                                                            offset: const Offset(
-                                                                2,
-                                                                5), // Shadow position
-                                                          ),
-                                                        ],
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    10)),
-                                                        color: Colors.white),
-                                                    child: Column(
+                                          Container(
+                                            width: 600,
+                                            height: 400,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            const Text(
-                                                              'Total Campaigns',
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xff65BFB8),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            Tooltip(
-                                                              message:
-                                                                  "Total Active Campaigns done by Sylviapp",
-                                                              child: Icon(
-                                                                Icons
-                                                                    .help_rounded,
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.7),
-                                                                size: 13,
-                                                              ),
-                                                            )
-                                                          ],
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: const [
+                                                        Text(
+                                                          'Dashboard',
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff65BFB8),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 30),
                                                         ),
-                                                        const SizedBox(
-                                                          height: 40,
+                                                        Text(
+                                                          'Welcome to Sylviapp Dashboard',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              fontSize: 15),
                                                         ),
-                                                        Center(
-                                                          child: StreamBuilder<
-                                                                  QuerySnapshot>(
-                                                              stream: FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'campaigns')
-                                                                  .snapshots(),
-                                                              builder: (context,
-                                                                  AsyncSnapshot<
-                                                                          QuerySnapshot>
-                                                                      snaphots) {
-                                                                if (!snaphots
-                                                                    .hasData) {
-                                                                  return const SizedBox(
-                                                                    height: 10,
-                                                                    width: 10,
-                                                                    child:
-                                                                        CircularProgressIndicator(),
-                                                                  );
-                                                                } else {
-                                                                  return Center(
-                                                                    child: Text(
-                                                                      snaphots
-                                                                              .data!
-                                                                              .docs
-                                                                              .length
-                                                                              .toString() +
-                                                                          " Campaign(s)",
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize:
-                                                                              20),
-                                                                    ),
-                                                                  );
-                                                                }
-                                                              }),
-                                                        )
                                                       ],
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20),
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 5),
-                                                    height: 120,
-                                                    width: 350,
-                                                    decoration: BoxDecoration(
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: const Color(
-                                                                    0xff778ba5)
-                                                                .withOpacity(
-                                                                    0.4),
-                                                            blurRadius: 4,
-                                                            offset: const Offset(
-                                                                2,
-                                                                5), // Shadow position
-                                                          ),
-                                                        ],
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    10)),
-                                                        color: Colors.white),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            const Text(
-                                                              'Total Users',
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xff65BFB8),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            Tooltip(
-                                                              message:
-                                                                  "Total Users in the system Sylviapp",
-                                                              child: Icon(
-                                                                Icons
-                                                                    .help_rounded,
-                                                                color: Colors
-                                                                    .black
+                                                    IgnorePointer(
+                                                      ignoring: true,
+                                                      child: IconButton(
+                                                          onPressed: () {},
+                                                          icon: const Icon(
+                                                            Icons.menu,
+                                                            color: Colors
+                                                                .transparent,
+                                                          )),
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 25,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    InkWell(
+                                                        onTap: () {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              '/feedback');
+                                                        },
+                                                        child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(20),
+                                                            height: 250,
+                                                            width: 315,
+                                                            decoration: BoxDecoration(
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: const Color(
+                                                                            0xff778ba5)
+                                                                        .withOpacity(
+                                                                            0.4),
+                                                                    blurRadius:
+                                                                        4,
+                                                                    offset: const Offset(
+                                                                        2,
+                                                                        5), // Shadow position
+                                                                  ),
+                                                                ],
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
+                                                                            10)),
+                                                                color: const Color(
+                                                                    0xffFF673A)),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: const [
+                                                                Text(
+                                                                  "Handle Feedbacks",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize:
+                                                                          20),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                Center(
+                                                                  child: Text(
+                                                                    'List of feedbacks by users to be \nconsidered.',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            10,
+                                                                        fontWeight:
+                                                                            FontWeight.w100),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ))),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        homePageController.animateToPage(
+                                                            homePageController
+                                                                    .page!
+                                                                    .toInt() +
+                                                                1,
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    1000),
+                                                            curve: Curves
+                                                                .fastOutSlowIn);
+                                                      },
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 5,
+                                                            vertical: 5),
+                                                        height: 250,
+                                                        width: 312,
+                                                        decoration: BoxDecoration(
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: const Color(
+                                                                        0xff778ba5)
                                                                     .withOpacity(
-                                                                        0.7),
-                                                                size: 13,
+                                                                        0.4),
+                                                                blurRadius: 4,
+                                                                offset: const Offset(
+                                                                    2,
+                                                                    5), // Shadow position
                                                               ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 15,
-                                                        ),
-                                                        Center(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
+                                                            ],
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                        .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            10)),
+                                                            color:
+                                                                Colors.white),
+                                                        child: Center(
+                                                            child: FittedBox(
+                                                          child: Column(
+                                                              children: [
+                                                                Chart(),
+                                                                GestureDetector(
+                                                                    onTap: () {
+                                                                      homePageController.animateToPage(
+                                                                          homePageController.page!.toInt() +
+                                                                              1,
+                                                                          duration: Duration(
+                                                                              milliseconds:
+                                                                                  1000),
+                                                                          curve:
+                                                                              Curves.fastOutSlowIn);
+                                                                    },
+                                                                    child: Text(
+                                                                        'expand'))
+                                                              ]),
+                                                        )),
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20),
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal: 5,
+                                                                  vertical: 5),
+                                                          width: 350,
+                                                          decoration: BoxDecoration(
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: const Color(
+                                                                          0xff778ba5)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  blurRadius: 4,
+                                                                  offset: const Offset(
+                                                                      2,
+                                                                      5), // Shadow position
+                                                                ),
+                                                              ],
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          10)),
+                                                              color:
+                                                                  Colors.white),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              StreamBuilder<
-                                                                      QuerySnapshot>(
-                                                                  stream: FirebaseFirestore
-                                                                      .instance
-                                                                      .collection(
-                                                                          'users')
-                                                                      .where(
-                                                                          'isVerify',
-                                                                          isNotEqualTo:
-                                                                              true)
-                                                                      .snapshots(),
-                                                                  builder: (context,
-                                                                      notTrue) {
-                                                                    if (notTrue
-                                                                        .hasData) {
-                                                                      return Text(
-                                                                        notTrue.data!.docs.length.toString() +
-                                                                            ' Volunteer(s)',
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight: FontWeight.bold,
-                                                                            fontSize: 15),
-                                                                      );
-                                                                    } else {
-                                                                      return const SizedBox(
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  const Text(
+                                                                    'Total Campaigns',
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0xff65BFB8),
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                  Tooltip(
+                                                                    message:
+                                                                        "Total Active Campaigns done by Sylviapp",
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .help_rounded,
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.7),
+                                                                      size: 13,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 40,
+                                                              ),
+                                                              Center(
+                                                                child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                    stream: FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'campaigns')
+                                                                        .snapshots(),
+                                                                    builder: (context,
+                                                                        AsyncSnapshot<QuerySnapshot>
+                                                                            snaphots) {
+                                                                      if (!snaphots
+                                                                          .hasData) {
+                                                                        return const SizedBox(
                                                                           height:
                                                                               10,
                                                                           width:
                                                                               10,
                                                                           child:
-                                                                              CircularProgressIndicator());
-                                                                    }
-                                                                  }),
-                                                              StreamBuilder<
-                                                                      QuerySnapshot>(
-                                                                  stream: FirebaseFirestore
-                                                                      .instance
-                                                                      .collection(
-                                                                          'users')
-                                                                      .where(
-                                                                          'isVerify',
-                                                                          isEqualTo:
-                                                                              true)
-                                                                      .snapshots(),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    if (snapshot
-                                                                        .hasData) {
-                                                                      return Text(
-                                                                        snapshot.data!.docs.length.toString() +
-                                                                            ' Organizer(s)',
-                                                                        style: const TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontWeight: FontWeight.bold,
-                                                                            fontSize: 15),
-                                                                      );
-                                                                    } else {
-                                                                      return const SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                          height:
-                                                                              10,
+                                                                              CircularProgressIndicator(),
+                                                                        );
+                                                                      } else {
+                                                                        return Center(
                                                                           child:
-                                                                              CircularProgressIndicator());
-                                                                    }
-                                                                  }),
+                                                                              Text(
+                                                                            snaphots.data!.docs.length.toString() +
+                                                                                " Campaign(s)",
+                                                                            style: const TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 20),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    }),
+                                                              )
                                                             ],
                                                           ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                      context, "/map_polygon");
-                                                },
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 5),
-                                                  height: 250,
-                                                  width: 315 + 312,
-                                                  decoration: BoxDecoration(
-                                                      image: const DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: AssetImage(
-                                                              "assets/images/map.png")),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: const Color(
-                                                                  0xff778ba5)
-                                                              .withOpacity(0.4),
-                                                          blurRadius: 4,
-                                                          offset: const Offset(
-                                                              2,
-                                                              5), // Shadow position
+                                                        ),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20),
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal: 5,
+                                                                  vertical: 5),
+                                                          height: 120,
+                                                          width: 350,
+                                                          decoration: BoxDecoration(
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: const Color(
+                                                                          0xff778ba5)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  blurRadius: 4,
+                                                                  offset: const Offset(
+                                                                      2,
+                                                                      5), // Shadow position
+                                                                ),
+                                                              ],
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          10)),
+                                                              color:
+                                                                  Colors.white),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  const Text(
+                                                                    'Total Users',
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0xff65BFB8),
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                  Tooltip(
+                                                                    message:
+                                                                        "Total Users in the system Sylviapp",
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .help_rounded,
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                              0.7),
+                                                                      size: 13,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Center(
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    StreamBuilder<
+                                                                            QuerySnapshot>(
+                                                                        stream: FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(
+                                                                                'users')
+                                                                            .where('isVerify',
+                                                                                isNotEqualTo:
+                                                                                    true)
+                                                                            .snapshots(),
+                                                                        builder:
+                                                                            (context,
+                                                                                notTrue) {
+                                                                          if (notTrue
+                                                                              .hasData) {
+                                                                            return Text(
+                                                                              notTrue.data!.docs.length.toString() + ' Volunteer(s)',
+                                                                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                                                                            );
+                                                                          } else {
+                                                                            return const SizedBox(
+                                                                                height: 10,
+                                                                                width: 10,
+                                                                                child: CircularProgressIndicator());
+                                                                          }
+                                                                        }),
+                                                                    StreamBuilder<
+                                                                            QuerySnapshot>(
+                                                                        stream: FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(
+                                                                                'users')
+                                                                            .where('isVerify',
+                                                                                isEqualTo:
+                                                                                    true)
+                                                                            .snapshots(),
+                                                                        builder:
+                                                                            (context,
+                                                                                snapshot) {
+                                                                          if (snapshot
+                                                                              .hasData) {
+                                                                            return Text(
+                                                                              snapshot.data!.docs.length.toString() + ' Organizer(s)',
+                                                                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                                                                            );
+                                                                          } else {
+                                                                            return const SizedBox(
+                                                                                width: 10,
+                                                                                height: 10,
+                                                                                child: CircularProgressIndicator());
+                                                                          }
+                                                                        }),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  10)),
-                                                      color: Colors.white),
-                                                  child: ClipRRect(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin: Alignment
-                                                              .bottomCenter,
-                                                          end: Alignment
-                                                              .topCenter,
-                                                          colors: [
-                                                            const Color(
-                                                                    0xff65BFB8)
-                                                                .withOpacity(
-                                                                    0.3),
-                                                            Colors.transparent,
-                                                          ],
-                                                        ),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    10)),
-                                                      ),
-                                                      child: const ClipRRect(
-                                                        child: Center(
-                                                          child: Text(
-                                                            'Go to Map',
-                                                            style: TextStyle(
-                                                                fontSize: 30,
+                                                    )
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            "/map_polygon");
+                                                      },
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 5,
+                                                            vertical: 5),
+                                                        height: 250,
+                                                        width: 315 + 312,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                image: const DecorationImage(
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                    image: AssetImage(
+                                                                        "assets/images/map.png")),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: const Color(
+                                                                            0xff778ba5)
+                                                                        .withOpacity(
+                                                                            0.4),
+                                                                    blurRadius:
+                                                                        4,
+                                                                    offset: const Offset(
+                                                                        2,
+                                                                        5), // Shadow position
+                                                                  ),
+                                                                ],
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
+                                                                            10)),
                                                                 color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                    .white),
+                                                        child: ClipRRect(
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              gradient:
+                                                                  LinearGradient(
+                                                                begin: Alignment
+                                                                    .bottomCenter,
+                                                                end: Alignment
+                                                                    .topCenter,
+                                                                colors: [
+                                                                  const Color(
+                                                                          0xff65BFB8)
+                                                                      .withOpacity(
+                                                                          0.3),
+                                                                  Colors
+                                                                      .transparent,
+                                                                ],
+                                                              ),
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          10)),
+                                                            ),
+                                                            child:
+                                                                const ClipRRect(
+                                                              child: Center(
+                                                                child: Text(
+                                                                  'Go to Map',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          30,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () =>
-                                                    Navigator.pushNamed(context,
-                                                        "/manage_users"),
-                                                onHover: (hover) {},
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 5),
-                                                  height: 250,
-                                                  width: 350,
-                                                  decoration: BoxDecoration(
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: const Color(
-                                                                  0xff778ba5)
-                                                              .withOpacity(0.3),
-                                                          blurRadius: 4,
-                                                          offset: const Offset(
-                                                              2,
-                                                              5), // Shadow position
+                                                    InkWell(
+                                                      onTap: () =>
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              "/manage_users"),
+                                                      onHover: (hover) {},
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 5,
+                                                            vertical: 5),
+                                                        height: 250,
+                                                        width: 350,
+                                                        decoration: BoxDecoration(
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: const Color(
+                                                                        0xff778ba5)
+                                                                    .withOpacity(
+                                                                        0.3),
+                                                                blurRadius: 4,
+                                                                offset: const Offset(
+                                                                    2,
+                                                                    5), // Shadow position
+                                                              ),
+                                                            ],
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                        .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            10)),
+                                                            color: const Color(
+                                                                0xff65BFB8)),
+                                                        child: const Center(
+                                                          child: Text(
+                                                            'Manage Users',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 20.1),
+                                                          ),
                                                         ),
-                                                      ],
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  10)),
-                                                      color: const Color(
-                                                          0xff65BFB8)),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      'Manage Users',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20.1),
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 400,
+                                            height: 400,
+                                            child: Column(
+                                              children: [
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      homePageController
+                                                          .animateToPage(
+                                                              homePageController
+                                                                      .page!
+                                                                      .toInt() -
+                                                                  1,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      1000),
+                                                              curve: Curves
+                                                                  .fastOutSlowIn);
+                                                    },
+                                                    child: Text(
+                                                        ' ^ Go to Dashboard ^')),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    'Created Campaign in specific month'),
+                                                Container(
+                                                  child: BarGraph(),
+                                                ),
+                                                SizedBox(
+                                                  height: 50,
+                                                ),
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Column(children: [
+                                                        Text(
+                                                            'Volunteers Joined'),
+                                                        Container(
+                                                          child:
+                                                              BarGraphJoined(),
+                                                        ),
+                                                      ]),
+                                                      Column(children: [
+                                                        Text('Total Donated'),
+                                                        Container(
+                                                          child:
+                                                              BarGraphDonated(),
+                                                        ),
+                                                      ]),
+                                                    ])
+                                              ],
+                                            ),
                                           )
-                                        ],
-                                      ),
-                                    ),
+                                        ]),
                                   ),
                                 ),
-                                Expanded(
-                                    child: Container(
-                                  color: Colors.black,
-                                ))
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

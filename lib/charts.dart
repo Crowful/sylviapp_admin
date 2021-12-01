@@ -58,6 +58,9 @@ class _ChartState extends State<Chart> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 GestureDetector(
                                   onTap: () {},
                                   child: const Text(
