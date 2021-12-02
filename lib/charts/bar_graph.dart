@@ -108,6 +108,7 @@ class _BarGraphState extends State<BarGraph> {
             primaryXAxis: CategoryAxis(),
             series: <BarSeries<CampaignData, String>>[
           BarSeries<CampaignData, String>(
+              color: Colors.orange,
               // Bind data source
               dataSource: getCampaignData(),
               xValueMapper: (CampaignData volunteers, _) => volunteers.year,

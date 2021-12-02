@@ -854,40 +854,148 @@ class _AdminHomeState extends State<AdminHome> {
                                                     child: Text(
                                                         ' ^ Go to Dashboard ^')),
                                                 SizedBox(
-                                                  height: 10,
+                                                  height: 20,
                                                 ),
                                                 Text(
-                                                    'Created Campaign in specific month'),
+                                                    'Created Campaign in specific month',
+                                                    style: TextStyle(
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
                                                 Container(
                                                   child: BarGraph(),
                                                 ),
                                                 SizedBox(
-                                                  height: 50,
+                                                  height: 100,
                                                 ),
-                                                Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Column(children: [
-                                                        Text(
-                                                            'Volunteers Joined'),
-                                                        Container(
-                                                          child:
-                                                              BarGraphJoined(),
-                                                        ),
+                                                Container(
+                                                  width: 800,
+                                                  height: 220,
+                                                  child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Column(children: [
+                                                          Text(
+                                                              'Active Volunteers Joined',
+                                                              style: TextStyle(
+                                                                  fontSize: 25,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                              stream: FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'campaigns')
+                                                                  .snapshots(),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                double
+                                                                    numOfVolunteers =
+                                                                    0;
+
+                                                                snapshot
+                                                                    .data!.docs
+                                                                    .forEach(
+                                                                        (element) {
+                                                                  numOfVolunteers =
+                                                                      numOfVolunteers +
+                                                                          element
+                                                                              .get('current_volunteers');
+                                                                });
+
+                                                                if (!snapshot
+                                                                    .hasData) {
+                                                                  return Container(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                  );
+                                                                } else {
+                                                                  return Container(
+                                                                    child: Text(
+                                                                        numOfVolunteers
+                                                                            .toString(),
+                                                                        style: TextStyle(
+                                                                            color: Color(
+                                                                                0xff65BFB8),
+                                                                            fontSize:
+                                                                                50,
+                                                                            fontWeight:
+                                                                                FontWeight.bold)),
+                                                                  );
+                                                                }
+                                                              }),
+                                                        ]),
+                                                        SizedBox(width: 50),
+                                                        Column(children: [
+                                                          Text(
+                                                              'Overall Accumulated Donation',
+                                                              style: TextStyle(
+                                                                  fontSize: 25,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          StreamBuilder<
+                                                                  QuerySnapshot>(
+                                                              stream: FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'campaigns')
+                                                                  .snapshots(),
+                                                              builder: (context,
+                                                                  snapshot) {
+                                                                double
+                                                                    numOfDonation =
+                                                                    0;
+
+                                                                snapshot
+                                                                    .data!.docs
+                                                                    .forEach(
+                                                                        (element) {
+                                                                  numOfDonation =
+                                                                      numOfDonation +
+                                                                          element
+                                                                              .get('current_donations');
+                                                                });
+                                                                if (!snapshot
+                                                                    .hasData) {
+                                                                  SizedBox(
+                                                                    height: 20,
+                                                                  );
+                                                                  return Container(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                  );
+                                                                }
+                                                                SizedBox(
+                                                                  height: 20,
+                                                                );
+                                                                return Container(
+                                                                  child: Text(
+                                                                    numOfDonation
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        color: Color(
+                                                                            0xff65BFB8),
+                                                                        fontSize:
+                                                                            50,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                );
+                                                              }),
+                                                        ]),
                                                       ]),
-                                                      Column(children: [
-                                                        Text('Total Donated'),
-                                                        Container(
-                                                          child:
-                                                              BarGraphDonated(),
-                                                        ),
-                                                      ]),
-                                                    ])
+                                                )
                                               ],
                                             ),
                                           )

@@ -24,6 +24,7 @@ class _BarGraphDonatedState extends State<BarGraphDonated> {
   int numOct = 0;
   int numNov = 0;
   int numDec = 0;
+  int amount = 0;
 
   @override
   void initState() {
@@ -34,8 +35,16 @@ class _BarGraphDonatedState extends State<BarGraphDonated> {
         .where('type', isEqualTo: 'donated')
         .get()
         .then((value) => value.docs.forEach((element) {
-              int amount =
-                  element.get('amount') == null ? 0 : element.get('amount');
+              if (element.get('amount') == null) {
+                setState(() {
+                  int amount = 0;
+                });
+              } else {
+                setState(() {
+                  int amount = element.get('amount');
+                });
+              }
+
               print('test' + amount.toString());
               Timestamp valueDate = element.get('dateDonated');
 
