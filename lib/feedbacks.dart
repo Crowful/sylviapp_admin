@@ -23,17 +23,17 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen> {
   bool pageIsScrolling = false;
   PageController pageController = PageController();
-  Timer _timer = Timer(const Duration(milliseconds: 1), () {});
+  Timer? _timer = Timer(const Duration(milliseconds: 1), () {});
   void _initializeTimer() {
     if (_timer != null) {
-      _timer.cancel();
+      _timer!.cancel();
     }
 
     _timer = Timer(const Duration(minutes: 2), () => _handleInactivity());
   }
 
   void _handleInactivity() async {
-    _timer.cancel();
+    _timer!.cancel();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear().whenComplete(() => Navigator.push(context,
         MaterialPageRoute(builder: (context) => const LoginWrapper())));
@@ -43,6 +43,15 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   void initState() {
     super.initState();
     _initializeTimer();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
   }
 
   @override

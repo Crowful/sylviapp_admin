@@ -23,7 +23,6 @@ class _VerifyUsersState extends State<VerifyUsers> {
   String? errorText;
   String urlTest = "";
   Timer? _timer = Timer(const Duration(milliseconds: 1), () {});
-  String uid = "orc9pQYQ01OLQZ1uDn11VEvAJLn1";
   // ignore: non_constant_identifier_names
   late String Future;
   showProfile(uid) async {
@@ -50,7 +49,6 @@ class _VerifyUsersState extends State<VerifyUsers> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     if (_timer != null) {
       _timer!.cancel();

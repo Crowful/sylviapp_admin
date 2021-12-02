@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,7 +18,7 @@ class _CampaignReportsState extends State<CampaignReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: StreamBuilder<QuerySnapshot>(
@@ -27,20 +26,21 @@ class _CampaignReportsState extends State<CampaignReports> {
                 FirebaseFirestore.instance.collection('campaigns').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else {
                 return ListView(
                   children: snapshot.data!.docs.map((e) {
                     return Container(
-                      margin: EdgeInsets.fromLTRB(500, 0, 500, 10),
+                      margin: const EdgeInsets.fromLTRB(500, 0, 500, 10),
                       child: Row(children: [
                         Container(
                           width: 500,
                           height: 200,
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Card(
                             child: Container(
-                                margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                margin:
+                                    const EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 child: Row(children: [
                                   Column(
                                       mainAxisAlignment:
@@ -50,38 +50,38 @@ class _CampaignReportsState extends State<CampaignReports> {
                                       children: [
                                         Text(
                                           e.get('campaign_name'),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Color(0xff65BFB8),
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         Text(
                                           'Scam Report: ' +
                                               e.get('reportScam').toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w300),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         Text(
                                           'Abuse Report: ' +
                                               e.get('reportAbuse').toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w300),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         Text(
                                           'Inappropriate Words: ' +
                                               e.get('reportUIW').toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w300),
                                         )
@@ -92,13 +92,13 @@ class _CampaignReportsState extends State<CampaignReports> {
                         Container(
                           width: 210,
                           height: 200,
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Card(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
+                                SizedBox(
                                   height: 200,
                                   width: 100,
                                   child: ElevatedButton(
@@ -113,9 +113,9 @@ class _CampaignReportsState extends State<CampaignReports> {
                                                     msg:
                                                         'Campaign Successfully Deleted'));
                                       },
-                                      child: Text('delete campaign')),
+                                      child: const Text('delete campaign')),
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 200,
                                   width: 100,
                                   child: ElevatedButton(
@@ -126,8 +126,9 @@ class _CampaignReportsState extends State<CampaignReports> {
                                             context: context,
                                             builder: (context) {
                                               return Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      300, 200, 300, 400),
+                                                  margin:
+                                                      const EdgeInsets.fromLTRB(
+                                                          300, 200, 300, 400),
                                                   child: StreamBuilder<
                                                           DocumentSnapshot>(
                                                       stream: FirebaseFirestore
@@ -146,7 +147,7 @@ class _CampaignReportsState extends State<CampaignReports> {
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
                                                                         .center,
-                                                                children: [
+                                                                children: const [
                                                                   CircularProgressIndicator(),
                                                                 ]),
                                                           );
@@ -183,7 +184,7 @@ class _CampaignReportsState extends State<CampaignReports> {
                                                       }));
                                             });
                                       },
-                                      child: Text('info of organizer')),
+                                      child: const Text('info of organizer')),
                                 ),
                               ],
                             ),
