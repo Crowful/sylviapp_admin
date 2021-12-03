@@ -144,10 +144,10 @@ class _ManageUsersState extends State<ManageUsers> {
                                           manageUserController.page!.toInt() +
                                               1,
                                           duration:
-                                              Duration(milliseconds: 1000),
+                                              const Duration(milliseconds: 500),
                                           curve: Curves.fastOutSlowIn);
                                     },
-                                    child: Text('Applicants')),
+                                    child: const Text('Go to Applicants')),
                               ]),
                               Expanded(
                                 child: SizedBox(

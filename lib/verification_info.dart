@@ -103,7 +103,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                         shape: BoxShape.rectangle,
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Container(
+                    child: const SizedBox(
                         height: 20,
                         width: 20,
                         child: CircularProgressIndicator())),
@@ -247,7 +247,7 @@ class _VerificationInfoState extends State<VerificationInfo> {
                           shape: BoxShape.rectangle,
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Container(
+                      child: SizedBox(
                           height: 20,
                           width: 20,
                           child: Center(
@@ -260,54 +260,3 @@ class _VerificationInfoState extends State<VerificationInfo> {
         });
   }
 }
-// Scaffold(
-//       body: StreamBuilder<DocumentSnapshot>(
-//           stream: FirebaseFirestore.instance
-//               .collection('verification')
-//               .doc(widget.userUID)
-//               .snapshots(),
-//           builder: (context, snapshot) {
-//             return Center(
-//               child: SingleChildScrollView(
-//                 child: Container(
-//                   margin: const EdgeInsets.fromLTRB(350, 100, 350, 0),
-//                   child: Column(
-//                     children: [
-//                       SizedBox(
-//                         height: 500,
-//                         width: 500,
-//                         child: Image.network(
-//                             "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=466&q=80"),
-//                       ),
-//                       const SizedBox(height: 50),
-//                       Row(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: [
-//                           Text(snapshot.data!.get('reasonForApplication')),
-//                           const SizedBox(
-//                             width: 30,
-//                           ),
-//                           Text(snapshot.data!.get('reasonForApplication')),
-//                         ],
-//                       ),
-//                       Container(
-//                         height: 300,
-//                         width: 300,
-//                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-//                         child: Image.network(
-//                             "https://media.istockphoto.com/photos/covid19-vaccination-record-card-on-white-background-picture-id1297704047"),
-//                       ),
-//                       const Text("Reason for Applying as an organizer: "),
-//                       const Text(
-//                           "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsum"),
-//                       const Text("Have any Experience?:  No"),
-//                       ElevatedButton(
-//                           onPressed: () {},
-//                           child: const Text("Approve Application"))
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             );
-//           }),
-//     );
