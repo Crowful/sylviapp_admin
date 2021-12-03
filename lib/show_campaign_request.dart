@@ -461,7 +461,14 @@ class ShowCampaignState extends State<ShowCampaign> {
                                 shape: BoxShape.circle, color: Colors.white),
                             child: CircleAvatar(
                               radius: 70,
-                              backgroundImage: NetworkImage(urlTest),
+                              child: Icon(
+                                Icons.person,
+                                size: 100,
+                              ),
+                              backgroundColor: Colors.green,
+                              foregroundImage: urlTest == ""
+                                  ? null
+                                  : Image.network(urlTest).image,
                             ),
                           ),
                           Padding(
