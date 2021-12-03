@@ -15,8 +15,8 @@ class _ChartState extends State<Chart> {
   @override
   void initState() {
     super.initState();
-    _chartData = getCampaignData();
     _chartData.clear();
+    _chartData = getCampaignData();
   }
 
   @override
@@ -34,7 +34,7 @@ class _ChartState extends State<Chart> {
             return StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('campaigns')
-                    .where('isDone', isEqualTo: true)
+                    .where('isCompleted', isEqualTo: true)
                     .snapshots(),
                 builder: (context, isDoneSnap) {
                   if (isDoneSnap.hasData) {
