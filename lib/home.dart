@@ -899,20 +899,6 @@ class _AdminHomeState extends State<AdminHome> {
                                                                   .snapshots(),
                                                               builder: (context,
                                                                   snapshot) {
-                                                                double
-                                                                    numOfVolunteers =
-                                                                    0;
-
-                                                                snapshot
-                                                                    .data!.docs
-                                                                    .forEach(
-                                                                        (element) {
-                                                                  numOfVolunteers =
-                                                                      numOfVolunteers +
-                                                                          element
-                                                                              .get('current_volunteers');
-                                                                });
-
                                                                 if (!snapshot
                                                                     .hasData) {
                                                                   return Container(
@@ -920,6 +906,19 @@ class _AdminHomeState extends State<AdminHome> {
                                                                         CircularProgressIndicator(),
                                                                   );
                                                                 } else {
+                                                                  double
+                                                                      numOfVolunteers =
+                                                                      0;
+
+                                                                  snapshot.data!
+                                                                      .docs
+                                                                      .forEach(
+                                                                          (element) {
+                                                                    numOfVolunteers =
+                                                                        numOfVolunteers +
+                                                                            element.get('current_volunteers');
+                                                                  });
+
                                                                   return Container(
                                                                     child: Text(
                                                                         numOfVolunteers
@@ -953,19 +952,6 @@ class _AdminHomeState extends State<AdminHome> {
                                                                   .snapshots(),
                                                               builder: (context,
                                                                   snapshot) {
-                                                                double
-                                                                    numOfDonation =
-                                                                    0;
-
-                                                                snapshot
-                                                                    .data!.docs
-                                                                    .forEach(
-                                                                        (element) {
-                                                                  numOfDonation =
-                                                                      numOfDonation +
-                                                                          element
-                                                                              .get('current_donations');
-                                                                });
                                                                 if (!snapshot
                                                                     .hasData) {
                                                                   SizedBox(
@@ -975,23 +961,37 @@ class _AdminHomeState extends State<AdminHome> {
                                                                     child:
                                                                         CircularProgressIndicator(),
                                                                   );
+                                                                } else {
+                                                                  double
+                                                                      numOfDonation =
+                                                                      0;
+
+                                                                  snapshot.data!
+                                                                      .docs
+                                                                      .forEach(
+                                                                          (element) {
+                                                                    numOfDonation =
+                                                                        numOfDonation +
+                                                                            element.get('current_donations');
+                                                                  });
+
+                                                                  SizedBox(
+                                                                    height: 20,
+                                                                  );
+                                                                  return Container(
+                                                                    child: Text(
+                                                                      numOfDonation
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          color: Color(
+                                                                              0xff65BFB8),
+                                                                          fontSize:
+                                                                              50,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  );
                                                                 }
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                );
-                                                                return Container(
-                                                                  child: Text(
-                                                                    numOfDonation
-                                                                        .toString(),
-                                                                    style: TextStyle(
-                                                                        color: Color(
-                                                                            0xff65BFB8),
-                                                                        fontSize:
-                                                                            50,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
-                                                                );
                                                               }),
                                                         ]),
                                                       ]),

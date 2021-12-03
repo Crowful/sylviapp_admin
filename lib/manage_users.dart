@@ -178,15 +178,6 @@ class _ManageUsersState extends State<ManageUsers> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            width: 100,
-                                            height: 1000,
-                                            decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(url))),
-                                          ),
                                           const SizedBox(
                                             width: 20,
                                           ),
