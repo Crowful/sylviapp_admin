@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:sylviapp_admin/providers/providers.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 
 class ShowCampaign extends StatefulWidget {
   final String campaignId;
@@ -52,6 +54,23 @@ class ShowCampaignState extends State<ShowCampaign> {
             return const Text('');
           } else if (snapshot.hasData) {
             if (snapshot.data!.exists) {
+              var isActive = snapshot.data!.get('isActive');
+              var isCompleted = snapshot.data!.get('isDone');
+              var inProgress = snapshot.data!.get('inProgress');
+              Timestamp timeStampcampaign = snapshot.data!.get('date_created');
+
+              DateTime dateTimeCampaign = timeStampcampaign.toDate();
+              var statusSentence;
+              if (isActive == true) {
+                statusSentence = 'This campaign is Active';
+              } else if (isCompleted == true) {
+                statusSentence = 'This campaign is Completed';
+              } else if (inProgress == true) {
+                statusSentence = 'This campaign is in Progress';
+              } else {
+                statusSentence = 'This campaign is not Active';
+              }
+
               return Dialog(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
@@ -114,13 +133,69 @@ class ShowCampaignState extends State<ShowCampaign> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Text(
-                                            snapshot.data!.get('description'),
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black
-                                                    .withOpacity(0.8)),
-                                          ),
+                                          StreamBuilder<DocumentSnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('users')
+                                                  .doc(
+                                                      snapshot.data!.get('uid'))
+                                                  .snapshots(),
+                                              builder: (context, snapshote) {
+                                                if (!snapshote.hasData) {
+                                                  return Container(
+                                                    width: 20,
+                                                    height: 20,
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                }
+                                                return Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        AESCryptography()
+                                                            .decryptAES(enc
+                                                                    .Encrypted
+                                                                .fromBase64(
+                                                                    snapshote
+                                                                        .data!
+                                                                        .get(
+                                                                            'fullname'))),
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.8)),
+                                                      ),
+                                                      Text(
+                                                        snapshote.data!
+                                                            .get('email'),
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.8)),
+                                                      ),
+                                                      Text(
+                                                        AESCryptography()
+                                                            .decryptAES(enc
+                                                                    .Encrypted
+                                                                .fromBase64(
+                                                                    snapshote
+                                                                        .data!
+                                                                        .get(
+                                                                            'phoneNumber'))),
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.8)),
+                                                      ),
+                                                    ]);
+                                              }),
                                         ],
                                       ),
                                     ),
@@ -151,7 +226,7 @@ class ShowCampaignState extends State<ShowCampaign> {
                                                     color: Color(0xff65BFB8)),
                                               ),
                                               Text(
-                                                'male 19',
+                                                statusSentence,
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     color: Colors.black
@@ -228,13 +303,57 @@ class ShowCampaignState extends State<ShowCampaign> {
                                               fontSize: 18,
                                               color: Color(0xff65BFB8)),
                                         ),
-                                        Text(
-                                          'male 19',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black
-                                                  .withOpacity(0.8)),
-                                        ),
+                                        Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot.data!.get('address'),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black
+                                                        .withOpacity(0.8)),
+                                              ),
+                                              Text(
+                                                'Date Created: ' +
+                                                    dateTimeCampaign.month
+                                                        .toString() +
+                                                    ' ' +
+                                                    dateTimeCampaign.day
+                                                        .toString() +
+                                                    ', ' +
+                                                    dateTimeCampaign.year
+                                                        .toString()
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black
+                                                        .withOpacity(0.8)),
+                                              ),
+                                              Text(
+                                                'Max Donation: ' +
+                                                    snapshot.data!
+                                                        .get('max_donation')
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black
+                                                        .withOpacity(0.8)),
+                                              ),
+                                              Text(
+                                                'Max Volunteers: ' +
+                                                    snapshot.data!
+                                                        .get(
+                                                            'number_volunteers')
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black
+                                                        .withOpacity(0.8)),
+                                              ),
+                                            ]),
                                       ],
                                     ),
                                   )

@@ -15,8 +15,9 @@ class _ChartState extends State<Chart> {
   @override
   void initState() {
     super.initState();
-    _chartData.clear();
+
     _chartData = getCampaignData();
+    _chartData.clear();
   }
 
   @override
