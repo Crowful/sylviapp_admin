@@ -88,7 +88,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         pageController.jumpTo(1);
                       },
                       child: const Text(
-                        'Feedbacks Of Users',
+                        'Feedbacks and Suggestions Of Users',
                         style: TextStyle(
                             color: Color(0xff65BFB8),
                             fontSize: 25,
@@ -126,7 +126,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         scrollDirection: Axis.horizontal,
                         physics: const NeverScrollableScrollPhysics(),
                         controller: pageController,
-                        children: [feedbacksList(), reportList()],
+                        children: [
+                          feedbacksList(),
+                          suggestionList(),
+                          reportList()
+                        ],
                       ),
                     ),
                   ),
@@ -226,6 +230,148 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                           children: [
                                             const Text(
                                               'Feedback Message:',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 13),
+                                            ),
+                                            Container(
+                                              height: 200,
+                                              width: 400,
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(10))),
+                                              child: Text(
+                                                reportMessage,
+                                                style: const TextStyle(
+                                                    overflow:
+                                                        TextOverflow.clip),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Center(
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.red,
+                                                shape: const StadiumBorder()),
+                                            onPressed: () async {
+                                              await context
+                                                  .read(authserviceProvider)
+                                                  .removeFeedback(e.id);
+                                            },
+                                            child: const Text("Delete")),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      });
+                }).toList()));
+          }
+        });
+  }
+
+  Widget suggestionList() {
+    return StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance.collection('suggestions').snapshots(),
+        builder: (context, snapshotFeedbacks) {
+          if (!snapshotFeedbacks.hasData) {
+            return const Center(
+                child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: CircularProgressIndicator()));
+          } else {
+            return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 400, vertical: 100),
+                child: ListView(
+                    children: snapshotFeedbacks.data!.docs.map((e) {
+                  var string = e['date'];
+                  var reportMessage = e['suggestion'];
+
+                  return StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(e['uid'])
+                          .snapshots(),
+                      builder: (context, userSnaps) {
+                        if (!userSnaps.hasData) {
+                          return const CircularProgressIndicator();
+                        } else {
+                          String name = AESCryptography().decryptAES(
+                              enc.Encrypted.fromBase64(
+                                  userSnaps.data!.get('fullname')));
+                          String email = userSnaps.data!.get('email');
+                          return SizedBox(
+                            child: Card(
+                              elevation: 4,
+                              child: Container(
+                                margin: const EdgeInsets.all(20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              name,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              email,
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              'Date Issued: ' + string,
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Suggestion Area:',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 13),
