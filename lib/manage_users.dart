@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:sylviapp_admin/animations/opaque.dart';
 import 'package:sylviapp_admin/domain/aes_cryptography.dart';
 import 'package:encrypt/encrypt.dart' as enc;
@@ -103,7 +104,10 @@ class _ManageUsersState extends State<ManageUsers> {
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold),
                           ),
-                          CircularProgressIndicator(),
+                          Skeleton(
+                              isLoading: true,
+                              skeleton: SkeletonItem(child: Card()),
+                              child: Text('test')),
                         ],
                       ));
                     } else {
@@ -138,7 +142,26 @@ class _ManageUsersState extends State<ManageUsers> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.w400),
                                 ),
+                                const SizedBox(
+                                  width: 100,
+                                ),
                                 ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color(0xff65BFB8))),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Home')),
+                                const SizedBox(
+                                  width: 100,
+                                ),
+                                ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color(0xff65BFB8))),
                                     onPressed: () {
                                       manageUserController.animateToPage(
                                           manageUserController.page!.toInt() +
@@ -411,7 +434,14 @@ class _ManageUsersState extends State<ManageUsers> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.w400),
                                 ),
+                                const SizedBox(
+                                  width: 100,
+                                ),
                                 ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color(0xff65BFB8))),
                                     onPressed: () {
                                       manageUserController.animateToPage(
                                           manageUserController.page!.toInt() -

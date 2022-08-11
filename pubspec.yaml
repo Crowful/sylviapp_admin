@@ -63,6 +63,7 @@ dependencies:
   rate_limiter: ^0.1.1
   shared_preferences_web: ^2.0.2
   shared_preferences: ^2.0.9
+  skeletons: ^0.0.3
   
   
 

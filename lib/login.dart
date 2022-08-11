@@ -46,6 +46,7 @@ class _LoginAdminState extends State<LoginAdmin> {
           .decryptAES(enc.Encrypted.fromBase64(value["admin_user"]));
       adminPass = AESCryptography()
           .decryptAES(enc.Encrypted.fromBase64(value["admin_pass"]));
+      print(adminUser + adminPass);
     });
   }
 
